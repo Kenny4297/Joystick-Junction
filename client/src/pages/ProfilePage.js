@@ -10,7 +10,7 @@ const ProfilePage = ({user}) => {
 
   const update = async (e) => {
     e?.preventDefault()
-    const resp = await fetch(`/api/user/${user.id}`, {
+    const resp = await fetch(`/api/users/${user.id}`, {
       method: "PUT",
       body: JSON.stringify(formData),
       headers: {
@@ -25,7 +25,7 @@ const ProfilePage = ({user}) => {
 
   useEffect(() => {
     if (user) {
-      setFormData(prevFormData => ({ ...prevFormData, email: user.email, username: user.username, location: user.location }))
+      setFormData(prevFormData => ({ ...prevFormData, email: user.email, username: user.username}))
     }
   }, [user])
   
@@ -47,18 +47,6 @@ const ProfilePage = ({user}) => {
               onChange={handleInputChange}
             />
           </div>
-
-          <div className="form-group mb-2">
-            <label>Location</label>
-            <input 
-              type="text" 
-              className="form-control" 
-              name="location" 
-              value={formData.location || ""} 
-              onChange={handleInputChange}
-            />
-          </div>
-
 
           <div className="form-group mb-2">
             <label>Email Address</label>

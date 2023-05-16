@@ -29,6 +29,7 @@ function App() {
                     });
                     const result = await query.json();
                     if (result) {
+                        console.log("user being set")
                         setUser(result);
                     }
                 } catch (error) {

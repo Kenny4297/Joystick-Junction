@@ -32,7 +32,7 @@ const Header = ({user}) => {
               </>
             ) : (
               <>
-                <Nav.Link href={`/profile/${user._id}`} style={{color: 'white'}}>Profile</Nav.Link>
+                <Nav.Link href={`/profile/${user.id}`} style={{color: 'white'}}>Profile</Nav.Link>
                 <Nav.Link href="##" onClick={logout} style={{color: 'white'}}>
                   Logout
                 </Nav.Link>
@@ -49,7 +49,7 @@ const Header = ({user}) => {
                     }
                     id="basic-nav-dropdown"
                   >
-                    <NavDropdown.Item href={`/profile/${user._id}`}>
+                    <NavDropdown.Item href={`/profile/${user.id}`}>
                       Profile
                     </NavDropdown.Item>
                     <NavDropdown.Item href="##" onClick={logout}>

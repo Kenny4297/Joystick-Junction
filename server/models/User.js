@@ -19,9 +19,6 @@ User.init(
     username: {
       type: DataTypes.STRING,
     },
-    location: {
-      type: DataTypes.STRING,
-    },
     email: {
       type: DataTypes.STRING,
       allowNull: false,

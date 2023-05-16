@@ -14,7 +14,7 @@ const LoginPage = (props) => {
   const handleFormSubmit = async (e) => {
     console.log(formData)
     e.preventDefault()
-    const query = await fetch("/api/user/auth", {
+    const query = await fetch("/api/users/auth", {
       method: "post",
       body: JSON.stringify(formData),
       headers: {
