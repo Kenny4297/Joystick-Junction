@@ -9,6 +9,8 @@ import 'bootstrap/dist/css/bootstrap.min.css';
 import './styles/global.css'
 import TestComponent from "./components/testComponent";
 
+import Browse from './components/Browse'
+
 function App() {
     const [user, setUser] = useState(null)
 
@@ -19,7 +21,7 @@ function App() {
             const authCookie = cookie.get("auth-token");
             if (authCookie) {
                 try {
-                    const query = await fetch("http://localhost:3001/api/users/verify", {
+                    const query = await fetch("/api/users/verify", {
                         method: "post",
                         body: JSON.stringify({}),
                         headers: {
@@ -49,9 +51,11 @@ function App() {
                         <Routes>
                             <Route path="/" element={<HomePage />} />
                             <Route path="/login" element={<LoginPage />} />
-                            <Route path="/profile" element={<ProfilePage />} />
+                            <Route path="/profile/:userId" element={<ProfilePage />} />
                             <Route path="/signup" element={<SignupPage />} />
                             <Route path="/test" element={<TestComponent />} />
+                            <Route path="/browse" element={<Browse />} />
+                            
                         </Routes>
                     </div>
             </UserContext.Provider>

@@ -1,94 +1,113 @@
-import { useEffect, useState } from "react"
+import { useEffect, useState, useContext } from "react";
+import { useParams} from 'react-router-dom';
+import { UserContext } from "../contexts/UserContext";
 
-const ProfilePage = ({user}) => {
-  const [ formData, setFormData ] = useState({ email: "", password: "", username: "" })
-  const [ updateResult, setUpdateResult ] = useState("")
+const ProfilePage = () => {
 
-  const handleInputChange = (e) => {
-    setFormData({...formData, [e.target.name]: e.target.value})
-  }
+  const [user, setUser] = useContext(UserContext);
 
-  const update = async (e) => {
-    e?.preventDefault()
-    const resp = await fetch(`/api/users/${user.id}`, {
-      method: "PUT",
-      body: JSON.stringify(formData),
-      headers: {
-        "Content-Type": "application/json"
-      }
-    })
-    if( !resp.ok ){
-      return setUpdateResult("fail")
-    }
-    setUpdateResult("success")
-  }
 
-  useEffect(() => {
-    if (user) {
-      setFormData(prevFormData => ({ ...prevFormData, email: user.email, username: user.username}))
-    }
-  }, [user])
-  
+    const {userId } = useParams();
 
-  return (
-    <>
-      <h1>Your Profile</h1>
+    const [formData, setFormData] = useState({
+        email: "",
+        password: "",
+        username: "",
+    });
+    const [updateResult, setUpdateResult] = useState("");
 
-      <div style={{ width: "50%"}}>
-        <form onSubmit={update} className="mb-2">
+    const handleInputChange = (event) => {
+        setFormData({ ...formData, [event.target.name]: event.target.value });
+    };
 
-          <div className="form-group mb-2">
-            <label>Username</label>
-            <input 
-              type="text" 
-              className="form-control" 
-              name="username" 
-              value={formData.username || ""} 
-              onChange={handleInputChange}
-            />
-          </div>
+    const update = async (event) => {
+        event?.preventDefault();
+        const resp = await fetch(`/api/users/${userId}`, {
+            method: "PUT",
+            body: JSON.stringify(formData),
+            headers: {
+                "Content-Type": "application/json",
+            },
+        });
+        if (!resp.ok) {
+            return setUpdateResult("fail");
+        }
+        setUpdateResult("success");
+    };
 
-          <div className="form-group mb-2">
-            <label>Email Address</label>
-            <input 
-              type="text" 
-              className="form-control" 
-              name="email" 
-              value={formData.email} 
-              onChange={handleInputChange}
-            />
-          </div>
+    useEffect(() => {
+        if (user) {
+            setFormData((prevFormData) => ({
+                ...prevFormData,
+                email: user.email,
+                username: user.username,
+            }));
+        }
+    }, [user]);
 
-          <div className="form-group mb-2">
-            <label>Password</label>
-            <input 
-              type="password" 
-              className="form-control" 
-              name="password" 
-              value={formData.password} 
-              onChange={handleInputChange}
-            />
-          </div>
+    return (
+        <>
+            <h1>Your Profile</h1>
+            {console.log(user)}
 
-          <div className="form-group">
-            <button className="btn btn-primary">Update Profile</button>
-          </div>
-        </form>
+            <p style={{color:'white'}}>{JSON.stringify(user)}</p>
 
-        { updateResult === "success" && (
-          <div className="alert alert-success" role="alert">
-            Update successful!
-          </div>
-        )}
+            <div style={{ width: "50%" }}>
+                <form onSubmit={update} className="mb-2">
+                    <div className="form-group mb-2">
+                        <label>Username</label>
+                        <input
+                            type="text"
+                            className="form-control"
+                            name="username"
+                            value={formData.username || ""}
+                            onChange={handleInputChange}
+                        />
+                    </div>
 
-        { updateResult === "fail" && (
-          <div className="alert alert-danger" role="alert">
-            Update failed!
-          </div>
-        )}
-      </div>
-    </>
-  )
-}
+                    <div className="form-group mb-2">
+                        <label>Email Address</label>
+                        <input
+                            type="text"
+                            className="form-control"
+                            name="email"
+                            value={formData.email}
+                            onChange={handleInputChange}
+                        />
+                    </div>
 
-export default ProfilePage
+                    <div className="form-group mb-2">
+                        <label>Password</label>
+                        <input
+                            type="password"
+                            className="form-control"
+                            name="password"
+                            value={formData.password}
+                            onChange={handleInputChange}
+                        />
+                    </div>
+
+                    <div className="form-group">
+                        <button className="btn btn-primary">
+                            Update Profile
+                        </button>
+                    </div>
+                </form>
+
+                {updateResult === "success" && (
+                    <div className="alert alert-success" role="alert">
+                        Update successful!
+                    </div>
+                )}
+
+                {updateResult === "fail" && (
+                    <div className="alert alert-danger" role="alert">
+                        Update failed!
+                    </div>
+                )}
+            </div>
+        </>
+    );
+};
+
+export default ProfilePage;

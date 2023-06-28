@@ -1,19 +1,19 @@
 import { useState } from "react"
 import cookie from "js-cookie"
 
-const LoginPage = (props) => {
+const LoginPage = () => {
 
   const defForm = { email: "", password: "" }
   const [ formData, setFormData ] = useState(defForm)
   const [ loginResult, setLoginResult ] = useState("")
 
-  const handleInputChange = (e) => {
-    setFormData({...formData, [e.target.name]: e.target.value})
+  const handleInputChange = (event) => {
+    setFormData({...formData, [event.target.name]: event.target.value})
   }
 
-  const handleFormSubmit = async (e) => {
+  const handleFormSubmit = async (event) => {
     console.log(formData)
-    e.preventDefault()
+    event.preventDefault()
     const query = await fetch("/api/users/auth", {
       method: "post",
       body: JSON.stringify(formData),
