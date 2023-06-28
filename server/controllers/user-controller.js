@@ -4,6 +4,7 @@ require("dotenv").config()
 
 module.exports = {
 
+  // POST: api/users/
   async createUser({ body }, res) {
     const userToInsert = {email: body.email, password: body.password, username: body.username }
     const user = await User.create(userToInsert);
@@ -15,6 +16,7 @@ module.exports = {
   },
 
 
+  // UPDATE api/users/:id
   async updateUser({ body, params }, res) {
     let userToUpdate = { email: body.email, username: body.username}
   
@@ -32,6 +34,8 @@ module.exports = {
     res.status(200).json({ id: user[0], username: user[1].username, email: user[1].email });
   },
 
+
+  // POST: api/users/auth
   async authUser({ body }, res) {
 
     // Find the user by the email address
@@ -57,13 +61,12 @@ module.exports = {
   },
 
 
+  // POST: /api/users/verify
   async verifyUser(req, res){
-    console.log("Verify test")
     const token = req.headers["auth-token"]
   
     if( !token ) return res.status(401).json({msg: "un-authorized"})
   
-    console.log(token)
     console.log("JWT secret:", process.env.JWT_SECRET);
     const isVerified = jwt.verify(token, process.env.JWT_SECRET)
     if( !isVerified ) return res.status(401).json({msg: "un-authorized"})

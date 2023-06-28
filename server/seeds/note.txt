@@ -1,1 +1,0 @@
-I will not be seeding this data base. In fact, I will just create two new users and add data by hand. Please see the users information in a google dox titled 'react_cms' for their user data.
