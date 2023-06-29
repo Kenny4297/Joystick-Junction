@@ -19,6 +19,15 @@ Post.init(
                 key: 'id'
             }
         },
+        game_id: {
+            type: DataTypes.STRING,
+            allowNull: false
+        },
+        category: {
+            type: DataTypes.ENUM,
+            values: ['Strategy and Tips', 'Reviews and Opinions', 'Bugs and Glitches', 'Updates, Patches, and DLC’s', 'Meet ups'],
+            allowNull: false,
+        },
         post_date: {
             type: DataTypes.STRING,
         },
@@ -42,5 +51,3 @@ Post.init(
 );
 
 module.exports = Post;
-
-

@@ -1,16 +1,20 @@
-import React, { useEffect, useRef, useState } from 'react';
+import React, { useEffect, useRef, useState, useContext } from 'react';
 import axios from 'axios';
+import { Link } from 'react-router-dom';
+import { GameContext } from '../contexts/GameContext';
 
 const BrowseBySearch = () => {
     const searchBarForGameRef = useRef(null);
     const [games, setGames] = useState([]);
     const [errorMessage, setErrorMessage] = useState('');
 
+    const { setGameData } = useContext(GameContext);
+
     const fetchGamesByName = async (event) => {
         event.preventDefault();
-    
+
         const gameName = searchBarForGameRef.current.value;
-    
+
         const options = {
             method: 'GET',
             url: 'https://free-to-play-games-database.p.rapidapi.com/api/games',
@@ -19,18 +23,20 @@ const BrowseBySearch = () => {
                 'X-RapidAPI-Host': 'free-to-play-games-database.p.rapidapi.com'
             }
         };
-    
+
         try {
             const response = await axios.request(options);
             const games = response.data;
-            // Filter the games by title
             const filteredGames = games.filter(game => game.title.toLowerCase().includes(gameName.toLowerCase()));
-            console.log(filteredGames);
-            setGames(filteredGames); // Update the games state with the filtered games
+            setGames(filteredGames);
         } catch (error) {
             console.error(error);
         }
     };
+
+    const handleGameClick = (game) => {
+        setGameData(game);
+    }
 
     return (
         <div>
@@ -50,11 +56,13 @@ const BrowseBySearch = () => {
             <div>
                 {games.length > 0 ? (
                     games.map(game => (
-                        <div key={game.id}>
-                            <h2>{game.title}</h2>
-                            <img src={game.thumbnail} alt={game.title} />
-                            <p>{game.short_description}</p>
-                        </div>
+                        <Link key={game.id} to={`/game/${game.id}`} onClick={() => handleGameClick(game)}>
+                            <div>
+                                <h2>{game.title}</h2>
+                                <img src={game.thumbnail} alt={game.title} />
+                                <p>{game.short_description}</p>
+                            </div>
+                        </Link>
                     ))
                 ) : (
                     <p>No games found for the selected categories or name.</p>

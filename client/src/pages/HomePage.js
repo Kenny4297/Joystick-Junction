@@ -41,8 +41,11 @@ const HomePage = () => {
 
         <p>Testing displaying all posts</p>
 
-        <Link to="/browse">Browse Component testing</Link>
-        <Link to="/discover">Discover Component testing</Link>
+        <div style={{display:'flex', flexDirection:'column'}}>
+            <Link to="/browseBySearch">Browse by search test</Link>
+            <Link to="/browseByCheckboxes">Browse by checkboxes test</Link>
+            <Link to="/discover">Discover Component test</Link>
+        </div>
 
 
         <div>
@@ -51,7 +54,6 @@ const HomePage = () => {
                     <h2>{post.post_title}</h2>
                     <h3>{post.user_id}</h3>
                     <p>{post.post_content}</p>
-                    {/* Add more post details as needed */}
                 </div>
             ))}
         </div>

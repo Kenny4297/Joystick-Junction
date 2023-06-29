@@ -1,4 +1,6 @@
-import React, { useState, useEffect } from 'react';
+import React, { useState, useEffect, useContext } from 'react';
+import { GameContext } from '../contexts/GameContext';
+import { Link } from 'react-router-dom'
 
 const BrowseByCheckboxes = () => {
     const [selectedCategories, setSelectedCategories] = useState([]);
@@ -9,6 +11,7 @@ const BrowseByCheckboxes = () => {
     const [POVCategoryCheckboxes, setPOVCategoryCheckboxes] = useState([]);
     const [randomCategoryCheckboxes, setRandomCategoryCheckboxes] = useState([]);
     const [errorMessage, setErrorMessage] = useState(null);
+    const { setGameData } = useContext(GameContext);
 
     useEffect(() => {
         const mainCategoryArray = ["flight", "racing", "sailing", "sports"];
@@ -42,6 +45,7 @@ const BrowseByCheckboxes = () => {
         try {
             const response = await fetch(url, options);
             const data = await response.json();
+            setGameData(data);
             setGames(data);
         } catch (error) {
             console.error('Failed to fetch games:', error);
@@ -91,17 +95,19 @@ const BrowseByCheckboxes = () => {
 
             {errorMessage && <p>{errorMessage}</p>}
             <div>
-                {games.length > 0 ? (
-                    games.map(game => (
-                        <div key={game.id}>
+            {games.length > 0 ? (
+                games.map(game => (
+                    <Link to={`/game/${game.id}`} key={game.id} onClick={() => setGameData(game)}>
+                        <div>
                             <h2>{game.title}</h2>
                             <img src={game.thumbnail} alt={game.title} />
-                            <p>{game.short_description}</p>
+                        <p>{game.short_description}</p>
                         </div>
-                    ))
-                ) : (
-                    <p>No games found for the selected categories or name.</p>
-                )}
+                    </Link>
+                ))
+            ) : (
+                <p>No games found for the selected categories or name.</p>
+            )}
             </div>
         </>
     );

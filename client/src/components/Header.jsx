@@ -1,20 +1,84 @@
-import styled from "styled-components";
-import cookie from "js-cookie";
-import { Navbar, Nav, NavDropdown } from "react-bootstrap";
-import "bootstrap/dist/css/bootstrap.min.css";
 
-const Header = ({ user }) => {
+import { Link } from "react-router-dom";
+import {
+    Navbar,
+    Nav,
+    FormControl,
+    Form
+} from "react-bootstrap";
+import "bootstrap/dist/css/bootstrap.min.css";
+import { useNavigate } from "react-router-dom";
+import React, { useContext, useState} from "react";
+import { UserContext } from "../contexts/UserContext";
+
+const Header = () => {
+    const [user, setUser] = useContext(UserContext);
+
     const logout = () => {
-        cookie.remove("auth-token");
-        window.location.href = "/login";
+        localStorage.removeItem("auth-token");
+        setUser(null);
+        navigate("/login");
+    };
+
+    //Here we are keeping track of the data in the search bar. If it changes, the state will be updated
+    const [searchTerm, setSearchTerm] = useState("");
+
+    const navigate = useNavigate();
+
+    const handleInputChange = (event) => {
+        setSearchTerm(event.target.value);
+    };
+
+    const handleFormSubmit = (event) => {
+        event.preventDefault();
+        const query = searchTerm.replace(/ /g, "+");
+        navigate(`/individual-book/${query}`, {
+            state: { searchTerm: searchTerm.replace(/[+,]/g, "") },
+        });
     };
 
     return (
-        <header>
-            <StyledNavbar expand="md">
-                <StyledBrand href="/">
-                    <h2>Project Title</h2>
-                </StyledBrand>
+        <header
+            style={{ width: "100%", minHight: "1.5rem", maxHeight: "1.5rem", marginBottom:'5rem'}}
+            aria-label="Main navigation"
+        >
+            <Navbar
+                style={{ backgroundColor: "grey" }}
+                expand="md"
+                className="d-flex justify-content-center align-items-center"
+                aria-label="Main menu"
+            >
+                <Navbar.Brand href="/">
+                    <h2 style={{paddingLeft:'2rem'}}>Joystick Junction</h2>
+                </Navbar.Brand>
+
+                <Form
+                    inline="true"
+                    onSubmit={handleFormSubmit}
+                    aria-label="Search for a book"
+                >
+                    <div style={{ display: "flex", alignItems: "center" }}>
+                        <FormControl
+                            type="text"
+                            placeholder="Search..."
+                            style={{ width: "30vw" }}
+                            className="mr-sm-2 header-search-bar"
+                            onChange={handleInputChange}
+                            aria-label="Search input"
+                        />
+
+                        <Link to={`/individual-book/${searchTerm}`}></Link>
+
+                        <button
+                            className="header-search-button"
+                            aria-label="Search button"
+                            type="submit"
+                        >
+                            Search
+                        </button>
+                    </div>
+                </Form>
+
                 <Navbar.Toggle aria-controls="basic-navbar-nav" />
                 <Navbar.Collapse id="basic-navbar-nav">
                     <Nav
@@ -24,78 +88,50 @@ const Header = ({ user }) => {
                             justifyContent: "center",
                             flexGrow: "1",
                         }}
+                        aria-label="Page navigation"
                     >
-                        <StyledLink href="/">Home</StyledLink>
+                        <Nav.Link className="header-links" href="/">Home</Nav.Link>
                         {!user ? (
                             <>
-                                <StyledLink href="/signup">Signup</StyledLink>
-                                <StyledLink href="/login">Login</StyledLink>
+                                <Nav.Link className="header-links" href="/signUp">SignUp</Nav.Link>
+                                <Nav.Link href="/login">Login</Nav.Link>
                             </>
                         ) : (
                             <>
-                                <StyledLink href={`/profile/${user.id}`}>
+                                <Nav.Link className="header-links" href={`/profile/${user._id}`}>
                                     Profile
-                                </StyledLink>
-                                <StyledLink href="##" onClick={logout}>
+                                </Nav.Link>
+                                <Nav.Link
+                                    href="##"
+                                    onClick={logout}
+                                    aria-label="Logout"
+                                    className="header-links"
+                                >
                                     Logout
-                                </StyledLink>
-                                {!user.profileImage ? (
-                                    <StyledLink href="/profileImage">
-                                        Add a profile Image!
-                                    </StyledLink>
-                                ) : (
-                                    <StyledDropdown
-                                        title={
-                                            <img
-                                                src={user.profileImage}
-                                                alt="The users profile pic"
-                                            />
-                                        }
-                                        id="basic-nav-dropdown"
-                                    >
-                                        <NavDropdown.Item
-                                            href={`/profile/${user.id}`}
-                                        >
-                                            Profile
-                                        </NavDropdown.Item>
-                                        <NavDropdown.Item
-                                            href="##"
-                                            onClick={logout}
-                                        >
-                                            Logout
-                                        </NavDropdown.Item>
-                                    </StyledDropdown>
+                                </Nav.Link>
+                                <Nav.Link className="header-links" href={`/shoppingCart/${user._id}`}>
+                                    Messages
+                                </Nav.Link>
+                                {user && user.profileImage && (
+                                    <img
+                                        src={user.profileImage}
+                                        alt="The user's profile pic"
+                                        style={{
+                                            width: "40px",
+                                            borderRadius: "20px",
+                                            border: "1px solid var(--dark-wood)",
+                                            marginRight: "2rem",
+                                        }}
+                                        className="profile-pic"
+                                    />
                                 )}
                             </>
                         )}
                     </Nav>
                 </Navbar.Collapse>
-            </StyledNavbar>
+            </Navbar>
         </header>
     );
 };
 
 export default Header;
-
-const StyledNavbar = styled(Navbar)`
-    background-color: #1A1A1A;
-    display: flex;
-    justify-content: space-between;
-`;
-
-const StyledBrand = styled(Navbar.Brand)`
-    h2 {
-        color: white;
-    }
-`;
-
-const StyledLink = styled(Nav.Link)`
-    color: white;
-`;
-
-const StyledDropdown = styled(NavDropdown)`
-    img {
-        width: 40px;
-        border-radius: 20px;
-    }
-`;
