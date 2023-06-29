@@ -42,6 +42,8 @@ const HomePage = () => {
         <p>Testing displaying all posts</p>
 
         <Link to="/browse">Browse Component testing</Link>
+        <Link to="/discover">Discover Component testing</Link>
+
 
         <div>
             {posts.map((post) => (

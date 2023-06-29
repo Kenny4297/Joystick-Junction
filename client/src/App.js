@@ -4,12 +4,12 @@ import cookie from "js-cookie"
 import { Header } from "./components"
 import { HomePage, LoginPage, ProfilePage, SignupPage } from "./pages";
 import { UserContext } from "./contexts/UserContext";
-
 import 'bootstrap/dist/css/bootstrap.min.css';
 import './styles/global.css'
 import TestComponent from "./components/testComponent";
 
-import Browse from './components/Browse'
+import Browse from './components/BrowseBySearch'
+import Discover from './components/Discover'
 
 function App() {
     const [user, setUser] = useState(null)
@@ -55,7 +55,7 @@ function App() {
                             <Route path="/signup" element={<SignupPage />} />
                             <Route path="/test" element={<TestComponent />} />
                             <Route path="/browse" element={<Browse />} />
-                            
+                            <Route path="/discover" element={<Discover />} />                            
                         </Routes>
                     </div>
             </UserContext.Provider>
