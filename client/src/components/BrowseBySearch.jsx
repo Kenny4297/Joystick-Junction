@@ -27,7 +27,9 @@ const BrowseBySearch = () => {
         try {
             const response = await axios.request(options);
             const games = response.data;
+            console.log("The games response is", games)
             const filteredGames = games.filter(game => game.title.toLowerCase().includes(gameName.toLowerCase()));
+            console.log("The filtered games response is", filteredGames)
             setGames(filteredGames);
         } catch (error) {
             console.error(error);

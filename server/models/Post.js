@@ -25,7 +25,7 @@ Post.init(
         },
         category: {
             type: DataTypes.ENUM,
-            values: ['Strategy and Tips', 'Reviews and Opinions', 'Bugs and Glitches', 'Updates, Patches, and DLC’s', 'Meet ups'],
+            values: ['Strategy-and-Tips', 'Reviews-and-Opinions', 'Bugs-and-Glitches', 'Updates-Patches-DLCs', 'Meetups'],
             allowNull: false,
         },
         post_date: {

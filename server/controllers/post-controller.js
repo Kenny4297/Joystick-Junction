@@ -3,108 +3,104 @@ const User = require('../models/User');
 const Comment = require('../models/Comment');
 
 module.exports = {
-    // Function to get all posts
-    // api/posts/
+    // Get all posts
+    // GET api/posts/
     async getAllPosts(req, res) {
-        console.log("/api/posts API function firing")
         try {
             const getPostData = await Post.findAll({
                 include: [
-                    {
-                        model: User,
-                        attributes: ['username']
-                    },
-                    {
-                        model: Comment,
-                        attributes: ['id', 'user_id', 'post_id', 'comment_date', 'comment_content'], // Changed 'post_date' to 'comment_date'
-                        include: {
-                            model: User,
-                            attributes: ['username']
-                        }
+                    { model: User, attributes: ['username'] },
+                    { model: Comment, 
+                        attributes: ['id', 'user_id', 'post_id', 'comment_date', 'comment_content'],
+                        include: { model: User, attributes: ['username'] }
                     }
                 ]
             });
-            
-            console.log("Successfully retrieved all posts.");
-            res.json(getPostData); // Send the retrieved posts data back to the client
-        } catch (err) {
-            console.log("Error fetching posts: ", err);
-            res.status(500).json(err); // Send the error back to the client
-        }
-    },
-    
 
-    // Function to get a specific post
-    async getPostById(req, res) {
-        let postId = req.params.id;
-        try {
-            const getSpecificPost = await Post.findOne({ where: { id: postId }})
-            if (!getSpecificPost) {
-                res.status(404).send("Sorry, post was not found!")
-            } else {
-                res.json(getSpecificPost);
+            if(!getPostData.length) {
+                return res.status(404).json({message: 'No posts found'});
             }
+
+            res.json(getPostData);
         } catch (err) {
-            console.log(err);
-            res.status(500).json(err);
+            console.error(err);
+            res.status(500).json({message: 'An error occurred while retrieving posts'});
         }
     },
 
-    // Function to create a post
-    async createPost(req, res) {
+    // Get a specific post
+    async getPostById(req, res) {
         try {
-            let newPost = {
+            const getSpecificPost = await Post.findOne({ where: { id: req.params.id }})
+
+            if(!getSpecificPost) {
+                return res.status(404).json({message: 'Post not found'});
+            }
+
+            res.json(getSpecificPost);
+        } catch (err) {
+            console.error(err);
+            res.status(500).json({message: 'An error occurred while retrieving the post'});
+        }
+    },
+
+    // Create a post
+    // POST api/posts/
+    async createPost(req, res) {
+        console.log("Create a post API function firing!")
+        try {
+            const newPost = {
+                game_id: req.body.game_id,
+                category: req.body.category,
                 post_date: req.body.post_date,
-                post_content: req.body.post_content,
                 post_title: req.body.post_title,
+                post_content: req.body.post_content,
                 user_id: req.session.user_id
             };
 
             const createdPost = await Post.create(newPost);
-            res.status(201).send(createdPost);
+            res.status(201).json(createdPost);
         } catch (err) {
-            console.log(err);
-            res.status(500).json(err);
+            console.error(err);
+            res.status(500).json({message: 'An error occurred while creating the post'});
         }
     },
 
-    // Function to update a post
+    // Update a post
     async updatePost(req, res) {
-        let postId = req.params.id;
-
         try {
             const postToUpdate = await Post.update({
+                game_id: req.body.game_id,
+                category: req.body.category,
+                post_date: req.body.post_date,
                 post_title: req.body.post_title,
                 post_content: req.body.post_content
-            }, 
-            { where: { id: postId }});
+            }, { where: { id: req.params.id }});
 
-            if (!postToUpdate) {
-                res.status(404).json({message: "Post not found!"});
-                return;
-            } else {
-                res.status(204).send("Post updated successfully");
+            if(!postToUpdate) {
+                return res.status(404).json({message: 'Post not found'});
             }
+
+            res.json(postToUpdate);
         } catch (err) {
-            console.log(err);
-            res.status(500).json(err);
+            console.error(err);
+            res.status(500).json({message: 'An error occurred while updating the post'});
         }
     },
 
-    // Function to delete a post
+    // Delete a post
     async deletePost(req, res) {
-        let postId = parseInt(req.params.id);
         try {
-            const postToDelete = await Post.destroy({ where: { id: postId }});
+            const postToDelete = await Post.destroy({ where: { id: req.params.id }});
 
-            if (!postToDelete) {
-                res.status(404).send("Sorry, no post found!");
-            } else {
-                res.json(postToDelete);
+            if(!postToDelete) {
+                return res.status(404).json({message: 'Post not found'});
             }
+
+            res.json({message: 'Post deleted successfully'});
         } catch (err) {
-            console.log(err);
-            res.status(500).json(err);
+            console.error(err);
+            res.status(500).json({message: 'An error occurred while deleting the post'});
         }
     }
 };

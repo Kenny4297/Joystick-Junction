@@ -25,13 +25,13 @@ const GameDetails = () => {
             </div>
 
             <div style={{display:'flex', justifyContent:'center', alignItems:'center', flexDirection:'column'}}>
-                <Link to={`/games/${gameId}/Strategy`}>Strategy and Tips</Link>
+                <Link to={`/games/${gameId}/Strategy-and-Tips`}>Strategy and Tips</Link>
 
-                <Link to={`/games/${gameId}/Reviews`}>Reviews</Link>
+                <Link to={`/games/${gameId}/Reviews-and-Opinions`}>Reviews and Opinions</Link>
 
-                <Link to={`/games/${gameId}/Bugs`}>Bugs Glitches</Link>
+                <Link to={`/games/${gameId}/Bugs-and-Glitches`}>Bugs and Glitches</Link>
 
-                <Link to={`/games/${gameId}/Updates`}>Updates, Patches, DLC</Link>
+                <Link to={`/games/${gameId}/Updates-Patches-DLCs`}>Updates, Patches, DLC's</Link>
 
                 <Link to={`/games/${gameId}/Meetups`}>Meetups</Link>
             </div>
