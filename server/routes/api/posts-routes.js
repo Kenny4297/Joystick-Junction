@@ -1,17 +1,17 @@
 const express = require('express');
 const router = express.Router();
 
-// Controllers
 const { 
   getAllPosts,
   getPostById, 
   createPost, 
   updatePost,
-  deletePost
+  deletePost,
+  getPostsByGameAndCategory 
 } = require('../../controllers/post-controller');
 
-// Routes
 router.route('/').get(getAllPosts).post(createPost);
 router.route('/:id').get(getPostById).put(updatePost).delete(deletePost);
+router.route('/game/:gameId/category/:category').get(getPostsByGameAndCategory); 
 
 module.exports = router;

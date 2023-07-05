@@ -4,7 +4,8 @@ const Post = require('../models/Post');
 
 module.exports = {
     // Function to get all comments
-    getAllComments: async (req, res) => {
+    // api/comments/
+    async getAllComments (req, res) {
         try {
             const getAllComments = await Comment.findAll({
                 where: { post_id: req.params.postId },
@@ -28,7 +29,8 @@ module.exports = {
     },
 
     // Function to create a comment
-    createComment: async (req, res) => {
+
+    async createComment (req, res) {
         if (req.session) {
             try {
                 const createdComment = await Comment.create({

@@ -48,6 +48,8 @@ module.exports = {
     // POST api/posts/
     async createPost(req, res) {
         console.log("Create a post API function firing!")
+        console.log(req.body);  
+    
         try {
             const newPost = {
                 game_id: req.body.game_id,
@@ -55,9 +57,9 @@ module.exports = {
                 post_date: req.body.post_date,
                 post_title: req.body.post_title,
                 post_content: req.body.post_content,
-                user_id: req.session.user_id
+                user_id: req.body.user_id
             };
-
+    
             const createdPost = await Post.create(newPost);
             res.status(201).json(createdPost);
         } catch (err) {
@@ -65,6 +67,37 @@ module.exports = {
             res.status(500).json({message: 'An error occurred while creating the post'});
         }
     },
+
+    // Get posts by game id and category
+    // GET api/posts/game/:gameId/category/:category
+    async getPostsByGameAndCategory(req, res) {
+        console.log("Get posts by category API function firing!")
+        try {
+            const postsData = await Post.findAll({
+                where: {
+                    game_id: req.params.gameId,
+                    category: req.params.category,
+                },
+                include: [
+                    { model: User, attributes: ['username'] },
+                    { model: Comment, 
+                        attributes: ['id', 'user_id', 'post_id', 'comment_date', 'comment_content'],
+                        include: { model: User, attributes: ['username'] }
+                    }
+                ]
+            });
+
+            if(!postsData.length) {
+                return res.status(404).json({message: 'No posts found for this game and category'});
+            }
+
+            res.json(postsData);
+        } catch (err) {
+            console.error(err);
+            res.status(500).json({message: 'An error occurred while retrieving posts'});
+        }
+    },
+
 
     // Update a post
     async updatePost(req, res) {

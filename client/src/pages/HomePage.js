@@ -3,13 +3,15 @@ import { UserContext } from "../contexts/UserContext";
 import { Link } from "react-router-dom";
 import axios from "axios";
 
-
 const HomePage = () => {
     const [user, setUser] = useContext(UserContext);
 
     useEffect(() => {
+        if (user && user.id) {
         console.log(user);
-    }, [user]);
+        console.log(user.id)
+        }
+    }, [user])
 
     const [posts, setPosts] = useState([]);
 
@@ -38,6 +40,8 @@ const HomePage = () => {
                     <Link to="/test">Go to Test Component</Link>
                 </>
             )}
+
+        <Link className="header-links" to="/signUp">SignUp</Link>
 
         <p>Testing displaying all posts</p>
 

@@ -15,7 +15,9 @@ const GameCategoriesPage = () => {
     const [modalIsOpen, setIsOpen] = useState(false);
     const [postTitle, setPostTitle] = useState("");
     const [postContent, setPostContent] = useState("");
-    const [posts, setPosts] = useState([]);  // New state for posts
+    const [posts, setPosts] = useState([]); 
+    const [comments, setComments] = useState([]);
+    const [newComment, setNewComment] = useState([]);
 
     useEffect(() => {
         if (user && user.id) {
@@ -23,6 +25,19 @@ const GameCategoriesPage = () => {
         console.log(user.id)
         }
     }, [user])
+
+    useEffect(() => {
+        // Function to fetch comments for each post
+        const fetchCommentsForPosts = async () => {
+          const allComments = await Promise.all(posts.map(async (post) => {
+            const response = await axios.get(`/api/comments/${post.id}`);
+            return response.data;
+          }));
+          setComments(allComments);
+        };
+
+        fetchCommentsForPosts();
+      }, [posts]); // Re-fetch comments when posts change
 
     const openModal = () => {
         setIsOpen(true);
@@ -35,7 +50,8 @@ const GameCategoriesPage = () => {
     const handleFormSubmit = async (event) => {
         event.preventDefault();
 
-        // Create a new post object
+        console.log(user.id)
+
         const newPost = {
             game_id: gameId,
             category: categoryPage,
@@ -46,10 +62,8 @@ const GameCategoriesPage = () => {
         };
 
         try {
-            // Send a POST request to your server
             const response = await axios.post("/api/posts/", newPost);
 
-            // If successful, add the new post to posts state and clear the form
             if (response.status === 201) {
                 setPosts([...posts, response.data]);
                 setPostTitle("");
@@ -61,9 +75,52 @@ const GameCategoriesPage = () => {
         }
     };
 
+    const fetchComments = async (postId) => {
+        try {
+          const response = await axios.get(`/api/comments/${postId}`);
+          setComments(response.data);
+        } catch (error) {
+          console.error(error);
+        }
+      };
+    
+      const handleAddComment = async (postId, index) => {
+        try {
+            await axios.post('/api/comments', { post_id: postId, comment_content: newComment[index] });
+    
+            const updatedNewComments = [...newComment];
+            updatedNewComments[index] = '';
+            setNewComment(updatedNewComments);
+            
+            const response = await axios.get(`/api/comments/${postId}`);
+    
+            const updatedComments = [...comments];
+    
+            updatedComments[index] = response.data;
+    
+            setComments(updatedComments);
+        } catch (error) {
+            console.error(error);
+        }
+    };
+
     useEffect(() => {
         fetchGameById(gameId);
     }, [gameId, fetchGameById]);
+
+    useEffect(() => {
+        const fetchPostsByGameAndCategory = async () => {
+            try {
+                const response = await axios.get(`/api/posts/game/${gameId}/category/${categoryPage}`);
+                setPosts(response.data);
+            } catch (err) {
+                console.error(err);
+            }
+        }
+    
+        fetchPostsByGameAndCategory();
+    }, [gameId, categoryPage]);
+    
 
     return (
         <>
@@ -85,10 +142,29 @@ const GameCategoriesPage = () => {
             </div>
 
             {posts.map((post, index) => (
-                <p key={index}>{post.post_content}</p>
+                <div key={index} className="post">
+                <h3>{post.post_title}</h3>
+                <p>{post.post_content}</p>
+                <div>
+                    {comments[index]?.map((comment, idx) => (
+                    <div key={idx}>
+                        <p>{comment.comment_content}</p>
+                    </div>
+                    ))}
+                </div>
+                <textarea 
+                    value={newComment[index] || ''} 
+                    onChange={(event) => {
+                        const updatedComments = [...newComment];
+                        updatedComments[index] = event.target.value;
+                        setNewComment(updatedComments);
+                    }} 
+                    placeholder="Add a comment..."
+                    />
+                <button onClick={() => handleAddComment(post.id, index)}>Submit Comment</button>
+                </div>
             ))}
 
-            {/* The Modal itself */}
             <Modal
                 isOpen={modalIsOpen}
                 onRequestClose={closeModal}

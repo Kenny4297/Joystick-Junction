@@ -41,9 +41,9 @@ app.use(express.static(path.join(__dirname, 'public')));
 
 const syncOptions = { force: false };
 
-// Change the 'force' to 'alter' to update the schema of the database
+// If the environment is not production, 'force' is set to false to avoid dropping and recreating all tables
 if (process.env.NODE_ENV !== "production") {
-  syncOptions.alter = true;
+  syncOptions.force = false;
 }
 
 sequelize.sync(syncOptions).then(() => {

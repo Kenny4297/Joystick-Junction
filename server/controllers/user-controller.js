@@ -68,17 +68,23 @@ module.exports = {
     if( !token ) return res.status(401).json({msg: "un-authorized"})
   
     console.log("JWT secret:", process.env.JWT_SECRET);
-    const isVerified = jwt.verify(token, process.env.JWT_SECRET)
-    if( !isVerified ) return res.status(401).json({msg: "un-authorized"})
+    let isVerified;
+    try {
+      isVerified = jwt.verify(token, process.env.JWT_SECRET);
+    } catch (err) {
+      console.log('JWT verification failed', err);
+      return res.status(401).json({msg: "un-authorized"})
+    }
   
     // Check if id is undefined before trying to find the user
     if (isVerified.id === undefined) return res.status(401).json({msg: "unauthorized"})
   
     const user = await User.findOne({ where: { id: isVerified.id } })
     if( !user ) return res.status(401).json({msg: "unauthorized"})
-    
+  
     return res.status(200).json({ id: user.id, username: user.username, email: user.email })
   }
+  
   
 
 };
