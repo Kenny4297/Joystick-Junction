@@ -9,15 +9,20 @@ module.exports = {
         try {
             const getPostData = await Post.findAll({
                 include: [
-                    { model: User, attributes: ['username'] },
-                    { model: Comment, 
+                    { model: User, as: 'user', attributes: ['username'] },
+                    { 
+                        model: Comment, 
+                        as: 'comments',
                         attributes: ['id', 'user_id', 'post_id', 'comment_date', 'comment_content'],
-                        include: { model: User, attributes: ['username'] }
+                        include: { 
+                            model: User, 
+                            as: 'user', 
+                            attributes: ['username'] 
+                        }
                     }
                 ]
             });
     
-            // Return empty array when no posts exist, instead of a 404 error
             if(!getPostData.length) {
                 return res.json([]);
             }
@@ -70,37 +75,41 @@ module.exports = {
         }
     },
 
-// Get posts by game id and category
-// GET api/posts/game/:gameId/category/:category
-async getPostsByGameAndCategory(req, res) {
-    console.log("Get posts by category API function firing!")
-    try {
-        const postsData = await Post.findAll({
-            where: {
-                game_id: req.params.gameId,
-                category: req.params.category,
-            },
-            include: [
-                { model: User, attributes: ['username'] },
-                { model: Comment, 
-                    attributes: ['id', 'user_id', 'post_id', 'comment_date', 'comment_content'],
-                    include: { model: User, attributes: ['username'] }
-                }
-            ]
-        });
-
-        if(!postsData.length) {
-            return res.status(200).json([]);
+    // Get posts by game id and category
+    // GET api/posts/game/:gameId/category/:category
+    async getPostsByGameAndCategory(req, res) {
+        console.log("Get posts by category API function firing!")
+        try {
+            const postsData = await Post.findAll({
+                where: {
+                    game_id: req.params.gameId,
+                    category: req.params.category,
+                },
+                include: [
+                    { model: User, as: 'user', attributes: ['username', 'profileImage'] },
+                    { 
+                        model: Comment,
+                        as: 'comments', 
+                        attributes: ['id', 'post_id', 'comment_date', 'comment_content'],
+                        include: { 
+                            model: User, 
+                            as: 'user', 
+                            attributes: ['username'] 
+                        }
+                    }
+                ]
+            });
+            
+            if(!postsData.length) {
+                return res.status(200).json([]);
+            }
+    
+            res.json(postsData);
+        } catch (err) {
+            console.error(err);
+            res.status(500).json({message: 'An error occurred while retrieving posts'});
         }
-
-        res.json(postsData);
-    } catch (err) {
-        console.error(err);
-        res.status(500).json({message: 'An error occurred while retrieving posts'});
-    }
-},
-
-
+    },
 
     // Update a post
     async updatePost(req, res) {

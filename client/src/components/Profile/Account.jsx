@@ -4,18 +4,17 @@ import { Image } from "cloudinary-react";
 import Axios from "axios";
 import cloudinary from "cloudinary-core";
 import { UserContext } from "../../contexts/UserContext";
-// import noUser from "../../components/assets/images/noUser.png";
+import noUser from "../Assets/Images/noUser.png";
 
 const Account = () => {
     const { userId } = useParams();
     const [formData, setFormData] = useState({
-        email: "",
-        password: "",
-        name: "",
-        phone: "",
-        address: "",
-        profileImage: "",
-    });
+        id: '',
+        username: '',
+        email: '',
+        password: '',
+        profileImage: ''
+      });      
 
     const [updateResult, setUpdateResult] = useState("");
     const [userUrl, setUserUrl] = useState(null);
@@ -36,17 +35,23 @@ const Account = () => {
 
     const getUserData = useCallback(async () => {
         try {
-            const resp = await Axios.post(`/api/users/verify`);
-            if (resp.data) {
-                setFormData(resp.data);
-                if (resp.data.profileImage) {
-                    setUserUrl(resp.data.profileImage);
-                }
+          const resp = await Axios.get(`/api/users/verify`);
+          if (resp.data) {
+            setFormData({
+              id: resp.data.id,
+              username: resp.data.username,
+              email: resp.data.email,
+              profileImage: resp.data.profileImage
+            });
+            if (resp.data.profileImage) {
+              setUserUrl(resp.data.profileImage);
             }
+          }
         } catch (error) {
-            console.error('Error during verification:', error);
+          console.error('Error during verification:', error);
         }
-    }, [userId]);
+      }, []);
+      
 
     const update = async (event) => {
         event?.preventDefault();
@@ -62,7 +67,7 @@ const Account = () => {
             dataToSend.profileImage = userUrl;
         }
 
-        const resp = await Axios.put(`/api/user/${userId}`, dataToSend);
+        const resp = await Axios.put(`/api/users/${userId}`, dataToSend);
 
         if (resp.status !== 200) {
             return setUpdateResult("fail");
@@ -84,8 +89,10 @@ const Account = () => {
 
         const response = await Axios.post(
             "https://api.cloudinary.com/v1_1/diwhrgwml/image/upload",
-            formData
-        );
+            formData,
+            { withCredentials: false }
+          );
+          
 
         if (response.data) {
             const publicId = response.data.public_id;
@@ -137,79 +144,58 @@ const Account = () => {
                             aria-labelledby="form-label"
                         >
                             <label
-                                htmlFor="name"
+                                htmlFor="username"
                                 className="account-form-label"
                             >
-                                Name
+                                Username
                             </label>
                             <input
                                 type="text"
-                                id="name"
+                                id="username"
                                 className="form-control"
-                                name="name"
+                                name="username"
                                 placeholder={
-                                    formData.name
+                                    formData.username
                                 }
                                 onChange={handleInputChange}
-                                aria-label="Name"
+                                aria-label="Username"
                             />
 
                             <label
-                                htmlFor="address"
+                                htmlFor="email"
                                 className="account-form-label"
                             >
-                                Address
+                                Email
                             </label>
                             <input
-                                type="text"
-                                id="address"
+                                type="email"
+                                id="email"
                                 className="form-control"
-                                name="address"
+                                name="email"
                                 placeholder={
-                                    formData.address
+                                    formData.email
                                 }
                                 onChange={handleInputChange}
-                                aria-label="Address"
+                                aria-label="Email"
                             />
 
                             <label
-                                htmlFor="phone"
+                                htmlFor="password"
                                 className="account-form-label"
                             >
-                                Phone Number
+                                Password
                             </label>
                             <input
-                                type="text"
-                                id="phone"
+                                type="password"
+                                id="password"
                                 className="form-control"
-                                name="phone"
+                                name="password"
                                 placeholder={
-                                    formData.phone
+                                    '******' // For security, don't display the actual password
                                 }
                                 onChange={handleInputChange}
-                                aria-label="Phone Number"
+                                aria-label="Password"
                             />
-
-                            <p className="account-form-label">
-                                Email: {formData.email}
-                            </p>
-
-                            <button
-                                type="button"
-                                className="account-email-button"
-                                onClick={handleChangeEmailClick}
-                                aria-label="Change Email Address"
-                            >
-                                Change Email Address
-                            </button>
-                            {showEmailMessage && (
-                                <div aria-live="polite">
-                                    Normally you would receive an email with a
-                                    link to change your email. However, for the
-                                    purpose of this demonstration, no email will
-                                    be sent.
-                                </div>
-                            )}
 
                             <div
                                 style={{
@@ -259,7 +245,7 @@ const Account = () => {
                 </section>
                 <section className="profile-image-container">
                     <h2 className="profile-image-h2">Edit Profile Image</h2>
-                    {/* {userUrl ? (
+                    {userUrl ? (
                         <Image
                             className="profile-img"
                             cloudName="diwhrgwml"
@@ -272,7 +258,7 @@ const Account = () => {
                             alt="No User"
                             className="profile-img"
                         />
-                    )} */}
+                    )}
 
                     <label htmlFor="fileInput" className="file-input-label">
                         Upload File

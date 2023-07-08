@@ -19,6 +19,8 @@ import GameDetails from "./components/GameDetails";
 
 import GameCategoriesPage from './components/Categories/GameCategoriesPage'
 
+import ViewProfilePage from './components/ViewProfilePage'
+
 import axios from "axios";
 
 axios.defaults.withCredentials = true;
@@ -29,7 +31,7 @@ function App() {
     useEffect(() => {
         const verifyUser = async () => {
             try {
-                const response = await axios.post("/api/users/verify");
+                const response = await axios.get("/api/users/verify");
                 console.log(response.data)
                 if (response.data) {
                     setUser(response.data);
@@ -66,6 +68,8 @@ function App() {
                                 <Route path="/discover" element={<Discover />} />  
 
                                 <Route path="/games/:gameId/:categoryPage" element={<GameCategoriesPage />} />
+
+                                <Route path="/users/:userId" element={<ViewProfilePage />} />
          
                             </Routes>
                         </div>

@@ -7,32 +7,51 @@ const DirectMessage = require('./Direct-message');
 
 //COMMENTS
 Comment.belongsTo(User, {
+    as: 'user',
     foreignKey: 'user_id'
 });
 Comment.belongsTo(Post, {
+    as: 'post',
     foreignKey: 'post_id'
 });
 
 //POSTS
-Post.belongsTo(User);
-Post.hasMany(Comment);
+Post.belongsTo(User, {
+    as: 'user',
+    foreignKey: 'user_id'
+});
+Post.hasMany(Comment, {
+    as: 'comments',
+    foreignKey: 'post_id'
+});
 
 //USERS
-User.hasMany(Comment);
-User.hasMany(Post);
+User.hasMany(Comment, {
+    as: 'comments',
+    foreignKey: 'user_id'
+});
+User.hasMany(Post, {
+    as: 'posts',
+    foreignKey: 'user_id'
+});
 User.hasMany(DirectMessage, {
+    as: 'sentDirectMessages',
     foreignKey: 'sender_id'
-}); // Associate User with sent DMs
+});
 User.hasMany(DirectMessage, {
+    as: 'receivedDirectMessages',
     foreignKey: 'recipient_id'
-}); // Associate User with received DMs
+});
 
 //DIRECT MESSAGES
 DirectMessage.belongsTo(User, {
+    as: 'sender',
     foreignKey: 'sender_id'
-}); // Associate DM with sender
+});
 DirectMessage.belongsTo(User, {
+    as: 'recipient',
     foreignKey: 'recipient_id'
-}); // Associate DM with recipient
+});
 
-module.exports = { Comment, Post, User, DirectMessage }; // Export new model
+
+module.exports = { Comment, Post, User, DirectMessage };

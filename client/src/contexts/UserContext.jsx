@@ -10,27 +10,27 @@ export const UserProvider = ({ children }) => {
         email: null,
     });
 
-    // useEffect(() => {
-    //     const fetchUser = async () => {
-    //         try {
-    //             const response = await axios.post('/api/users/verify');
+    useEffect(() => {
+        const fetchUser = async () => {
+            try {
+                const response = await axios.get('/api/users/verify');
 
-    //             let { id, username, email } = response.data;
+                let { id, username, email } = response.data;
 
-    //             setUser((prevUser) => ({
-    //                 ...prevUser,
-    //                 id,
-    //                 username,
-    //                 email,
-    //             }));
-    //         } catch (error) {
-    //             console.error(error);
-    //             console.log("Unable to fetch user data!")
-    //         }
-    //     };
+                setUser((prevUser) => ({
+                    ...prevUser,
+                    id,
+                    username,
+                    email,
+                }));
+            } catch (error) {
+                console.error(error);
+                console.log("Unable to fetch user data!")
+            }
+        };
 
-    //     fetchUser();
-    // }, []);
+        fetchUser();
+    }, []);
 
     return (
         <UserContext.Provider value={[user, setUser]}>

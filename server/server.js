@@ -27,7 +27,7 @@ const sess = {
 app.use(session(sess));
 
 // Set up CORS
-app.use(cors({ credentials: true }));
+app.use(cors());
 
 app.use(express.urlencoded( { extended: true }))
 app.use(express.json());

@@ -1,7 +1,7 @@
 import React, { useContext, useEffect, useState } from "react";
 import { GameContext } from "../../contexts/GameContext";
 import { UserContext } from '../../contexts/UserContext';
-import { useParams } from "react-router-dom";
+import { useParams, Link } from "react-router-dom";
 import Modal from "react-modal";
 import axios from "axios";  
 
@@ -29,7 +29,6 @@ const GameCategoriesPage = () => {
     useEffect(() => {
         // Function to fetch comments for each post
         const fetchCommentsForPosts = async () => {
-            // make sure posts exist and is an array before mapping over it
             if (Array.isArray(posts)) {
                 const allComments = await Promise.all(posts.map(async (post) => {
                     const response = await axios.get(`/api/comments/${post.id}`);
@@ -115,6 +114,7 @@ const GameCategoriesPage = () => {
             try {
                 const response = await axios.get(`/api/posts/game/${gameId}/category/${categoryPage}`);
                 setPosts(response.data);
+                console.log(response.data)
             } catch (err) {
                 console.error(err);
                 if (err.response && err.response.status === 404) {
@@ -149,26 +149,33 @@ const GameCategoriesPage = () => {
 
             {Array.isArray(posts) && posts.map((post, index) => (
                 <div key={index} className="post">
-                <h3>{post.post_title}</h3>
-                <p>{post.post_content}</p>
-                <div>
-                    {Array.isArray(comments[index])
-                    && comments[index].map((comment, idx) => (
-                    <div key={idx}>
-                        <p>{comment.comment_content}</p>
+                    <div className="post-header">
+                        <Link to={`/users/${post.user_id}`}>
+                            <img className="post-avatar" src={post.user ? post.user.profileImage : 'defaultImageURL'} alt={post.user ? post.user.username : 'Anonymous'} />
+                            <h4>{post.user.username}</h4>
+                        </Link>
+                        </div>
+
+                    <h3>{post.post_title}</h3>
+                    <p>{post.post_content}</p>
+                    <div>
+                        {Array.isArray(comments[index])
+                        && comments[index].map((comment, idx) => (
+                        <div key={idx}>
+                            <p>{comment.comment_content}</p>
+                        </div>
+                        ))}
                     </div>
-                    ))}
-                </div>
-                <textarea 
-                    value={newComment[index] || ''} 
-                    onChange={(event) => {
-                        const updatedComments = [...newComment];
-                        updatedComments[index] = event.target.value;
-                        setNewComment(updatedComments);
-                    }} 
-                    placeholder="Add a comment..."
+                    <textarea 
+                        value={newComment[index] || ''} 
+                        onChange={(event) => {
+                            const updatedComments = [...newComment];
+                            updatedComments[index] = event.target.value;
+                            setNewComment(updatedComments);
+                        }} 
+                        placeholder="Add a comment..."
                     />
-                <button onClick={() => handleAddComment(post.id, index)}>Submit Comment</button>
+                    <button onClick={() => handleAddComment(post.id, index)}>Submit Comment</button>
                 </div>
             ))}
 
