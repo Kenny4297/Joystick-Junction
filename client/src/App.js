@@ -19,36 +19,33 @@ import GameDetails from "./components/GameDetails";
 
 import GameCategoriesPage from './components/Categories/GameCategoriesPage'
 
+import axios from "axios";
+
+axios.defaults.withCredentials = true;
+
 function App() {
     const [user, setUser] = useState(null)
 
     useEffect(() => {
-        console.log("use Effect firing")
         const verifyUser = async () => {
-            console.log("Verify user async function firing")
-            const authCookie = cookie.get("auth-token");
-            if (authCookie) {
-                try {
-                    const query = await fetch("/api/users/verify", {
-                        method: "post",
-                        body: JSON.stringify({}),
-                        headers: {
-                            "Content-Type": "application/json",
-                            "auth-token": authCookie,
-                        },
-                    });
-                    const result = await query.json();
-                    if (result) {
-                        console.log("user being set")
-                        setUser(result);
-                    }
-                } catch (error) {
+            try {
+                const response = await axios.post("/api/users/verify");
+                console.log(response.data)
+                if (response.data) {
+                    setUser(response.data);
+                }
+            } catch (error) {
+                if (error.response && error.response.status === 401) {
+                    setUser(null);
+                } else {
                     console.error("Error during fetch:", error);
                 }
             }
         };
         verifyUser();
     }, []);
+  
+    
     
 
     return (
@@ -60,7 +57,7 @@ function App() {
                             <Routes>
                                 <Route path="/" element={<HomePage />} />
                                 <Route path="/login" element={<LoginPage />} />
-                                <Route path="/account/:userId" element={<Account />} />
+                                <Route path="/profile/:userId" element={<Account />} />
                                 <Route path="/signup" element={<SignupPage />} />
                                 <Route path="/test" element={<TestComponent />} />
                                 <Route path="/browseBySearch" element={<BrowseBySearch />} />
@@ -69,10 +66,7 @@ function App() {
                                 <Route path="/discover" element={<Discover />} />  
 
                                 <Route path="/games/:gameId/:categoryPage" element={<GameCategoriesPage />} />
-
-
-
-                                         
+         
                             </Routes>
                         </div>
                 </GameProvider>

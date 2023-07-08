@@ -98,7 +98,7 @@ const Header = () => {
                             </>
                         ) : (
                             <>
-                                <Nav.Link className="header-links" href={`/profile/${user._id}`}>
+                                <Nav.Link className="header-links" href={`/profile/${user.id}`}>
                                     Profile
                                 </Nav.Link>
                                 <Nav.Link

@@ -24,9 +24,13 @@ const HomePage = () => {
         })
         .catch((error) => {
             console.error(`There was an error retrieving the posts: ${error}`);
-            console.log("Error fetching posts")
+            if (error.response && error.response.status === 404) {
+                console.error(`No posts found`);
+                setPosts([]);
+            }
         });
     }, []);
+    
 
     return (
         <>

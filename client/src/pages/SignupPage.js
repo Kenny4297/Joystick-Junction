@@ -1,6 +1,6 @@
 import { useState } from "react"
 
-const SignupPage = (props) => {
+const SignupPage = () => {
 
   const defForm = { email: "", password: "", username: "" }
   const [ formData, setFormData ] = useState(defForm)

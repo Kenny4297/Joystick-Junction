@@ -35,12 +35,16 @@ const Account = () => {
     };
 
     const getUserData = useCallback(async () => {
-        const resp = await Axios.get(`/api/user/${userId}`);
-        if (resp.data) {
-            setFormData(resp.data);
-            if (resp.data.profileImage) {
-                setUserUrl(resp.data.profileImage);
+        try {
+            const resp = await Axios.post(`/api/users/verify`);
+            if (resp.data) {
+                setFormData(resp.data);
+                if (resp.data.profileImage) {
+                    setUserUrl(resp.data.profileImage);
+                }
             }
+        } catch (error) {
+            console.error('Error during verification:', error);
         }
     }, [userId]);
 
@@ -94,7 +98,7 @@ const Account = () => {
         if(userUrl) {
             let updatedData = { ...formData, profileImage: "" };  
 
-            const resp = await Axios.put(`/api/user/${userId}`, updatedData);
+            const resp = await Axios.put(`/api/users/${userId}`, updatedData);
 
             if (resp.status === 200) {
                 setUserUrl("");  

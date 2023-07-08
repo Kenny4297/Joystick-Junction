@@ -29,15 +29,18 @@ const GameCategoriesPage = () => {
     useEffect(() => {
         // Function to fetch comments for each post
         const fetchCommentsForPosts = async () => {
-          const allComments = await Promise.all(posts.map(async (post) => {
-            const response = await axios.get(`/api/comments/${post.id}`);
-            return response.data;
-          }));
-          setComments(allComments);
+            // make sure posts exist and is an array before mapping over it
+            if (Array.isArray(posts)) {
+                const allComments = await Promise.all(posts.map(async (post) => {
+                    const response = await axios.get(`/api/comments/${post.id}`);
+                    return response.data;
+                }));
+                setComments(allComments);
+            }
         };
 
         fetchCommentsForPosts();
-      }, [posts]); // Re-fetch comments when posts change
+    }, [posts]); // Re-fetch comments when posts change
 
     const openModal = () => {
         setIsOpen(true);
@@ -74,27 +77,26 @@ const GameCategoriesPage = () => {
             console.error(err);
         }
     };
-
-    const fetchComments = async (postId) => {
-        try {
-          const response = await axios.get(`/api/comments/${postId}`);
-          setComments(response.data);
-        } catch (error) {
-          console.error(error);
-        }
-      };
     
-      const handleAddComment = async (postId, index) => {
+    const handleAddComment = async (postId, index) => {
+        console.log("post.id:", postId);
+        console.log("index:", index);
         try {
-            await axios.post('/api/comments', { post_id: postId, comment_content: newComment[index] });
+            await axios.post('/api/comments', { post_id: postId, comment_content: newComment[index] }, { withCredentials: true });
     
             const updatedNewComments = [...newComment];
+            if (updatedNewComments[index] === undefined) {
+                updatedNewComments[index] = '';
+            }
             updatedNewComments[index] = '';
             setNewComment(updatedNewComments);
             
             const response = await axios.get(`/api/comments/${postId}`);
     
             const updatedComments = [...comments];
+            if (updatedComments[index] === undefined) {
+                updatedComments[index] = [];
+            }
     
             updatedComments[index] = response.data;
     
@@ -115,6 +117,10 @@ const GameCategoriesPage = () => {
                 setPosts(response.data);
             } catch (err) {
                 console.error(err);
+                if (err.response && err.response.status === 404) {
+                    console.error(`No posts found for game ${gameId} and category ${categoryPage}`);
+                    setPosts([]); 
+                }
             }
         }
     
@@ -141,12 +147,13 @@ const GameCategoriesPage = () => {
                 <button onClick={openModal}>Open Modal</button>
             </div>
 
-            {posts.map((post, index) => (
+            {Array.isArray(posts) && posts.map((post, index) => (
                 <div key={index} className="post">
                 <h3>{post.post_title}</h3>
                 <p>{post.post_content}</p>
                 <div>
-                    {comments[index]?.map((comment, idx) => (
+                    {Array.isArray(comments[index])
+                    && comments[index].map((comment, idx) => (
                     <div key={idx}>
                         <p>{comment.comment_content}</p>
                     </div>
@@ -164,6 +171,10 @@ const GameCategoriesPage = () => {
                 <button onClick={() => handleAddComment(post.id, index)}>Submit Comment</button>
                 </div>
             ))}
+
+            {Array.isArray(posts) && posts.length === 0 && (
+                <p>No posts found for this category.</p>
+            )}
 
             <Modal
                 isOpen={modalIsOpen}

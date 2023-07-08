@@ -1,5 +1,5 @@
-import { useState } from "react"
-import cookie from "js-cookie"
+import { useState } from "react";
+import axios from 'axios'
 
 const LoginPage = () => {
 
@@ -12,24 +12,24 @@ const LoginPage = () => {
   }
 
   const handleFormSubmit = async (event) => {
-    console.log(formData)
-    event.preventDefault()
-    const query = await fetch("/api/users/auth", {
-      method: "post",
-      body: JSON.stringify(formData),
-      headers: {
-        "Content-Type": "application/json"
+    console.log(formData);
+    event.preventDefault();
+  
+    try {
+      const response = await axios.post("/api/users/auth", formData);
+      console.log('login response', response);
+      const result = response.data;
+  
+      if(result && !result.err){
+        setLoginResult("success");
+      } else {
+        setLoginResult("fail");
       }
-    })
-    const result = await query.json()
-
-    if( result && !result.err && result.data && result.data.token ){
-      setLoginResult("success")
-      cookie.set("auth-token", result.data.token, { expires: 3 })
-    } else {
-      setLoginResult("fail")
+    } catch (error) {
+      console.error("Error during login:", error);
     }
   }
+  
 
   return (
     <>
