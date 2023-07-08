@@ -31,6 +31,9 @@ User.init(
       type: DataTypes.STRING,
       allowNull: false,
     },
+    profileImage: {
+      type: DataTypes.STRING,
+    },
   },
   {
     hooks: {

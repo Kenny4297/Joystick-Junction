@@ -9,12 +9,6 @@ const routes = require('./routes');
 
 const app = express();
 
-app.use(cors());
-
-app.use((req, res, next) => {
-  next();
-});
-
 const PORT = process.env.PORT || 3001;
 
 const session = require('express-session');
@@ -32,6 +26,9 @@ const sess = {
 
 app.use(session(sess));
 
+// Set up CORS
+app.use(cors({ credentials: true }));
+
 app.use(express.urlencoded( { extended: true }))
 app.use(express.json());
 
@@ -47,5 +44,8 @@ if (process.env.NODE_ENV !== "production") {
 }
 
 sequelize.sync(syncOptions).then(() => {
-    app.listen(PORT, () => console.log(`Now listening on port ${PORT}`));
+  app.listen(PORT, () => console.log(`Now listening on port ${PORT}`));
+}).catch((error) => {
+  console.error('Unable to sync database:', error);
 });
+

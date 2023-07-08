@@ -8,6 +8,7 @@ const {
 } = require('../../controllers/comment-controller');
 
 // Routes
-router.route('/').get(getAllComments).post(createComment);
+router.route('/').post(createComment);
+router.route('/:postId').get(getAllComments);
 
 module.exports = router;

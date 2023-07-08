@@ -16,17 +16,19 @@ module.exports = {
                     }
                 ]
             });
-
+    
+            // Return empty array when no posts exist, instead of a 404 error
             if(!getPostData.length) {
-                return res.status(404).json({message: 'No posts found'});
+                return res.json([]);
             }
-
+    
             res.json(getPostData);
         } catch (err) {
             console.error(err);
             res.status(500).json({message: 'An error occurred while retrieving posts'});
         }
     },
+    
 
     // Get a specific post
     async getPostById(req, res) {
@@ -68,35 +70,36 @@ module.exports = {
         }
     },
 
-    // Get posts by game id and category
-    // GET api/posts/game/:gameId/category/:category
-    async getPostsByGameAndCategory(req, res) {
-        console.log("Get posts by category API function firing!")
-        try {
-            const postsData = await Post.findAll({
-                where: {
-                    game_id: req.params.gameId,
-                    category: req.params.category,
-                },
-                include: [
-                    { model: User, attributes: ['username'] },
-                    { model: Comment, 
-                        attributes: ['id', 'user_id', 'post_id', 'comment_date', 'comment_content'],
-                        include: { model: User, attributes: ['username'] }
-                    }
-                ]
-            });
+// Get posts by game id and category
+// GET api/posts/game/:gameId/category/:category
+async getPostsByGameAndCategory(req, res) {
+    console.log("Get posts by category API function firing!")
+    try {
+        const postsData = await Post.findAll({
+            where: {
+                game_id: req.params.gameId,
+                category: req.params.category,
+            },
+            include: [
+                { model: User, attributes: ['username'] },
+                { model: Comment, 
+                    attributes: ['id', 'user_id', 'post_id', 'comment_date', 'comment_content'],
+                    include: { model: User, attributes: ['username'] }
+                }
+            ]
+        });
 
-            if(!postsData.length) {
-                return res.status(404).json({message: 'No posts found for this game and category'});
-            }
-
-            res.json(postsData);
-        } catch (err) {
-            console.error(err);
-            res.status(500).json({message: 'An error occurred while retrieving posts'});
+        if(!postsData.length) {
+            return res.status(200).json([]);
         }
-    },
+
+        res.json(postsData);
+    } catch (err) {
+        console.error(err);
+        res.status(500).json({message: 'An error occurred while retrieving posts'});
+    }
+},
+
 
 
     // Update a post

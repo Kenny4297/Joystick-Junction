@@ -17,74 +17,58 @@ module.exports = {
 
 
   // UPDATE api/users/:id
-  async updateUser({ body, params }, res) {
-    let userToUpdate = { email: body.email, username: body.username}
-  
+  async updateUser({ body, params, req }, res) {
+    if (!req.session || !req.session.userId || req.session.userId != params.id) {
+      return res.status(403).json({ message: 'Forbidden' });
+    }
+
+    let userToUpdate = { email: body.email, username: body.username }
+
     if( body.password?.length ){
       userToUpdate = {...userToUpdate, password: body.password }
     }
-  
+
     const user = await User.update(userToUpdate, {
       where: { id: params.id },
       returning: true
     });
-  
+
     if (!user) return res.status(400).json({ message: 'Unable to update user' });
-  
+
     res.status(200).json({ id: user[0], username: user[1].username, email: user[1].email });
   },
 
-
   // POST: api/users/auth
-  async authUser({ body }, res) {
-
-    // Find the user by the email address
-    const user = await User.findOne({
-      where: {
-        email: body.email
-      }
-    });
-
+  async authUser(req, res) {
+    console.log("This is the req.session", req.session);
+    console.log("Auth user API function firing");
+  
+    const { body } = req;
+    const user = await User.findOne({ where: { email: body.email } });
+  
     if (!user) return res.status(400).json({ message: 'Unable to authenticate user' });
-
-    // We want to verify the password & kick them out if it fails
+  
     const isValid = await user.isValidPassword(body.password);
     if( !isValid ) return res.status(400).json({ message: 'Unable to authenticate user' });
-
-    console.log(user)
-    const token = jwt.sign({
-      email: user.email,
-      id: user.id
-    }, process.env.JWT_SECRET)
-
-    res.header("auth-token", token).json({ error: null, data: { user, token }})
+  
+    req.session.userId = user.id; 
+  
+    res.json(user);
   },
-
+  
 
   // POST: /api/users/verify
-  async verifyUser(req, res){
-    const token = req.headers["auth-token"]
-  
-    if( !token ) return res.status(401).json({msg: "un-authorized"})
-  
-    console.log("JWT secret:", process.env.JWT_SECRET);
-    let isVerified;
-    try {
-      isVerified = jwt.verify(token, process.env.JWT_SECRET);
-    } catch (err) {
-      console.log('JWT verification failed', err);
-      return res.status(401).json({msg: "un-authorized"})
+  async verifyUser(req, res) {
+    console.log(req.session);
+    if(!req.session || !req.session.userId) {
+      return res.status(401).json({msg: "unauthorized"})
     }
-  
-    // Check if id is undefined before trying to find the user
-    if (isVerified.id === undefined) return res.status(401).json({msg: "unauthorized"})
-  
-    const user = await User.findOne({ where: { id: isVerified.id } })
-    if( !user ) return res.status(401).json({msg: "unauthorized"})
-  
+
+    const user = await User.findOne({ where: { id: req.session.userId } })
+    if(!user) return res.status(401).json({msg: "unauthorized"})
+
     return res.status(200).json({ id: user.id, username: user.username, email: user.email })
-  }
-  
+  } 
   
 
 };

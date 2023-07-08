@@ -5,6 +5,7 @@ const Post = require('../models/Post');
 module.exports = {
     // Function to get all comments
     // api/comments/
+    // GET /api/comments/:  postId
     async getAllComments (req, res) {
         try {
             const getAllComments = await Comment.findAll({
@@ -29,18 +30,23 @@ module.exports = {
     },
 
     // Function to create a comment
-
+    // POST /api/comments/:postId
     async createComment (req, res) {
+        console.log("Create comment API function firing")
+        console.log("Session:", req.session);
+        console.log("User ID:", req.session.userId);  // this should log 1, as per your previous message
         if (req.session) {
             try {
                 const createdComment = await Comment.create({
-                    user_id: req.session.user_id, 
+                    user_id: req.session.userId,  // this should be 1, as per your previous message
                     post_id: req.body.post_id,
                     comment_date: new Date().toISOString(), 
                     comment_content: req.body.comment_content
                 });
-
-                const user = await User.findByPk(req.session.user_id);
+    
+                console.log("Created comment:", createdComment.toJSON()); // Add this line
+    
+                const user = await User.findByPk(req.session.userId); 
                 createdComment.dataValues.user_name = user.user_name;
                 res.json(createdComment);
             } catch (err) {
@@ -49,4 +55,5 @@ module.exports = {
             }
         }
     }
+    
 };
