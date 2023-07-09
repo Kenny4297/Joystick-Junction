@@ -22,6 +22,7 @@ const Messages = () => {
     useEffect(() => {
         if (userId) {
             const fetchConversations = async () => {
+                console.log(userId)
                 try {
                     const response = await axios.get(`/api/messages/conversations/${userId}`);
                     const conversations = response.data;
@@ -50,6 +51,7 @@ const Messages = () => {
                             <h3>{conversation.username}</h3>
                         </Link>
                     </div>
+
                 )
             ))}
         </div>

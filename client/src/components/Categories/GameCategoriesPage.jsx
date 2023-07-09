@@ -4,6 +4,7 @@ import { UserContext } from '../../contexts/UserContext';
 import { useParams, Link } from "react-router-dom";
 import Modal from "react-modal";
 import axios from "axios";  
+import noUser from '../Assets/Images/noUser.png'
 
 Modal.setAppElement('#root');
 
@@ -151,8 +152,10 @@ const GameCategoriesPage = () => {
                 <div key={index} className="post">
                     <div className="post-header">
                         <Link to={`/users/${post.user_id}`}>
-                            <img className="post-avatar" src={post.user ? post.user.profileImage : 'defaultImageURL'} alt={post.user ? post.user.username : 'Anonymous'} />
-                            <h4>{post.user.username}</h4>
+                        <img className="post-avatar" src={(post.user && post.user.profileImage) ? post.user.profileImage : noUser} alt={post.user ? post.user.username : 'Anonymous'} style={{width:'10rem'}} />
+
+                            <h4>{post.user ? post.user.username : 'Anonymous'}</h4>
+
                         </Link>
                         </div>
 

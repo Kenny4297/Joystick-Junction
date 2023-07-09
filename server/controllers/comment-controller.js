@@ -3,7 +3,7 @@ const User = require('../models/User');
 const Post = require('../models/Post');
 
 module.exports = {
-    async getAllComments (req, res) {
+    async getAllComments(req, res) {
         try {
             const getAllComments = await Comment.findAll({
                 where: { post_id: req.params.postId },
@@ -20,13 +20,14 @@ module.exports = {
                     }
                 ],
             });
-
+    
             res.json(getAllComments);
         } catch (err) {
             console.log(err);
             res.status(500).json(err);
         }
     },
+    
 
     async createComment (req, res) {
         console.log("Create comment API function firing")

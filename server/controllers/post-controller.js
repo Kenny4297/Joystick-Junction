@@ -52,11 +52,11 @@ module.exports = {
     },
 
     // Create a post
-    // POST api/posts/
+   // POST api/posts/
     async createPost(req, res) {
         console.log("Create a post API function firing!")
         console.log(req.body);  
-    
+
         try {
             const newPost = {
                 game_id: req.body.game_id,
@@ -66,14 +66,21 @@ module.exports = {
                 post_content: req.body.post_content,
                 user_id: req.body.user_id
             };
-    
-            const createdPost = await Post.create(newPost);
+
+            const createdPostModel = await Post.create(newPost);
+            const createdPost = createdPostModel.toJSON(); // convert to plain object
+
+            const user = await User.findOne({ where: { id: req.body.user_id } });
+
+            createdPost.user = user;
+
             res.status(201).json(createdPost);
         } catch (err) {
             console.error(err);
             res.status(500).json({message: 'An error occurred while creating the post'});
         }
     },
+
 
     // Get posts by game id and category
     // GET api/posts/game/:gameId/category/:category
