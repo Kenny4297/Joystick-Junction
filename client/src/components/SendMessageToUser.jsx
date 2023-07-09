@@ -2,7 +2,7 @@ import React, { useEffect, useState } from 'react';
 import { useParams } from 'react-router-dom';
 import axios from 'axios';
 
-const ViewProfilePage = () => {
+const SendMessageToUser = () => {
     const { userId } = useParams();
     const [userData, setUserData] = useState(null);
     const [message, setMessage] = useState("");
@@ -47,4 +47,4 @@ const ViewProfilePage = () => {
     );
 };
 
-export default ViewProfilePage;
+export default SendMessageToUser;

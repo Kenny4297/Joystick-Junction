@@ -19,7 +19,9 @@ import GameDetails from "./components/GameDetails";
 
 import GameCategoriesPage from './components/Categories/GameCategoriesPage'
 
-import ViewProfilePage from './components/ViewProfilePage'
+import SendMessageToUser from './components/SendMessageToUser'
+
+import Messages from './components/Messages'
 
 import axios from "axios";
 
@@ -46,9 +48,6 @@ function App() {
         };
         verifyUser();
     }, []);
-  
-    
-    
 
     return (
         <BrowserRouter>
@@ -69,7 +68,9 @@ function App() {
 
                                 <Route path="/games/:gameId/:categoryPage" element={<GameCategoriesPage />} />
 
-                                <Route path="/users/:userId" element={<ViewProfilePage />} />
+                                <Route path="/users/:userId" element={<SendMessageToUser />} />
+                                <Route path="/messages/:userId" element={<Messages />} />
+
          
                             </Routes>
                         </div>

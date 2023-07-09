@@ -1,5 +1,4 @@
 const { User } = require('../models');
-const jwt = require("jsonwebtoken");
 require("dotenv").config()
 
 module.exports = {
@@ -87,4 +86,15 @@ module.exports = {
   
     res.json(user);
   },
+
+  //  /users/logout
+  async logout(req, res) {
+    req.session.destroy((err) => {
+      if (err) {
+        return res.redirect('/home');
+      }
+      res.clearCookie('connect.sid', { path: '/' });
+      res.redirect('/login');
+    });
+  }
 };

@@ -13,17 +13,33 @@ import { UserContext } from "../contexts/UserContext";
 
 const Header = () => {
     const [user, setUser] = useContext(UserContext);
+    const navigate = useNavigate();
+
 
     const logout = () => {
-        localStorage.removeItem("auth-token");
-        setUser(null);
-        navigate("/login");
+        // Make API call to logout
+        fetch('/api/users/logout', {
+          method: 'GET',
+          credentials: 'include',
+        })
+        .then(response => {
+            if (response.ok) {
+                // After successful logout, clear user context and navigate to login page
+                setUser(null);
+                navigate('/login');
+            } else {
+                throw new Error('Failed to log out');
+            }
+        })
+        .catch(err => {
+            // Handle any exceptions here
+            console.error(err);
+        });
     };
+    
 
-    //Here we are keeping track of the data in the search bar. If it changes, the state will be updated
     const [searchTerm, setSearchTerm] = useState("");
 
-    const navigate = useNavigate();
 
     const handleInputChange = (event) => {
         setSearchTerm(event.target.value);
@@ -109,7 +125,7 @@ const Header = () => {
                                 >
                                     Logout
                                 </Nav.Link>
-                                <Nav.Link className="header-links" href={`/shoppingCart/${user._id}`}>
+                                <Nav.Link className="header-links" href={`/messages/${user.id}`}>
                                     Messages
                                 </Nav.Link>
                                 {user && user.profileImage && (
