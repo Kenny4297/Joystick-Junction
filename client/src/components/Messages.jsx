@@ -1,16 +1,16 @@
 import React, { useEffect, useState } from 'react';
 import axios from 'axios';
+import { Link } from 'react-router-dom';
 
 const Messages = () => {
-    const [messages, setMessages] = useState([]);
+    const [conversations, setConversations] = useState([]);
     const [userId, setUserId] = useState(null);
-    const [messageContent, setMessageContent] = useState(''); 
 
     useEffect(() => {
         const fetchCurrentUser = async () => {
             try {
                 const response = await axios.get('/api/users/verify');
-                setUserId(response.data.id);  
+                setUserId(response.data.id);
             } catch (err) {
                 console.error(err);
             }
@@ -21,47 +21,37 @@ const Messages = () => {
 
     useEffect(() => {
         if (userId) {
-            const fetchMessages = async () => {
+            const fetchConversations = async () => {
                 try {
-                    const response = await axios.get(`/api/messages/${userId}`);
-                    setMessages(response.data);
+                    const response = await axios.get(`/api/messages/conversations/${userId}`);
+                    const conversations = response.data;
+                    console.log(conversations)
+                    if (conversations.some((conversation) => !conversation)) {
+                        console.error('Received null or undefined conversation');
+                    } else {
+                        setConversations(conversations);
+                    }
                 } catch (err) {
                     console.error(err);
                 }
             }
-    
-            fetchMessages();
-        }
-    }, [userId]); 
-
-    const handleMessageChange = (event) => { 
-        setMessageContent(event.target.value);
-    }
-
-    const handleSendMessage = async () => { 
-        try {
-            const response = await axios.post('/api/messages/', { message: messageContent, receiverId: userId });
-            const newMessage = response.data;
-    
-            console.log('New message:', newMessage);
             
-            setMessages(prevMessages => [...prevMessages, newMessage]); 
-            setMessageContent(''); 
-        } catch (err) {
-            console.error(err);
+    
+            fetchConversations();
         }
-    }
+    }, [userId]);
 
     return (
         <div>
-            {messages.map(message => (
-                <div key={message.id}>
-                    <h3>{message.sender.username}</h3>
-                    <p>{message.message_content}</p>
-                </div>
+            {conversations.map((conversation) => (
+                conversation && (
+                    <div key={conversation.id}>
+                        <Link to={`/individualMessages/${userId}/${conversation.otherUserId}`}>
+                            <h3>{conversation.username}</h3>
+                        </Link>
+                    </div>
+                )
             ))}
-            <textarea value={messageContent} onChange={handleMessageChange}></textarea>
-            <button onClick={handleSendMessage}>Send</button> 
         </div>
     );
 };

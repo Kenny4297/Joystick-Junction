@@ -23,19 +23,19 @@ const Header = () => {
           credentials: 'include',
         })
         .then(response => {
-            if (response.ok) {
-                // After successful logout, clear user context and navigate to login page
-                setUser(null);
-                navigate('/login');
-            } else {
-                throw new Error('Failed to log out');
-            }
+          if (response.ok) {
+            // After successful logout, clear user context and navigate to login page
+            setUser(null);
+            navigate('/login');
+          } else {
+            throw new Error('Failed to log out');
+          }
         })
         .catch(err => {
-            // Handle any exceptions here
-            console.error(err);
+          // Handle any exceptions here
+          console.error(err);
         });
-    };
+      };
     
 
     const [searchTerm, setSearchTerm] = useState("");

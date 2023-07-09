@@ -12,6 +12,7 @@ const SignupPage = () => {
 
   const handleFormSubmit = async(e) => {
     e.preventDefault()
+    console.log(formData)
     const query = await fetch("/api/users/", {
       method: "post",
       body: JSON.stringify(formData),

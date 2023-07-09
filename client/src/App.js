@@ -19,7 +19,9 @@ import GameDetails from "./components/GameDetails";
 
 import GameCategoriesPage from './components/Categories/GameCategoriesPage'
 
-import SendMessageToUser from './components/SendMessageToUser'
+import SendMessageToUser from './components/SendMessageToUser';
+
+import IndividualMessages from './components/individualMessages';
 
 import Messages from './components/Messages'
 
@@ -69,7 +71,11 @@ function App() {
                                 <Route path="/games/:gameId/:categoryPage" element={<GameCategoriesPage />} />
 
                                 <Route path="/users/:userId" element={<SendMessageToUser />} />
+
                                 <Route path="/messages/:userId" element={<Messages />} />
+                                <Route path="/individualMessages/:userId/:otherUserId" element={<IndividualMessages />} />
+
+
 
          
                             </Routes>

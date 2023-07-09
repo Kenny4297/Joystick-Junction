@@ -1,4 +1,4 @@
-const { DirectMessage, User } = require('../models');
+const { DirectMessage, User } = require("../models");
 require("dotenv").config();
 
 module.exports = {
@@ -10,27 +10,59 @@ module.exports = {
             recipient_id: body.receiverId,
             message_content: body.message,
         });
-    
-        if (!message) return res.status(400).json({ message: 'Unable to send message' });
-    
-        const sender = await User.findOne({ where: { id: req.session.userId } });
-    
-        if (!sender) return res.status(404).json({ message: 'Sender not found' });
-    
-        const messageWithSender = { ...message.get({ plain: true }), sender: sender.get({ plain: true }) };
-        
+        if (!message)
+            return res.status(400).json({ message: "Unable to send message" });
+        const sender = await User.findOne({
+            where: { id: req.session.userId },
+        });
+        if (!sender)
+            return res.status(404).json({ message: "Sender not found" });
+        const messageWithSender = {
+            ...message.get({ plain: true }),
+            sender: sender.get({ plain: true }),
+        };
         res.status(200).json(messageWithSender);
     },
-    
-    
+
     // GET: /api/messages/:userId
     async getMessagesByUserId(req, res) {
         const { userId } = req.params;
         const messages = await DirectMessage.findAll({
-        where: { recipient_id: userId },
-        include: [{ model: User, as: 'sender' }],
+            where: { recipient_id: userId },
+            include: [{ model: User, as: "sender" }],
         });
-        if (!messages) return res.status(404).json({ message: 'Messages not found' });
+        if (!messages)
+            return res.status(404).json({ message: "Messages not found" });
         res.status(200).json(messages);
-    }
-}
+    },
+
+    // GET: /api/messages/conversations/:userId
+    async getConversationsByUserId(req, res) {
+        const { userId } = req.params;
+        const sentMessages = await DirectMessage.findAll({
+            where: { sender_id: userId },
+            include: [{ model: User, as: "recipient" }],
+        });
+        const receivedMessages = await DirectMessage.findAll({
+            where: { recipient_id: userId },
+            include: [{ model: User, as: "sender" }],
+        });
+        if (!sentMessages && !receivedMessages)
+            return res.status(404).json({ message: "Conversations not found" });
+
+        // Combine both lists and remove duplicates
+        const combinedMessages = [...sentMessages, ...receivedMessages];
+        const allUsers = combinedMessages.map(message => 
+            message.sender_id === userId ? message.recipient : message.sender
+        ).filter(user => user !== null && user !== undefined);
+
+        const uniqueUserIds = [...new Set(allUsers.map(user => user.id))];
+        const uniqueConversations = uniqueUserIds.map(id => allUsers.find(user => user.id === id));
+
+        res.status(200).json(uniqueConversations);
+    },
+
+
+
+
+};
