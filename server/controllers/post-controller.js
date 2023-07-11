@@ -1,15 +1,18 @@
 const Post = require('../models/Post');
 const User = require('../models/User');
 const Comment = require('../models/Comment');
+const Like = require('../models/Like')
 
 module.exports = {
     // Get all posts
     // GET api/posts/
     async getAllPosts(req, res) {
+        console.log("get all posts function firing?")
         try {
             const getPostData = await Post.findAll({
                 include: [
                     { model: User, as: 'user', attributes: ['username'] },
+                    { model: Like, as: 'likes' },
                     { 
                         model: Comment, 
                         as: 'comments',
@@ -22,11 +25,13 @@ module.exports = {
                     }
                 ]
             });
-    
+
+            console.log(getPostData)
+
             if(!getPostData.length) {
                 return res.json([]);
             }
-    
+
             res.json(getPostData);
         } catch (err) {
             console.error(err);
@@ -94,6 +99,7 @@ module.exports = {
                 },
                 include: [
                     { model: User, as: 'user', attributes: ['username', 'profileImage'] },
+                    { model: Like, as: 'likes' },
                     { 
                         model: Comment,
                         as: 'comments', 

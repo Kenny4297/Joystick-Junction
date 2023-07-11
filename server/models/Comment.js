@@ -37,7 +37,12 @@ Comment.init(
         comment_content: {
             type: DataTypes.STRING,
             allowNull: false,
-        }
+        },
+        likes_count: {
+            type: DataTypes.INTEGER,
+            allowNull: false,
+            defaultValue: 0
+        },
     },
     {
         sequelize,

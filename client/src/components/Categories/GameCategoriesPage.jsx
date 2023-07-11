@@ -19,6 +19,7 @@ const GameCategoriesPage = () => {
     const [posts, setPosts] = useState([]); 
     const [comments, setComments] = useState([]);
     const [newComment, setNewComment] = useState([]);
+    const [likes, setLikes] = useState([]);
 
     useEffect(() => {
         if (user && user.id) {
@@ -40,7 +41,7 @@ const GameCategoriesPage = () => {
         };
 
         fetchCommentsForPosts();
-    }, [posts]); // Re-fetch comments when posts change
+    }, [posts]); 
 
     const openModal = () => {
         setIsOpen(true);
@@ -106,6 +107,24 @@ const GameCategoriesPage = () => {
         }
     };
 
+    const handleLike = async (postId) => {
+        try {
+            const response = await axios.post('/api/likes', { post_id: postId }, { withCredentials: true });
+            setLikes([...likes, response.data]);
+        } catch (error) {
+            console.error(error);
+        }
+    };
+    
+    const handleUnlike = async (likeId) => {
+        try {
+            await axios.delete(`/api/likes/${likeId}`);
+            setLikes(likes.filter(like => like.id !== likeId));
+        } catch (error) {
+            console.error(error);
+        }
+    };
+
     useEffect(() => {
         fetchGameById(gameId);
     }, [gameId, fetchGameById]);
@@ -127,7 +146,21 @@ const GameCategoriesPage = () => {
     
         fetchPostsByGameAndCategory();
     }, [gameId, categoryPage]);
+
+    useEffect(() => {
+        const fetchLikesForPosts = async () => {
+            if (Array.isArray(posts)) {
+                const allLikes = await Promise.all(posts.map(async (post) => {
+                    const response = await axios.get(`/api/likes/posts/${post.id}`);
+                    return response.data;
+                }));
+                setLikes(allLikes);
+                console.log(allLikes);
+            }
+        };
     
+        fetchLikesForPosts();
+    }, [posts]);     
 
     return (
         <>
@@ -150,6 +183,7 @@ const GameCategoriesPage = () => {
 
             {Array.isArray(posts) && posts.map((post, index) => (
                 <div key={index} className="post">
+                    <button onClick={() => handleLike(post.id)}>Like</button>
                     <div className="post-header">
                         <Link to={`/users/${post.user_id}`}>
                         <img className="post-avatar" src={(post.user && post.user.profileImage) ? post.user.profileImage : noUser} alt={post.user ? post.user.username : 'Anonymous'} style={{width:'10rem'}} />
@@ -178,7 +212,10 @@ const GameCategoriesPage = () => {
                         }} 
                         placeholder="Add a comment..."
                     />
-                    <button onClick={() => handleAddComment(post.id, index)}>Submit Comment</button>
+                    {likes.find(like => like.user_id === user.id && like.post_id === post.id)
+                        ? <button onClick={() => handleUnlike(post.id)}>Unlike</button>
+                        : <button onClick={() => handleLike(post.id)}>Like</button>
+                    }
                 </div>
             ))}
 

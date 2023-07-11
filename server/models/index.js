@@ -2,6 +2,7 @@ const Comment = require('./Comment');
 const Post = require('./Post');
 const User = require('./User');
 const DirectMessage = require('./Direct-message'); 
+const Like = require('./Like');
 
 //Associations
 
@@ -62,6 +63,10 @@ Like.belongsTo(Post, {
     as: 'post',
     foreignKey: 'post_id'
 });
+Like.belongsTo(Comment, {
+    as: 'comment',
+    foreignKey: 'comment_id'
+});
 
 User.hasMany(Like, {
     as: 'likes',
@@ -71,6 +76,11 @@ User.hasMany(Like, {
 Post.hasMany(Like, {
     as: 'likes',
     foreignKey: 'post_id'
+});
+
+Comment.hasMany(Like, {
+    as: 'likes',
+    foreignKey: 'comment_id'
 });
 
 module.exports = { Comment, Post, User, DirectMessage, Like };

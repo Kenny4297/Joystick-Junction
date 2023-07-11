@@ -30,7 +30,9 @@ Post.init(
             allowNull: false,
         },
         post_date: {
-            type: DataTypes.STRING,
+            type: DataTypes.DATE,
+            allowNull: false,
+            defaultValue: DataTypes.NOW
         },
         post_title: {
             type: DataTypes.STRING,
@@ -40,7 +42,12 @@ Post.init(
         post_content: {
             type: DataTypes.STRING,
             allowNull: false,
-        }
+        },
+        likes_count: {
+            type: DataTypes.INTEGER,
+            allowNull: false,
+            defaultValue: 0
+        },
     },
     {
         sequelize,

@@ -1,6 +1,7 @@
 const Comment = require('../models/Comment');
 const User = require('../models/User');
 const Post = require('../models/Post');
+const Like = require('../models/Like');
 
 module.exports = {
     async getAllComments(req, res) {
@@ -17,6 +18,11 @@ module.exports = {
                         model: Post,
                         as: 'post',
                         attributes: ['id', 'user_id', 'post_title', 'post_content']
+                    },
+                    {
+                        model: Like,
+                        as: 'likes',
+                        attributes: ['id', 'user_id']
                     }
                 ],
             });

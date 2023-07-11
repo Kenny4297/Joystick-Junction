@@ -15,9 +15,17 @@ Like.init(
     },
     post_id: {
       type: DataTypes.INTEGER,
-      allowNull: false,
+      allowNull: true,  
       references: {
         model: 'Post',
+        key: 'id'
+      }
+    },
+    comment_id: {
+      type: DataTypes.INTEGER,
+      allowNull: true,  
+      references: {
+        model: 'Comment',
         key: 'id'
       }
     }
@@ -28,6 +36,16 @@ Like.init(
     freezeTableName: true,
     underscored: true,
     modelName: 'like',
+    validate: {
+      eitherPostOrComment() {
+        if (!(this.post_id || this.comment_id)) {
+          throw new Error('A like must be associated with either a post or a comment.');
+        }
+        if (this.post_id && this.comment_id) {
+          throw new Error('A like cannot be associated with both a post and a comment.');
+        }
+      }
+    },
   }
 );
 
