@@ -13,7 +13,10 @@ module.exports = {
                 where: {
                     post_id: postId,
                 },
-                include: [ User, Post ],
+                include: [
+                    { model: User, as: 'user' },
+                    { model: Post, as: 'post' }
+                ],
             });
 
             if (!likes) {
@@ -27,6 +30,7 @@ module.exports = {
         }
     },
 
+
     // POST api/likes/
     async createLike(req, res) {
         try {
@@ -36,6 +40,7 @@ module.exports = {
             });
     
             res.json(createdLike);
+            console.log("Like created!")
         } catch (err) {
             console.log(err);
             res.status(500).json(err);
@@ -47,15 +52,15 @@ module.exports = {
         try {
             const deletedLike = await Like.destroy({
                 where: {
-                    user_id: req.session.userId,  
+                    user_id: req.body.user_id,
                     post_id: req.body.post_id,
                 }
             });
-    
             res.json(deletedLike);
         } catch (err) {
             console.log(err);
             res.status(500).json(err);
         }
     }
+
 };

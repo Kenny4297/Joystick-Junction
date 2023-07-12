@@ -41,9 +41,25 @@ module.exports = {
     
 
     // Get a specific post
+    // Get a specific post
     async getPostById(req, res) {
         try {
-            const getSpecificPost = await Post.findOne({ where: { id: req.params.id }})
+            const getSpecificPost = await Post.findOne({ 
+                where: { id: req.params.id },
+                include: [
+                    { model: User, as: 'user', attributes: ['username'] },
+                    { model: Like, as: 'likes', include: [{ model: User, as: 'user' }] },
+                    { 
+                        model: Comment, 
+                        as: 'comments',
+                        attributes: ['id', 'user_id', 'post_id', 'comment_date', 'comment_content'],
+                        include: [ 
+                            { model: User, as: 'user', attributes: ['username'] },
+                            { model: Like, as: 'likes', include: [{ model: User, as: 'user' }] }
+                        ] 
+                    }
+                ]
+            })
 
             if(!getSpecificPost) {
                 return res.status(404).json({message: 'Post not found'});
@@ -55,6 +71,7 @@ module.exports = {
             res.status(500).json({message: 'An error occurred while retrieving the post'});
         }
     },
+
 
     // Create a post
    // POST api/posts/

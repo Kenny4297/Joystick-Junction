@@ -28,20 +28,46 @@ const GameCategoriesPage = () => {
         }
     }, [user])
 
-    useEffect(() => {
-        // Function to fetch comments for each post
-        const fetchCommentsForPosts = async () => {
-            if (Array.isArray(posts)) {
-                const allComments = await Promise.all(posts.map(async (post) => {
-                    const response = await axios.get(`/api/comments/${post.id}`);
-                    return response.data;
-                }));
-                setComments(allComments);
-            }
-        };
+    // useEffect(() => {
+    //     // Function to fetch comments for each post
+    //     const fetchCommentsForPosts = async () => {
+    //         if (Array.isArray(posts)) {
+    //             const allComments = await Promise.all(posts.map(async (post) => {
+    //                 const response = await axios.get(`/api/comments/${post.id}`);
+    //                 return response.data;
+    //             }));
+    //             setComments(allComments);
+    //         }
+    //     };
 
-        fetchCommentsForPosts();
-    }, [posts]); 
+    //     fetchCommentsForPosts();
+    // }, [posts]); 
+
+    useEffect(() => {
+        const fetchPostsByGameAndCategory = async () => {
+            try {
+                const response = await axios.get(`/api/posts/game/${gameId}/category/${categoryPage}`);
+                console.log(response.data)
+    
+                const postsWithNestedData = response.data.map(post => ({
+                    ...post,
+                    comments: post.comments || [],
+                    likes: post.likes || [],
+                    user: post.user || null,
+                }));
+    
+                setPosts(postsWithNestedData);
+            } catch (err) {
+                console.error(err);
+                if (err.response && err.response.status === 404) {
+                    console.error(`No posts found for game ${gameId} and category ${categoryPage}`);
+                    setPosts([]); 
+                }
+            }
+        }
+    
+        fetchPostsByGameAndCategory();
+    }, [gameId, categoryPage]);
 
     const openModal = () => {
         setIsOpen(true);
@@ -116,14 +142,28 @@ const GameCategoriesPage = () => {
         }
     };
     
-    const handleUnlike = async (likeId) => {
+    const handleUnlike = async (postId) => {
         try {
-            await axios.delete(`/api/likes/${likeId}`);
-            setLikes(likes.filter(like => like.id !== likeId));
+            const { id: userId } = user;
+    
+            const response = await axios.delete(`/api/likes/`, { data: { post_id: postId, user_id: userId } });
+            
+            if(response.status === 200) {
+                setPosts(posts.map(post => {
+                    if (post.id === postId) {
+                        return {
+                            ...post,
+                            likes: post.likes.filter(like => !(like.user_id === userId && like.post_id === postId))
+                        };
+                    }
+                    return post;
+                }));
+            }
         } catch (error) {
-            console.error(error);
+            console.log(error);
         }
     };
+    
 
     useEffect(() => {
         fetchGameById(gameId);
@@ -183,15 +223,12 @@ const GameCategoriesPage = () => {
 
             {Array.isArray(posts) && posts.map((post, index) => (
                 <div key={index} className="post">
-                    <button onClick={() => handleLike(post.id)}>Like</button>
                     <div className="post-header">
                         <Link to={`/users/${post.user_id}`}>
-                        <img className="post-avatar" src={(post.user && post.user.profileImage) ? post.user.profileImage : noUser} alt={post.user ? post.user.username : 'Anonymous'} style={{width:'10rem'}} />
-
+                            <img className="post-avatar" src={(post.user && post.user.profileImage) ? post.user.profileImage : noUser} alt={post.user ? post.user.username : 'Anonymous'} style={{width:'10rem'}} />
                             <h4>{post.user ? post.user.username : 'Anonymous'}</h4>
-
                         </Link>
-                        </div>
+                    </div>
 
                     <h3>{post.post_title}</h3>
                     <p>{post.post_content}</p>
@@ -212,12 +249,13 @@ const GameCategoriesPage = () => {
                         }} 
                         placeholder="Add a comment..."
                     />
-                    {likes.find(like => like.user_id === user.id && like.post_id === post.id)
+                    {post.likes.find(like => user && like.user_id === user.id)
                         ? <button onClick={() => handleUnlike(post.id)}>Unlike</button>
                         : <button onClick={() => handleLike(post.id)}>Like</button>
                     }
-                </div>
-            ))}
+                                        <p>{post.likes.length} likes</p>
+                                    </div>
+                                ))}
 
             {Array.isArray(posts) && posts.length === 0 && (
                 <p>No posts found for this category.</p>
