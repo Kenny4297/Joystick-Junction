@@ -23,31 +23,15 @@ const GameCategoriesPage = () => {
 
     useEffect(() => {
         if (user && user.id) {
-        console.log(user);
-        console.log(user.id)
+            console.log(user);
+            console.log(user.id);
         }
     }, [user])
-
-    // useEffect(() => {
-    //     // Function to fetch comments for each post
-    //     const fetchCommentsForPosts = async () => {
-    //         if (Array.isArray(posts)) {
-    //             const allComments = await Promise.all(posts.map(async (post) => {
-    //                 const response = await axios.get(`/api/comments/${post.id}`);
-    //                 return response.data;
-    //             }));
-    //             setComments(allComments);
-    //         }
-    //     };
-
-    //     fetchCommentsForPosts();
-    // }, [posts]); 
 
     useEffect(() => {
         const fetchPostsByGameAndCategory = async () => {
             try {
                 const response = await axios.get(`/api/posts/game/${gameId}/category/${categoryPage}`);
-                console.log(response.data)
     
                 const postsWithNestedData = response.data.map(post => ({
                     ...post,
@@ -75,6 +59,51 @@ const GameCategoriesPage = () => {
 
     const closeModal = () => {
         setIsOpen(false);
+    };
+
+    const handleLikeComment = async (commentId) => {
+        try {
+            const response = await axios.post(`/api/likes/comments/${commentId}`, {}, { withCredentials: true });
+            setPosts(posts.map(post => {
+                return {
+                    ...post,
+                    comments: post.comments.map(comment => {
+                        if(comment.id === commentId) {
+                            return { ...comment, likes: [...comment.likes, response.data] }
+                        }
+                        return comment;
+                    })
+                };
+            }));
+        } catch (error) {
+            console.error(error);
+        }
+    };
+    
+    const handleUnlikeComment = async (commentId) => {
+        try {
+            const { id: userId } = user;
+            const response = await axios.delete(`/api/likes/comments`, { data: { comment_id: commentId, user_id: userId } });
+            
+            if(response.status === 200) {
+                setPosts(posts.map(post => {
+                    return {
+                        ...post,
+                        comments: post.comments.map(comment => {
+                            if(comment.id === commentId) {
+                                return {
+                                    ...comment,
+                                    likes: comment.likes.filter(like => !(like.user_id === userId && like.comment_id === commentId))
+                                };
+                            }
+                            return comment;
+                        })
+                    };
+                }));
+            }
+        } catch (error) {
+            console.log(error);
+        }
     };
 
     const handleFormSubmit = async (event) => {
@@ -133,21 +162,27 @@ const GameCategoriesPage = () => {
         }
     };
 
-    const handleLike = async (postId) => {
+    const handleLikePost = async (postId) => {
         try {
-            const response = await axios.post('/api/likes', { post_id: postId }, { withCredentials: true });
-            setLikes([...likes, response.data]);
+            const response = await axios.post('/api/likes/posts', { post_id: postId }, { withCredentials: true });
+            if(response.status === 200) {
+                setPosts(posts.map(post => {
+                    if(post.id === postId) {
+                        return {...post, likes: [...post.likes, response.data]};
+                    }
+                    return post;
+                }));
+            }
         } catch (error) {
             console.error(error);
         }
     };
     
-    const handleUnlike = async (postId) => {
+    
+    const handleUnlikePost = async (postId) => {
         try {
             const { id: userId } = user;
-    
-            const response = await axios.delete(`/api/likes/`, { data: { post_id: postId, user_id: userId } });
-            
+            const response = await axios.delete(`/api/likes/posts`, { data: { post_id: postId, user_id: userId } });
             if(response.status === 200) {
                 setPosts(posts.map(post => {
                     if (post.id === postId) {
@@ -160,9 +195,9 @@ const GameCategoriesPage = () => {
                 }));
             }
         } catch (error) {
-            console.log(error);
+            console.error(error);
         }
-    };
+    };  
     
 
     useEffect(() => {
@@ -171,21 +206,37 @@ const GameCategoriesPage = () => {
 
     useEffect(() => {
         const fetchPostsByGameAndCategory = async () => {
-            try {
-                const response = await axios.get(`/api/posts/game/${gameId}/category/${categoryPage}`);
-                setPosts(response.data);
-                console.log(response.data)
-            } catch (err) {
+          console.log("Test test?")
+          try {
+            const postResponse = await axios.get(`/api/posts/game/${gameId}/category/${categoryPage}`);
+            console.log("Post response:", postResponse)
+      
+            const updatedPostData = await Promise.all(postResponse.data.map(async post => {
+              try {
+                const commentsResponse = await axios.get(`/api/comments/${post.id}`);
+                const comments = commentsResponse.data.length > 0 ? commentsResponse.data : [];
+                return { ...post, comments };
+              } catch (err) {
                 console.error(err);
-                if (err.response && err.response.status === 404) {
-                    console.error(`No posts found for game ${gameId} and category ${categoryPage}`);
-                    setPosts([]); 
-                }
+                return { ...post, comments: [] };
+              }
+            }));
+      
+            setPosts(updatedPostData);
+          } catch (err) {
+            console.error(err);
+            if (err.response && err.response.status === 404) {
+              console.error(`No posts found for game ${gameId} and category ${categoryPage}`);
+              setPosts([]);
             }
+          }
         }
-    
+      
         fetchPostsByGameAndCategory();
-    }, [gameId, categoryPage]);
+      }, [gameId, categoryPage]);
+      
+    
+    
 
     useEffect(() => {
         const fetchLikesForPosts = async () => {
@@ -195,19 +246,40 @@ const GameCategoriesPage = () => {
                     return response.data;
                 }));
                 setLikes(allLikes);
-                console.log(allLikes);
             }
         };
     
         fetchLikesForPosts();
-    }, [posts]);     
+    }, [posts]);
+    
+    useEffect(() => {
+        const fetchLikesForComments = async () => {
+            if (Array.isArray(posts)) {
+                for (let post of posts) {
+                    if (Array.isArray(post.comments)) {
+                        const allLikes = await Promise.all(post.comments.map(async (comment) => {
+                            const response = await axios.get(`/api/likes/comments/${comment.id}`);
+                            return response.data;
+                        }));
+    
+                        post.comments = post.comments.map((comment, index) => {
+                            return { ...comment, likes: allLikes[index] };
+                        });
+                    }
+                }
+            }
+        };
+    
+        fetchLikesForComments();
+    }, [posts]);
+    
 
     return (
         <>
             <div>
                 <h2>
-                    {categoryPage.charAt(0).toUpperCase() +
-                        categoryPage.slice(1)}
+                {categoryPage.charAt(0).toUpperCase() +
+                    categoryPage.slice(1)}
                 </h2>
                 <h1>{gameData.title}</h1>
                 <img src={gameData.thumbnail} alt={gameData.title} />
@@ -222,44 +294,50 @@ const GameCategoriesPage = () => {
             </div>
 
             {Array.isArray(posts) && posts.map((post, index) => (
-                <div key={index} className="post">
-                    <div className="post-header">
-                        <Link to={`/users/${post.user_id}`}>
-                            <img className="post-avatar" src={(post.user && post.user.profileImage) ? post.user.profileImage : noUser} alt={post.user ? post.user.username : 'Anonymous'} style={{width:'10rem'}} />
-                            <h4>{post.user ? post.user.username : 'Anonymous'}</h4>
-                        </Link>
-                    </div>
+            <div key={index} className="post">
+                <div className="post-header">
+                <Link to={`/users/${post.user_id}`}>
+                    <img className="post-avatar" src={(post.user && post.user.profileImage) ? post.user.profileImage : noUser} alt={post.user ? post.user.username : 'Anonymous'} style={{width:'10rem'}} />
+                    <h4>{post.user ? post.user.username : 'Anonymous'}</h4>
+                </Link>
+                </div>
 
-                    <h3>{post.post_title}</h3>
-                    <p>{post.post_content}</p>
-                    <div>
-                        {Array.isArray(comments[index])
-                        && comments[index].map((comment, idx) => (
-                        <div key={idx}>
-                            <p>{comment.comment_content}</p>
-                        </div>
-                        ))}
-                    </div>
-                    <textarea 
-                        value={newComment[index] || ''} 
-                        onChange={(event) => {
-                            const updatedComments = [...newComment];
-                            updatedComments[index] = event.target.value;
-                            setNewComment(updatedComments);
-                        }} 
-                        placeholder="Add a comment..."
-                    />
-                    {post.likes.find(like => user && like.user_id === user.id)
-                        ? <button onClick={() => handleUnlike(post.id)}>Unlike</button>
-                        : <button onClick={() => handleLike(post.id)}>Like</button>
+                <h3>{post.post_title}</h3>
+                <p>{post.post_content}</p>
+                <div>
+                {post.comments && post.comments.map((comment, idx) => (
+                    <div key={idx}>
+                    <p>{comment.comment_content}</p>
+                    {comment.likes && comment.likes.find(like => user && like.user_id === user.id)
+                        ? <button onClick={() => handleUnlikeComment(comment.id)}>Unlike</button>
+                        : <button onClick={() => handleLikeComment(comment.id)}>Like</button>
                     }
-                                        <p>{post.likes.length} likes</p>
-                                    </div>
-                                ))}
+                    <p>{comment.likes && comment.likes.length} likes</p>
+                    </div>
+                ))}
+                </div>
+                <textarea 
+                value={newComment[index] || ''} 
+                onChange={(event) => {
+                    const updatedComments = [...newComment];
+                    updatedComments[index] = event.target.value;
+                    setNewComment(updatedComments);
+                }} 
+                placeholder="Add a comment..."
+                />
+                <button onClick={() => handleAddComment(post.id, index)}>Add Comment</button>
+                {post.likes.find(like => user && like.user_id === user.id)
+                ? <button onClick={() => handleUnlikePost(post.id)}>Unlike</button>
+                : <button onClick={() => handleLikePost(post.id)}>Like</button>
+                }
+                <p>{post.likes && post.likes.length} likes</p>
+            </div>
+            ))}
 
             {Array.isArray(posts) && posts.length === 0 && (
-                <p>No posts found for this category.</p>
+            <p>No posts found for this category.</p>
             )}
+
 
             <Modal
                 isOpen={modalIsOpen}
@@ -267,28 +345,29 @@ const GameCategoriesPage = () => {
                 contentLabel="Example Modal"
             >
                 <>
-                    <h2>Create a post!</h2>
-                    <form onSubmit={handleFormSubmit}>
-                        <input
-                            type="text"
-                            value={postTitle}
-                            onChange={(event) =>
-                                setPostTitle(event.target.value)
-                            }
-                            placeholder="Post Title"
-                        />
-                        <textarea
-                            value={postContent}
-                            onChange={(event) =>
-                                setPostContent(event.target.value)
-                            }
-                            placeholder="Write your post here..."
-                        />
-                        <button type="submit">Submit</button>
-                    </form>
+                <h2>Create a post!</h2>
+                <form onSubmit={handleFormSubmit}>
+                    <input
+                    type="text"
+                    value={postTitle}
+                    onChange={(event) =>
+                        setPostTitle(event.target.value)
+                    }
+                    placeholder="Post Title"
+                    />
+                    <textarea
+                    value={postContent}
+                    onChange={(event) =>
+                        setPostContent(event.target.value)
+                    }
+                    placeholder="Write your post here..."
+                    />
+                    <button type="submit">Submit</button>
+                </form>
                 </>
             </Modal>
-        </>
+            </>
+
     );
 };
 

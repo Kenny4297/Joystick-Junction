@@ -5,7 +5,6 @@ const Like = require('../models/Like')
 
 module.exports = {
     // Get all posts
-    // GET api/posts/
     async getAllPosts(req, res) {
         console.log("get all posts function firing?")
         try {
@@ -40,7 +39,6 @@ module.exports = {
     },
     
 
-    // Get a specific post
     // Get a specific post
     async getPostById(req, res) {
         try {
@@ -129,18 +127,22 @@ module.exports = {
                     }
                 ]
             });
+    
+            const plainPostsData = postsData.map(post => post.toJSON());
+    
+            console.log("This is the plain post data", plainPostsData)
             
-            if(!postsData.length) {
+            if(!plainPostsData.length) {
                 return res.status(200).json([]);
             }
     
-            res.json(postsData);
+            res.json(plainPostsData);
         } catch (err) {
             console.error(err);
             res.status(500).json({message: 'An error occurred while retrieving posts'});
         }
     },
-
+    
     // Update a post
     async updatePost(req, res) {
         try {

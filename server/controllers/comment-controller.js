@@ -58,5 +58,40 @@ module.exports = {
                 res.status(500).json(err);
             }
         }
-    }  
+    },
+
+    async likeComment(req, res) {
+        try {
+            const newLike = {
+                user_id: req.body.user_id,
+                comment_id: req.body.comment_id
+            };
+    
+            const createdLike = await Like.create(newLike);
+            res.status(201).json(createdLike);
+        } catch (err) {
+            console.error(err);
+            res.status(500).json({message: 'An error occurred while liking the comment'});
+        }
+    },
+    
+    async unlikeComment(req, res) {
+        try {
+            const likeToDelete = await Like.destroy({ 
+                where: { 
+                    user_id: req.body.user_id, 
+                    comment_id: req.body.comment_id
+                }
+            });
+    
+            if(!likeToDelete) {
+                return res.status(404).json({message: 'Like not found'});
+            }
+    
+            res.json({message: 'Like removed successfully'});
+        } catch (err) {
+            console.error(err);
+            res.status(500).json({message: 'An error occurred while unliking the comment'});
+        }
+    }
 };
