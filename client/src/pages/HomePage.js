@@ -35,8 +35,10 @@ const HomePage = () => {
 
     return (
         <>
+        <h1>Joystick Junction</h1>
+        <p>Discover, Collaborate, Dominate</p>
         <FeaturedGamesCarousel />
-        <h1>Home Page</h1>
+        
 
         {!user ? (
             <p>The user is not logged in.</p>
