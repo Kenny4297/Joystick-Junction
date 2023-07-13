@@ -125,46 +125,46 @@ const Browse = () => {
 
     return (
         <div style={{display: 'flex', flexDirection: 'row'}}>
-            <div style={{display: 'flex', flexDirection: 'column', marginRight: '20px'}}>
-                <form onSubmit={fetchGamesByCategories}>
-                    <div style={{display: 'flex', flexDirection: 'row', flexWrap: 'wrap', justifyContent: 'space-between'}}>
-                        <div><ul>{generateCheckboxes(mainCategoryArray)}</ul></div>
-                        <div><ul>{generateCheckboxes(typesCategoryArray)}</ul></div>
-                        <div><ul>{generateCheckboxes(multiplayerCategoryArray)}</ul></div>
-                        <div><ul>{generateCheckboxes(POVCategoryArray)}</ul></div>
-                        <div><ul>{generateCheckboxes(randomCategoryArray)}</ul></div>
-                    </div>
-                    <button type="submit">Search by Categories</button>
-                </form>
-            </div>
-            <div style={{display: 'flex', flexDirection: 'column'}}>
-                <form onSubmit={fetchGamesByName}>
-                    <input
-                        ref={searchBarForGameRef}
-                        type="text"
-                        id="search-bar-for-game"
-                        placeholder="Search for a game by name..."
-                    />
-                    <button type="submit">Search</button>
-                </form>
-            </div>
-            {errorMessage && <p>{errorMessage}</p>}
-            <div>
-                {games.length > 0 ? (
-                    games.map(game => (
-                        <Link key={game.id} to={`/game/${game.id}`} onClick={() => handleGameClick(game)}>
-                            <div>
-                                <h2>{game.title}</h2>
-                                <img src={game.thumbnail} alt={game.title} />
-                                <p>{game.short_description}</p>
-                            </div>
-                        </Link>
-                    ))
-                ) : (
-                    <p>No games found for the selected categories or name.</p>
-                )}
-            </div>
+        <div style={{display: 'flex', flexDirection: 'column', marginRight: '20px'}}>
+            <form onSubmit={fetchGamesByCategories}>
+                <div style={{display: 'flex', flexDirection: 'row', flexWrap: 'wrap', justifyContent: 'space-between'}}>
+                    <div><ul>{mainCategoryCheckboxes}</ul></div>
+                    <div><ul>{typesCategoryCheckboxes}</ul></div>
+                    <div><ul>{multiplayerCategoryCheckboxes}</ul></div>
+                    <div><ul>{POVCategoryCheckboxes}</ul></div>
+                    <div><ul>{randomCategoryCheckboxes}</ul></div>
+                </div>
+                <button type="submit">Search by Categories</button>
+            </form>
         </div>
+        <div style={{display: 'flex', flexDirection: 'column'}}>
+            <form onSubmit={fetchGamesByName}>
+                <input
+                    ref={searchBarForGameRef}
+                    type="text"
+                    id="search-bar-for-game"
+                    placeholder="Search for a game by name..."
+                />
+                <button type="submit">Search</button>
+            </form>
+        </div>
+        {errorMessage && <p>{errorMessage}</p>}
+        <div>
+            {games.length > 0 ? (
+                games.map(game => (
+                    <Link key={game.id} to={`/game/${game.id}`} onClick={() => handleGameClick(game)}>
+                        <div>
+                            <h2>{game.title}</h2>
+                            <img src={game.thumbnail} alt={game.title} />
+                            <p>{game.short_description}</p>
+                        </div>
+                    </Link>
+                ))
+            ) : (
+                <p>No games found for the selected categories or name.</p>
+            )}
+        </div>
+    </div>
     );
 };
 

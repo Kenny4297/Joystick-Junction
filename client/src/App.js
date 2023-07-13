@@ -25,6 +25,7 @@ import IndividualMessages from './components/individualMessages';
 
 import Messages from './components/Messages'
 import Browse from "./components/Browse";
+import RecentArticles from './components/RecentArticles'
 
 import axios from "axios";
 
@@ -77,6 +78,8 @@ function App() {
                                 <Route path="/individualMessages/:userId/:otherUserId" element={<IndividualMessages />} />
 
                                 <Route path="/browse" element={<Browse />} />  
+                                <Route path="/recentArticles" element={<RecentArticles />} />  
+
 
 
 

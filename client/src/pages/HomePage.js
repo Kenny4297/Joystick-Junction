@@ -2,10 +2,13 @@ import { useContext, useEffect, useState } from "react";
 import { UserContext } from "../contexts/UserContext";
 import { Link } from "react-router-dom";
 import FeaturedGamesCarousel from "../components/FeaturedGamesCarousel";
+import RecentArticles from "../components/RecentArticles";
 import axios from "axios";
 
 const HomePage = () => {
     const [user, setUser] = useContext(UserContext);
+
+
 
     useEffect(() => {
         if (user && user.id) {
@@ -38,6 +41,8 @@ const HomePage = () => {
         <h1>Joystick Junction</h1>
         <p>Discover, Collaborate, Dominate</p>
         <FeaturedGamesCarousel />
+
+        <RecentArticles />
         
 
         {!user ? (
