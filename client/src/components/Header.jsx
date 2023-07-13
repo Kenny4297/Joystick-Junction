@@ -24,9 +24,8 @@ const Header = () => {
         })
         .then(response => {
           if (response.ok) {
-            // After successful logout, clear user context and navigate to login page
             setUser(null);
-            navigate('/login');
+            navigate('/');
           } else {
             throw new Error('Failed to log out');
           }

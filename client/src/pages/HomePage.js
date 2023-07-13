@@ -1,6 +1,7 @@
 import { useContext, useEffect, useState } from "react";
 import { UserContext } from "../contexts/UserContext";
 import { Link } from "react-router-dom";
+import FeaturedGamesCarousel from "../components/FeaturedGamesCarousel";
 import axios from "axios";
 
 const HomePage = () => {
@@ -34,16 +35,17 @@ const HomePage = () => {
 
     return (
         <>
-            <h1>Home Page</h1>
+        <FeaturedGamesCarousel />
+        <h1>Home Page</h1>
 
-            {!user ? (
-                <p>The user is not logged in.</p>
-            ) : (
-                <>
-                    <p>The user is logged in.</p>
-                    <Link to="/test">Go to Test Component</Link>
-                </>
-            )}
+        {!user ? (
+            <p>The user is not logged in.</p>
+        ) : (
+            <>
+                <p>The user is logged in.</p>
+                <Link to="/test">Go to Test Component</Link>
+            </>
+        )}
 
         <Link className="header-links" to="/signUp">SignUp</Link>
 
