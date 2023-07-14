@@ -72,6 +72,7 @@ const Browse = () => {
             const data = await response.json();
             setGameData(data);
             setGames(data);
+            console.log(data)
         } catch (error) {
             console.error('Failed to fetch games:', error);
             setErrorMessage('Failed to fetch games: ' + error.message);

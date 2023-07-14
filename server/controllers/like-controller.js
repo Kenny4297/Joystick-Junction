@@ -82,9 +82,8 @@ module.exports = {
                 ],
             });
     
-            console.log(`Fetched likes: ${JSON.stringify(likes)}`); // log likes
-    
-            // Send the likes array regardless of whether it's empty or not
+            console.log(`Fetched likes: ${JSON.stringify(likes)}`); 
+
             res.json(likes);
         } catch (err) {
             console.error(err);
@@ -110,7 +109,23 @@ module.exports = {
             console.error(err);
             res.status(500).json(err);
         }
-    }
+    },
 
+    // DELETE api/likes/comments/:commentId
+    async deleteLikeForComment(req, res) {
+        console.log("deleteLikeForComment firing!")
+        try {
+            const deletedLike = await Like.destroy({
+                where: {
+                    user_id: req.body.user_id,
+                    comment_id: req.params.commentId,
+                }
+            });
+            res.json(deletedLike);
+        } catch (err) {
+            console.log(err);
+            res.status(500).json(err);
+        }
+    }
 
 };

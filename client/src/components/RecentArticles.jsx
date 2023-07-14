@@ -28,7 +28,7 @@ const RecentArticles = () => {
         'Mastering the hardest boss fights',
     ];
 
-    const articleTitle = articleTitles[Math.floor(Math.random() * articleTitles.length)];
+    const articleTitlesIndex = articleTitles.sort(() => Math.random() - 0.5);
 
     useEffect(() => {
         const options = {
@@ -44,7 +44,6 @@ const RecentArticles = () => {
             try {
                 const response = await axios.request(options);
                 const games = response.data;
-                // Select three random games
                 const selectedGames = games.sort(() => .5 - Math.random()).slice(0,3);
                 setGames(selectedGames);
             } catch (error) {
@@ -55,7 +54,7 @@ const RecentArticles = () => {
         fetchGames();
     }, []);
 
-    const GameCard = ({ game }) => {
+    const GameCard = ({ game, index }) => {
         const gameDescription = loremIpsum({
             count: 1,
             format: 'plain',
@@ -70,8 +69,8 @@ const RecentArticles = () => {
         return (
             <div style={{ margin: '20px', padding: '20px', border: '1px solid gray', width: '300px' }}>
                 <h3>{game.title}</h3>
-                <h4>{articleTitle}</h4>
                 <img src={game.thumbnail} alt={game.title} style={{ width: '100%' }} />
+                <h4>{articleTitlesIndex[index]}</h4>
                 <p>{gameDescription}</p>
             </div>
         );
@@ -81,8 +80,8 @@ const RecentArticles = () => {
         <>
             <h2>Recent Articles</h2>
             <div style={{ display: 'flex', justifyContent: 'space-between' }}>
-                {games.map(game => (
-                    <GameCard key={game.id} game={game} />
+                {games.map((game, index) => (
+                    <GameCard key={game.id} game={game} index={index} />
                 ))}
             </div>
         </>

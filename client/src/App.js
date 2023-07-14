@@ -5,6 +5,7 @@ import { Header } from "./components"
 import { HomePage, LoginPage, ProfilePage, SignupPage } from "./pages";
 import { UserContext } from "./contexts/UserContext";
 import { GameProvider } from "./contexts/GameContext";
+import Footer from './components/Footer'
 
 import 'bootstrap/dist/css/bootstrap.min.css';
 import './styles/global.css'
@@ -79,16 +80,9 @@ function App() {
 
                                 <Route path="/browse" element={<Browse />} />  
                                 <Route path="/recentArticles" element={<RecentArticles />} />  
-
-
-
-
-
-
-
-         
                             </Routes>
                         </div>
+                        <Footer />
                 </GameProvider>
             </UserContext.Provider>
         </BrowserRouter>

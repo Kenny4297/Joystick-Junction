@@ -4,6 +4,11 @@ import { Link } from "react-router-dom";
 import FeaturedGamesCarousel from "../components/FeaturedGamesCarousel";
 import RecentArticles from "../components/RecentArticles";
 import axios from "axios";
+import {
+    Navbar,
+    Nav
+} from "react-bootstrap";
+import Footer from '../components/Footer'
 
 const HomePage = () => {
     const [user, setUser] = useContext(UserContext);
@@ -38,8 +43,16 @@ const HomePage = () => {
 
     return (
         <>
-        <h1>Joystick Junction</h1>
-        <p>Discover, Collaborate, Dominate</p>
+        <div style={{display:'flex', justifyContent:'space-between'}}>
+            <div style={{marginLeft:'3rem', marginBottom:'4rem'}}>
+                <h1>Joystick Junction</h1>
+                <p>Discover, Collaborate, Dominate</p>
+            </div>
+
+            <div style={{marginRight:'5rem', border:'2px solid red', bottom:'10rem'}}>
+                <Nav.Link style={{top: '2rem', position:'relative', fontSize:'2.5rem'}} href="/browse">Find your favorite game!</Nav.Link>
+            </div>
+        </div>
         <FeaturedGamesCarousel />
 
         <RecentArticles />
@@ -74,6 +87,8 @@ const HomePage = () => {
                 </div>
             ))}
         </div>
+
+        {/* <Footer /> */}
         </>
     )
 }

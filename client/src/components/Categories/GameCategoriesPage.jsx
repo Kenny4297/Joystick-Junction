@@ -83,8 +83,8 @@ const GameCategoriesPage = () => {
     const handleUnlikeComment = async (commentId) => {
         try {
             const { id: userId } = user;
-            const response = await axios.delete(`/api/likes/comments`, { data: { comment_id: commentId, user_id: userId } });
-            
+            const response = await axios.delete(`/api/likes/comments/${commentId}`, { data: { user_id: userId } });
+    
             if(response.status === 200) {
                 setPosts(posts.map(post => {
                     return {
@@ -105,6 +105,7 @@ const GameCategoriesPage = () => {
             console.log(error);
         }
     };
+    
 
     const handleFormSubmit = async (event) => {
         event.preventDefault();

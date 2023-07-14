@@ -7,7 +7,8 @@ const {
     createLikeForPost,
     deleteLikeForPost,
     getLikesForComment,
-    createLikeForComment
+    createLikeForComment,
+    deleteLikeForComment
 } = require('../../controllers/like-controller');
 
 // Routes
@@ -18,7 +19,8 @@ router.route('/posts/:postId')
 
 router.route('/comments/:commentId')
     .get(getLikesForComment)
-    .post(createLikeForComment);
+    .post(createLikeForComment)
+    .delete(deleteLikeForComment)
 
 
 module.exports = router;
