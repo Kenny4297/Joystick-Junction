@@ -12,8 +12,8 @@ const Footer = () => {
                 </div>
                 <div>
                     <h3>Contact Us</h3>
-                    <p>Email: support@gamingforum.com</p>
-                    <p>Phone: (123) 456-7890</p>
+                    <p>Email: geckob4i@gmail.com</p>
+                    {/* <p>Phone: (123) 456-7890</p> */}
                 </div>
             </div>
             <div style={{marginTop: '20px', borderTop: '1px solid #fff', paddingTop: '20px', textAlign: 'center'}}>

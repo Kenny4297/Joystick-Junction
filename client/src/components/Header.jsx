@@ -35,11 +35,11 @@ const Header = () => {
 
     return (
         <header
-            style={{ width: "100%", minHight: "1.5rem", maxHeight: "1.5rem", marginBottom:'5rem'}}
+            style={{display: 'flex', justifyContent:'flex-end', zIndex:'-1'}}
             aria-label="Main navigation"
         >
             <Navbar
-                style={{ backgroundColor: "grey" }}
+                style={{ backgroundColor: "var(--metal" }}
                 expand="md"
                 className="d-flex justify-content-center align-items-center"
                 aria-label="Main menu"

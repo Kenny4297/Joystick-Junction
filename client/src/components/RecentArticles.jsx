@@ -4,6 +4,8 @@ import { loremIpsum } from 'lorem-ipsum';
 
 const RecentArticles = () => {
     const [games, setGames] = useState([]);
+    const [clickedGame, setClickedGame] = useState(null);
+    const [searchedGame, setSearchedGame] = useState('');
 
     const articleTitles = [
         'Having trouble beating the final boss?',
@@ -65,26 +67,44 @@ const RecentArticles = () => {
             sentenceUpperBound: 15,
             random: Math.random,
         }).slice(0, 200) + '...';
-
-        return (
-            <div style={{ margin: '20px', padding: '20px', border: '1px solid gray', width: '300px' }}>
-                <h3>{game.title}</h3>
-                <img src={game.thumbnail} alt={game.title} style={{ width: '100%' }} />
-                <h4>{articleTitlesIndex[index]}</h4>
-                <p>{gameDescription}</p>
-            </div>
-        );
     };
 
     return (
-        <>
+        <div style={{marginTop:'3rem'}}>
             <h2>Recent Articles</h2>
-            <div style={{ display: 'flex', justifyContent: 'space-between' }}>
-                {games.map((game, index) => (
-                    <GameCard key={game.id} game={game} index={index} />
-                ))}
+            <div className="articles-card-container">
+                {games.length > 0 ? (
+                    games.map((game, index) => {
+                        const gameDescription = loremIpsum({
+                            count: 1,
+                            format: 'plain',
+                            units: 'paragraphs',
+                            paragraphLowerBound: 3,
+                            paragraphUpperBound: 5,
+                            sentenceLowerBound: 5,
+                            sentenceUpperBound: 15,
+                            random: Math.random,
+                        }).slice(0, 200) + '...';
+
+                        return (
+                            <div className="articles-card" key={game.id} onClick={() => setClickedGame(clickedGame === game.id ? null : game.id)}>
+                                <h3 className="articles-card-heading">{game.title}</h3>
+                                <img src={game.thumbnail} alt={game.title} className="articles-card-image" />
+                                <h4 className="articles-card-subheading">{articleTitlesIndex[index]}</h4>
+                                <p className="articles-card-description">{gameDescription}</p>
+                                {clickedGame === game.id && 
+                                    <p className="articles-card-additional-text">
+                                        In a fully developed application, clicking this panel would lead you to the full article. This function is currently for demonstrative purposes only.
+                                    </p>
+                                }
+                            </div>
+                        );
+                    })
+                ) : (
+                    <p>No games found for {searchedGame ? `the game name "${searchedGame}"` : 'the selected categories or name'}.</p>
+                )}
             </div>
-        </>
+        </div>
     );
 };
 

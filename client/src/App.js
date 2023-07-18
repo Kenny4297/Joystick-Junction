@@ -59,7 +59,7 @@ function App() {
             <UserContext.Provider value={[user, setUser]}>
                 <GameProvider>
                         <Header user={user} />
-                        <div style={{margin:'1rem 2rem 2rem 2rem'}}>
+                        <div style={{margin:'1rem 4rem 2rem 4rem'}}>
                             <Routes>
                                 <Route path="/" element={<HomePage />} />
                                 <Route path="/login" element={<LoginPage />} />

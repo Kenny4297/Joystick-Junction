@@ -43,52 +43,40 @@ const HomePage = () => {
 
     return (
         <>
-        <div style={{display:'flex', justifyContent:'space-between'}}>
-            <div style={{marginLeft:'3rem', marginBottom:'4rem'}}>
+        {/* <div style={{display:'flex', justifyContent:'center', gap: '3rem'}}>
+            <div style={{marginBottom:'4rem'}}>
                 <h1>Joystick Junction</h1>
                 <p>Discover, Collaborate, Dominate</p>
             </div>
 
-            <div style={{marginRight:'5rem', border:'2px solid red', bottom:'10rem'}}>
-                <Nav.Link style={{top: '2rem', position:'relative', fontSize:'2.5rem'}} href="/browse">Find your favorite game!</Nav.Link>
+            <div>
+                <p>Joystick Junction is your one-stop hub for all things gaming. Whether you're a casual player or a hardcore gamer, there's something here for everyone!</p>
             </div>
+
+            <div className=".call-to-action-button-container">
+                <button  className="call-to-action-button" as={Link} to="/browse">
+                    Find your favorite game!
+                </button>
+            </div>
+        </div> */}
+            <div style={{display:'flex', flexDirection:'column', justifyContent:'center', alignItems:'center', textAlign: 'center',marginBottom:'4rem'}}>
+                <h1 style={{fontSize:'3.5rem'}}>Joystick Junction</h1>
+                <p style={{fontSize:'1.5rem', color: 'var(--grey)'}}>Discover, Collaborate, Dominate</p>
+                <p style={{fontSize:'1.2rem',width:'30rem', color:'var(--blue)'}}>Joystick Junction is your one-stop hub for all things gaming. Whether you're a casual player or a hardcore gamer, there's something here for everyone!</p>
+            </div>
+        
+
+
+
+        <div className="call-to-action-button-container">
+            <Link to="/browse" className="call-to-action-button" as="button">
+                Find your favorite game!
+            </Link>
         </div>
+
         <FeaturedGamesCarousel />
 
         <RecentArticles />
-        
-
-        {!user ? (
-            <p>The user is not logged in.</p>
-        ) : (
-            <>
-                <p>The user is logged in.</p>
-                <Link to="/test">Go to Test Component</Link>
-            </>
-        )}
-
-        <Link className="header-links" to="/signUp">SignUp</Link>
-
-        <p>Testing displaying all posts</p>
-
-        <div style={{display:'flex', flexDirection:'column'}}>
-            <Link to="/browseBySearch">Browse by search test</Link>
-            <Link to="/browseByCheckboxes">Browse by checkboxes test</Link>
-            <Link to="/discover">Discover Component test</Link>
-        </div>
-
-
-        <div>
-            {posts.map((post) => (
-                <div key={post.id}>
-                    <h2>{post.post_title}</h2>
-                    <h3>{post.user_id}</h3>
-                    <p>{post.post_content}</p>
-                </div>
-            ))}
-        </div>
-
-        {/* <Footer /> */}
         </>
     )
 }

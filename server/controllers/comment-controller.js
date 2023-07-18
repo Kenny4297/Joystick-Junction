@@ -12,7 +12,7 @@ module.exports = {
                     {
                         model: User,
                         as: 'user',
-                        attributes: ['username'],
+                        attributes: ['username', 'profileImage'],
                     },
                     {
                         model: Post,

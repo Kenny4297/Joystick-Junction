@@ -3,6 +3,7 @@ import axios from "axios";
 import Carousel from "react-bootstrap/Carousel";
 import { Link, useNavigate } from "react-router-dom";
 import { GameContext } from "../contexts/GameContext";
+import { rightArrow } from './Assets/Images/rightArrow.png'
 
 //! Combine and add CSS. D.R.Y!
 
@@ -50,48 +51,35 @@ function FeaturedGamesCarousel() {
     };
 
     return (
-        <div style={{ display: "flex", justifyContent: "space-between" }}>
+        <div className="featured-games-card-container">
             <div>
-                <h2>Featured Games</h2>
-                <div
-                    style={{
-                        position: "relative",
-                        height: "33rem",
-                        border: "2px solid red",
-                        minWidth: "20rem",
-                        maxWidth: "20rem",
-                    }}
-                >
+                <h2 className="featured-games-card-heading">Featured Games</h2>
+                <div className="featured-games-card">
                     <Carousel interval={null} indicators={false}>
                         {featuredGames.map((game, index) => (
                             <Carousel.Item
                                 key={index}
                                 onClick={() => handleGameClick(game)}
-                                style={{ cursor: "pointer" }}
+                                className="featured-games-carousel"
                             >
-                                <div
-                                    style={{
-                                        display: "flex",
-                                        flexDirection: "column",
-                                        alignItems: "center",
-                                        height: "100%",
-                                    }}
-                                >
+                                <div>
                                     <img
-                                        className="d-block"
                                         src={game.thumbnail}
                                         alt={game.title}
-                                        style={{
-                                            width: "100%",
-                                            objectFit: "cover",
-                                        }}
+                                        className="featured-games-carousel-image"
                                     />
                                     <div style={{ flexGrow: 1 }}></div>
                                     <Carousel.Caption
-                                        style={{ position: "unset" }}
+                                        className="featured-games-carousel-caption"
                                     >
                                         <h3>{game.title}</h3>
-                                        <p>{game.short_description}</p>
+                                        <p>
+                                            {
+                                            game.short_description.length > 250 
+                                                ? `${game.short_description.substring(0, 250)}...` 
+                                                : game.short_description
+                                            }
+                                        </p>
                                     </Carousel.Caption>
                                 </div>
                             </Carousel.Item>
@@ -99,47 +87,33 @@ function FeaturedGamesCarousel() {
                     </Carousel>
                 </div>
             </div>
+            
             <div>
-                <h2>What's Hot</h2>
-                <div
-                    style={{
-                        position: "relative",
-                        height: "33rem",
-                        border: "2px solid red",
-                        minWidth: "20rem",
-                        maxWidth: "20rem",
-                    }}
-                >
+                <h2 className="featured-games-card-heading">What's Hot</h2>
+                <div className="featured-games-card">
                     <Carousel interval={null} indicators={false}>
                         {hotGames.map((game, index) => (
                             <Carousel.Item
                                 key={index}
                                 onClick={() => handleGameClick(game)}
-                                style={{ cursor: "pointer" }}
+                                className="featured-games-carousel"
                             >
-                                <div
-                                    style={{
-                                        display: "flex",
-                                        flexDirection: "column",
-                                        alignItems: "center",
-                                        height: "100%",
-                                    }}
-                                >
+                                <div>
                                     <img
-                                        className="d-block"
                                         src={game.thumbnail}
                                         alt={game.title}
-                                        style={{
-                                            width: "100%",
-                                            objectFit: "cover",
-                                        }}
+                                        className="featured-games-carousel-image"
                                     />
                                     <div style={{ flexGrow: 1 }}></div>
-                                    <Carousel.Caption
-                                        style={{ position: "unset" }}
-                                    >
+                                    <Carousel.Caption className="featured-games-carousel-caption">
                                         <h3>{game.title}</h3>
-                                        <p>{game.short_description}</p>
+                                        <p>
+                                            {
+                                            game.short_description.length > 250 
+                                                ? `${game.short_description.substring(0, 250)}...` 
+                                                : game.short_description
+                                            }
+                                        </p>
                                     </Carousel.Caption>
                                 </div>
                             </Carousel.Item>
@@ -147,47 +121,33 @@ function FeaturedGamesCarousel() {
                     </Carousel>
                 </div>
             </div>
+    
             <div>
-                <h2>Gotta Love It</h2>
-                <div
-                    style={{
-                        position: "relative",
-                        height: "33rem",
-                        border: "2px solid red",
-                        minWidth: "20rem",
-                        maxWidth: "20rem",
-                    }}
-                >
+                <h2 className="featured-games-card-heading">Gotta Love It</h2>
+                <div className="featured-games-card">
                     <Carousel interval={null} indicators={false}>
                         {lovedGames.map((game, index) => (
                             <Carousel.Item
                                 key={index}
                                 onClick={() => handleGameClick(game)}
-                                style={{ cursor: "pointer" }}
+                                className="featured-games-carousel"
                             >
-                                <div
-                                    style={{
-                                        display: "flex",
-                                        flexDirection: "column",
-                                        alignItems: "center",
-                                        height: "100%",
-                                    }}
-                                >
+                                <div>
                                     <img
-                                        className="d-block"
                                         src={game.thumbnail}
                                         alt={game.title}
-                                        style={{
-                                            width: "100%",
-                                            objectFit: "cover",
-                                        }}
+                                        className="featured-games-carousel-image"
                                     />
                                     <div style={{ flexGrow: 1 }}></div>
-                                    <Carousel.Caption
-                                        style={{ position: "unset" }}
-                                    >
+                                    <Carousel.Caption className="featured-games-carousel-caption">
                                         <h3>{game.title}</h3>
-                                        <p>{game.short_description}</p>
+                                        <p>
+                                            {
+                                            game.short_description.length > 250 
+                                                ? `${game.short_description.substring(0, 250)}...` 
+                                                : game.short_description
+                                            }
+                                        </p>
                                     </Carousel.Caption>
                                 </div>
                             </Carousel.Item>
@@ -197,6 +157,7 @@ function FeaturedGamesCarousel() {
             </div>
         </div>
     );
+    
 }
 
 export default FeaturedGamesCarousel;
