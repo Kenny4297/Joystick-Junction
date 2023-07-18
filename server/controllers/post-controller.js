@@ -122,7 +122,7 @@ module.exports = {
                         include: { 
                             model: User, 
                             as: 'user', 
-                            attributes: ['username'] 
+                            attributes: ['username', 'profileImage'] 
                         }
                     }
                 ]
@@ -142,6 +142,7 @@ module.exports = {
             res.status(500).json({message: 'An error occurred while retrieving posts'});
         }
     },
+    
     
     // Update a post
     async updatePost(req, res) {

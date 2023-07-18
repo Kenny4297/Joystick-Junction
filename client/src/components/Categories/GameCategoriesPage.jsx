@@ -5,6 +5,10 @@ import { useParams, Link } from "react-router-dom";
 import Modal from "react-modal";
 import axios from "axios";  
 import noUser from '../Assets/Images/noUser.png'
+import Accordion from 'react-bootstrap/Accordion';
+import Card from 'react-bootstrap/Card';
+import Button from 'react-bootstrap/Button';
+
 
 Modal.setAppElement('#root');
 
@@ -20,6 +24,9 @@ const GameCategoriesPage = () => {
     const [comments, setComments] = useState([]);
     const [newComment, setNewComment] = useState([]);
     const [likes, setLikes] = useState([]);
+    const [openIndex, setOpenIndex] = useState(null);
+
+    const [open, setOpen] = useState(false);
 
     useEffect(() => {
         if (user && user.id) {
@@ -45,7 +52,9 @@ const GameCategoriesPage = () => {
                     ...post,
                     comments: post.comments.map(comment => {
                         if(comment.id === commentId) {
-                            return { ...comment, likes: [...comment.likes, response.data] }
+                            // Check if likes is an array before trying to spread it
+                            const commentLikes = Array.isArray(comment.likes) ? comment.likes : [];
+                            return { ...comment, likes: [...commentLikes, response.data] }
                         }
                         return comment;
                     })
@@ -56,22 +65,29 @@ const GameCategoriesPage = () => {
         }
     };
     
+    
     const handleUnlikeComment = async (commentId) => {
+        console.log('handleunline comment firing')
         try {
             const { id: userId } = user;
             const response = await axios.delete(`/api/likes/comments/${commentId}`, { data: { user_id: userId } });
-    
+
+            console.log(response)
+        
             if(response.status === 200) {
                 setPosts(posts.map(post => {
                     return {
                         ...post,
                         comments: post.comments.map(comment => {
                             if(comment.id === commentId) {
+                                // Ensure likes is an array before trying to filter it
+                                const commentLikes = Array.isArray(comment.likes) ? comment.likes : [];
                                 return {
                                     ...comment,
-                                    likes: comment.likes.filter(like => !(like.user_id === userId && like.comment_id === commentId))
+                                    likes: commentLikes.filter(like => !(like.user_id === userId && like.comment_id === commentId))
                                 };
                             }
+                            console.log(comment)
                             return comment;
                         })
                     };
@@ -81,6 +97,7 @@ const GameCategoriesPage = () => {
             console.log(error);
         }
     };
+    
     
 
     const handleFormSubmit = async (event) => {
@@ -116,7 +133,7 @@ const GameCategoriesPage = () => {
         console.log("index:", index);
         try {
             await axios.post('/api/comments', { post_id: postId, comment_content: newComment[index] }, { withCredentials: true });
-    
+            
             const updatedNewComments = [...newComment];
             if (updatedNewComments[index] === undefined) {
                 updatedNewComments[index] = '';
@@ -124,24 +141,25 @@ const GameCategoriesPage = () => {
             updatedNewComments[index] = '';
             setNewComment(updatedNewComments);
             
-            const response = await axios.get(`/api/comments/${postId}`);
-    
-            const updatedComments = [...comments];
-            if (updatedComments[index] === undefined) {
-                updatedComments[index] = [];
-            }
-    
-            // Include the 'user.profileImage' attribute in the updated comments
-            updatedComments[index] = response.data.map(comment => ({
-                ...comment,
-                user: {
-                    ...comment.user,
-                    username: comment.user.username,
-                    profileImage: comment.user.profileImage
+            const commentResponse = await axios.get(`/api/comments/${postId}`);
+            
+            // Update the state of posts to include the new comment
+            setPosts(posts.map(post => {
+                if(post.id === postId) {
+                    return {
+                        ...post,
+                        comments: commentResponse.data.map(comment => ({
+                            ...comment,
+                            user: {
+                                ...comment.user,
+                                username: comment.user.username,
+                                profileImage: comment.user.profileImage
+                            }
+                        }))
+                    };
                 }
+                return post;
             }));
-    
-            setComments(updatedComments);
         } catch (error) {
             console.error(error);
         }
@@ -196,22 +214,20 @@ const GameCategoriesPage = () => {
                 const postResponse = await axios.get(`/api/posts/game/${gameId}/category/${categoryPage}`);
                 console.log("Post response:", postResponse)
     
-                const updatedPostData = await Promise.all(postResponse.data.map(async post => {
-                    try {
-                        const commentsResponse = await axios.get(`/api/comments/${post.id}`);
-                        const likesResponse = await axios.get(`/api/likes/posts/${post.id}`);
-                        
-                        const comments = commentsResponse.data.length > 0 ? commentsResponse.data : [];
-                        const likes = likesResponse.data || [];
-
-                        return { ...post, comments, likes };
-                    } catch (err) {
-                        console.error(err);
-                        return { ...post, comments: [], likes: [] };
-                    }
-                }));
-        
-                setPosts(updatedPostData);
+                if(postResponse.data.length) {
+                    const updatedPostData = postResponse.data.map(post => {
+                        return { 
+                            ...post, 
+                            comments: post.comments.length > 0 ? post.comments : [], 
+                            likes: post.likes || [] 
+                        };
+                    });
+                
+                    setPosts(updatedPostData);
+                    console.log("Posts data:", updatedPostData);
+                } else {
+                    setPosts([]);
+                }
             } catch (err) {
                 console.error(err);
                 if (err.response && err.response.status === 404) {
@@ -223,6 +239,10 @@ const GameCategoriesPage = () => {
     
         fetchPostsByGameAndCategory();
     }, [gameId, categoryPage]);
+
+    const handleToggle = (index) => {
+        setOpenIndex(openIndex === index ? null : index);
+    };
     
 
     return (
@@ -237,95 +257,88 @@ const GameCategoriesPage = () => {
                 <img src={gameData.thumbnail} alt={gameData.title} style={{width:'25rem'}} />
                 <button onClick={openModal}>Open Modal</button>
             </div>
-
+    
             {Array.isArray(posts) && posts.map((post, index) => (
-                <div key={index} className="post" style={{
+    <div key={index} className="post">
+        <div style={{ display: 'flex', alignItems: 'center' }}>
+            <img src={post.user.profileImage} alt={post.user.username} style={{width: '6rem', borderRadius: '50%'}} />
+            <div style={{marginLeft: '1rem'}}>
+                <h2>{post.post_title}</h2>
+                <p>{post.post_content}</p>
+                <h5>{post.user.username}</h5>
+            </div>
+        </div> 
+        <div 
+            onClick={() => handleToggle(index)}
+            style={{
+                cursor: 'pointer',
+                backgroundColor: 'var(--metal)',
+                color: 'var(--white)',
+                padding: '1rem',
+                textAlign: 'center',
+                borderBottom: openIndex === index ? 'none' : '1px solid var(--grey)',
+                borderTopLeftRadius: '0.25rem',
+                borderTopRightRadius: '0.25rem',
+                width: 'max-content',
+                alignSelf: 'center'
+            }}
+        >
+            Comments {openIndex === index ? '▲' : '▼'}
+        </div>
+        {openIndex === index && <div style={{
+            padding: '1rem',
+            borderBottomLeftRadius: '0.25rem',
+            borderBottomRightRadius: '0.25rem'
+        }}>
+            {post.comments && post.comments.length > 0 && post.comments.map((comment, idx) => (
+                <div key={idx} style={{
                     position: 'relative',
                     height: 'auto',
                     border: '0.125rem solid var(--grey)',
                     width:'100%',
-                    boxShadow: '0.3125rem 0.3125rem 0.625rem rgba(0,0,0,0.15)',
-                    backgroundColor: 'var(--metal)',
-                    padding: '1rem',
+                    boxShadow: '0.25rem 0.25rem 0.5rem rgba(0,0,0,0.15)',
+                    backgroundColor: '#414141',  // slightly lighter color
+                    padding: '0.8rem',
                     margin: '1rem 0',
-                    borderRadius: '0.25rem'
+                    borderRadius: '0.2rem'
                 }}>
-                    <div className="post-header" style={{ display: 'flex' }}>
-                        <Link to={`/users/${post.user_id}`} style={{ display: 'flex', flexDirection: 'column', alignItems: 'center' }}>
-                            <img className="post-avatar" src={(post.user && post.user.profileImage) ? post.user.profileImage : noUser} alt={post.user ? post.user.username : 'Anonymous'} style={{width:'10rem'}} />
-                            <h4>{post.user ? post.user.username : 'Anonymous'}</h4>
-                        </Link>
-
+                    <div style={{ display: 'flex', alignItems: 'center' }}>
+                        <img src={comment.user.profileImage} alt={comment.user.username} style={{width: '6rem', borderRadius: '50%'}}/>
                         <div style={{ marginLeft: '1rem' }}>
-                            <h3>{post.post_title}</h3>
-                            <p>{post.post_content}</p>
+                            <p>{comment.comment_content}</p>
+                            <h5>{comment.user.username}</h5>
                         </div>
                     </div>
-
-                    <div>
-                        {post.comments && post.comments.map((comment, idx) => (
-                            <div key={idx} style={{
-                                position: 'relative',
-                                height: 'auto',
-                                border: '0.125rem solid var(--grey)',
-                                width:'100%',
-                                boxShadow: '0.25rem 0.25rem 0.5rem rgba(0,0,0,0.15)',
-                                backgroundColor: '#414141',  // slightly lighter color
-                                padding: '0.8rem',
-                                margin: '1rem 0',
-                                borderRadius: '0.2rem'
-                            }}>
-                                <div style={{ display: 'flex' }}>
-                                    <div style={{ display: 'flex', flexDirection: 'column', alignItems: 'center' }}>
-                                        <img src={comment.user.profileImage} alt={comment.user.username} style={{width: '6rem'}}/>
-                                        <p>{comment.user.username}</p>
-                                    </div>
-                                    
-                                    <div style={{ marginLeft: '1rem' }}>
-                                        <p>{comment.comment_content}</p>
-                                        <div style={{ 
-                                            display: 'flex', 
-                                            justifyContent:'center', 
-                                            height:'3rem', 
-                                        }}>
-                                            {comment.likes && comment.likes.find(like => user && like.user_id === user.id)
-                                                ? <button onClick={() => handleUnlikeComment(comment.id)}>Unlike</button>
-                                                : <button onClick={() => handleLikeComment(comment.id)}>Like</button>
-                                            }
-                                            <p style={{ marginLeft: '1rem', position:'relative', top:'.8rem', right:'1rem' }}>{comment.likes && comment.likes.length} likes</p>
-                                        </div>
-                                    </div>
-                                </div>
-                            </div>
+                    <div style={{ 
+                        display: 'flex', 
+                        justifyContent:'center', 
+                        height:'3rem', 
+                        border:'1px solid green',
+                        width:'10rem'
+                    }}>
+                        {comment.likes && comment.likes.find(like => user && like.user_id === user.id)
+                            ? <button onClick={() => handleUnlikeComment(comment.id)} style={{width:'4rem'}}>Unlike</button>
+                            : <button onClick={() => handleLikeComment(comment.id)} style={{width:'4rem'}}>Like</button>
+                        }
+                        <p style={{ marginLeft: '1rem', position:'relative', top:'.8rem', right:'1rem' }}>{comment.likes && comment.likes.length} likes</p>
+                    </div>
+                </div>
             ))}
-        </div>
-
-        {/* Add a new comment to the post  */}
-        <textarea 
-            value={newComment[index] || ''} 
-            onChange={(event) => {
-                const updatedComments = [...newComment];
-                updatedComments[index] = event.target.value;
-                setNewComment(updatedComments);
-            }} 
-            placeholder="Add a comment..."
-        />
-        <button onClick={() => handleAddComment(post.id, index)}>Add Comment</button>
-        {post.likes.find(like => user && like.user_id === user.id)
-            ? <button onClick={() => handleUnlikePost(post.id)}>Unlike</button>
-            : <button onClick={() => handleLikePost(post.id)}>Like</button>
-        }
-        <p>{post.likes && post.likes.length} likes</p>
+            {/* Add a new comment to the post  */}
+            <textarea 
+                value={newComment[index] || ''} 
+                onChange={(event) => {
+                    const updatedComments = [...newComment];
+                    updatedComments[index] = event.target.value;
+                    setNewComment(updatedComments);
+                }} 
+                placeholder="Add a comment..."
+            />
+            <button onClick={() => handleAddComment(post.id, index)}>Add Comment</button>
+        </div>}
     </div>
 ))}
-
-{Array.isArray(posts) && posts.length === 0 && (
-    <p>No posts found for this category.</p>
-)}
-
-
-
-
+    
             <Modal
                 isOpen={modalIsOpen}
                 onRequestClose={closeModal}
@@ -353,9 +366,11 @@ const GameCategoriesPage = () => {
                 </form>
                 </>
             </Modal>
-            </>
-
+        </>
     );
+    
+    
+    
 };
 
 export default GameCategoriesPage;
