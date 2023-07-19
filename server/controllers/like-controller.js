@@ -35,14 +35,29 @@ module.exports = {
 
     // POST api/likes/posts/
     async createLikeForPost(req, res) {
-        console.log("createLikeForPost firing!")
         try {
             const newLike = await Like.create({
                 user_id: req.session.userId,
                 post_id: req.params.postId
             });
     
-            res.status(201).json(newLike);
+            // After creating a new like, find the associated post and return it
+            const updatedPost = await Post.findOne({
+                where: { id: req.params.postId },
+                include: [
+                    {
+                        model: Like,
+                        as: 'likes'
+                    },
+                    {
+                        model: User,
+                        as: 'user',
+                        attributes: ['username', 'profileImage'],  // Include username and profileImage
+                    }
+                ]
+            });
+    
+            res.status(201).json(updatedPost);
         } catch (err) {
             console.error(err);
             res.status(500).json(err);

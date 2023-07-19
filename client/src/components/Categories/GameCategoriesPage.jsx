@@ -164,26 +164,17 @@ const GameCategoriesPage = () => {
 
     const handleLikePost = async (postId) => {
         try {
-            // Optimistically update local state
-            setPosts(posts.map(post => {
-                if (post.id === postId) {
-                    const newLike = { user_id: user.id, post_id: postId };
-                    return { ...post, likes: [...post.likes, newLike], likes_count: post.likes_count + 1 };
-                }
-                return post;
-            }));
-    
-            // Send the request to the server
             const response = await axios.post(`/api/likes/posts/${postId}`, {}, { withCredentials: true });
     
-            // If there's an error, undo the optimistic update
-            if (response.status !== 200) {
-                setPosts(posts);  // Revert to the original posts state
+            if (response.status === 201) {
+                setPosts(posts.map(post => post.id === postId ? response.data : post));
             }
         } catch (error) {
-            console.error(error);
+            console.error('Error in handleLikePost:', error);
         }
     };
+    
+    
     
     const handleUnlikePost = async (postId) => {
         try {
@@ -253,10 +244,9 @@ const GameCategoriesPage = () => {
     return (
         <>
             <div style={{display:'flex', justifyContent:'center', flexDirection:'column', border:'2px solid green', alignItems:'center'}}>
-                
                 <h2>
-                {categoryPage.charAt(0).toUpperCase() +
-                    categoryPage.slice(1)}
+                    {categoryPage.charAt(0).toUpperCase() +
+                        categoryPage.slice(1)}
                 </h2>
                 <h1>{gameData.title}</h1>
                 <img src={gameData.thumbnail} alt={gameData.title} style={{width:'25rem'}} />
@@ -264,119 +254,111 @@ const GameCategoriesPage = () => {
             </div>
     
             {Array.isArray(posts) && posts.map((post, index) => (
-    <div key={index} className="post">
-        <div style={{
-    position: 'relative',
-    height: 'auto',
-    border: '0.125rem solid var(--grey)',
-    width:'100%',
-    boxShadow: '0.25rem 0.25rem 0.5rem rgba(0,0,0,0.15)',
-    backgroundColor: '#414141',  // slightly lighter color
-    padding: '0.8rem',
-    margin: '1rem 0',
-    borderRadius: '0.2rem'
-}}>
-    <div style={{ display: 'flex', alignItems: 'center' }}>
-        <img src={post.user.profileImage} alt={post.user.username} style={{width: '6rem', borderRadius: '50%'}} />
-        <div style={{ marginLeft: '1rem' }}>
-            <h2>{post.post_title}</h2>
-            <p>{post.post_content}</p>
-            <h5>{post.user.username}</h5>
-        </div>
-    </div>
-    <div style={{ 
-        display: 'flex', 
-        justifyContent:'center', 
-        height:'3rem', 
-        border:'1px solid green',
-        width:'10rem'
-    }}>
-        {post.likes.find(like => user && like.user_id === user.id)
-            ? <button onClick={() => handleUnlikePost(post.id)} style={{width:'4rem'}}>Unlike</button>
-            : <button onClick={() => handleLikePost(post.id)} style={{width:'4rem'}}>Like</button>
-        }
-        <p style={{ marginLeft: '1rem', position:'relative', top:'.8rem', right:'1rem' }}>{post.likes && post.likes.length} likes</p>
-    </div>
-</div>
-
-        <div 
-            onClick={() => handleToggle(index)}
-            style={{
-                cursor: 'pointer',
-                backgroundColor: 'var(--metal)',
-                color: 'var(--white)',
-                padding: '1rem',
-                textAlign: 'center',
-                borderBottom: openIndex === index ? 'none' : '1px solid var(--grey)',
-                borderTopLeftRadius: '0.25rem',
-                borderTopRightRadius: '0.25rem',
-                width: 'max-content',
-                alignSelf: 'center'
-            }}
-        >
-            Comments {openIndex === index ? '▲' : '▼'}
-        </div>
-        {openIndex === index && <div style={{
-            padding: '1rem',
-            borderBottomLeftRadius: '0.25rem',
-            borderBottomRightRadius: '0.25rem'
-        }}>
-            {post.comments && post.comments.length > 0 && post.comments.map((comment, idx) => (
-                <div key={idx} style={{
+                <div key={index} className="post" style={{
                     position: 'relative',
                     height: 'auto',
                     border: '0.125rem solid var(--grey)',
                     width:'100%',
                     boxShadow: '0.25rem 0.25rem 0.5rem rgba(0,0,0,0.15)',
-                    backgroundColor: '#414141',  // slightly lighter color
+                    backgroundColor: '#414141',
                     padding: '0.8rem',
                     margin: '1rem 0',
                     borderRadius: '0.2rem'
                 }}>
                     <div style={{ display: 'flex', alignItems: 'center' }}>
-                        <img src={comment.user.profileImage} alt={comment.user.username} style={{width: '6rem', borderRadius: '50%'}}/>
+                        <img src={post.user.profileImage} alt={post.user.username} style={{width: '6rem', borderRadius: '50%'}} />
                         <div style={{ marginLeft: '1rem' }}>
-                            <p>{comment.comment_content}</p>
-                            <h5>{comment.user.username}</h5>
+                            <h2>{post.post_title}</h2>
+                            <p>{post.post_content}</p>
+                            <h5>{post.user.username}</h5>
                         </div>
+                {post.likes.find(like => user && like.user_id === user.id)
+                ? <button onClick={() => handleUnlikePost(post.id)}>Unlike</button>
+                : <button onClick={() => handleLikePost(post.id)}>Like</button>
+                }
+                <p>{post.likes && post.likes.length} likes</p>
                     </div>
-                    <div style={{ 
-                        display: 'flex', 
-                        justifyContent:'center', 
-                        height:'3rem', 
-                        border:'1px solid green',
-                        width:'10rem'
-                    }}>
-                        {comment.likes && comment.likes.find(like => user && like.user_id === user.id)
-                            ? <button onClick={() => handleUnlikeComment(comment.id)} style={{width:'4rem'}}>Unlike</button>
-                            : <button onClick={() => handleLikeComment(comment.id)} style={{width:'4rem'}}>Like</button>
-                        }
-                        <p style={{ marginLeft: '1rem', position:'relative', top:'.8rem', right:'1rem' }}>{comment.likes && comment.likes.length} likes</p>
+    
+                    <div 
+                        onClick={() => handleToggle(index)}
+                        style={{
+                            cursor: 'pointer',
+                            backgroundColor: 'var(--metal)',
+                            color: 'var(--white)',
+                            padding: '1rem',
+                            textAlign: 'center',
+                            borderBottom: openIndex === index ? 'none' : '1px solid var(--grey)',
+                            borderTopLeftRadius: '0.25rem',
+                            borderTopRightRadius: '0.25rem',
+                            width: 'max-content',
+                            alignSelf: 'center'
+                        }}
+                    >
+                        Comments {openIndex === index ? '▲' : '▼'}
                     </div>
+    
+                    {openIndex === index && (
+                        <div style={{
+                            padding: '1rem',
+                            borderBottomLeftRadius: '0.25rem',
+                            borderBottomRightRadius: '0.25rem'
+                        }}>
+                            {/* Comment section */}
+                            {post.comments && post.comments.length > 0 && post.comments.map((comment, idx) => (
+                                <div key={idx} style={{
+                                    position: 'relative',
+                                    height: 'auto',
+                                    border: '0.125rem solid var(--grey)',
+                                    width:'100%',
+                                    boxShadow: '0.25rem 0.25rem 0.5rem rgba(0,0,0,0.15)',
+                                    backgroundColor: '#414141',
+                                    padding: '0.8rem',
+                                    margin: '1rem 0',
+                                    borderRadius: '0.2rem'
+                                }}>
+                                    <div style={{ display: 'flex', alignItems: 'center' }}>
+                                        <img src={comment.user.profileImage} alt={comment.user.username} style={{width: '6rem', borderRadius: '50%'}}/>
+                                        <div style={{ marginLeft: '1rem' }}>
+                                            <p>{comment.comment_content}</p>
+                                            <h5>{comment.user.username}</h5>
+                                        </div>
+                                    </div>
+                                    <div style={{ 
+                                        display: 'flex', 
+                                        justifyContent:'center', 
+                                        height:'3rem', 
+                                        border:'1px solid green',
+                                        width:'10rem'
+                                    }}>
+                                        {comment.likes && comment.likes.find(like => user && like.user_id === user.id)
+                                            ? <button onClick={() => handleUnlikeComment(comment.id)} style={{width:'4rem'}}>Unlike</button>
+                                            : <button onClick={() => handleLikeComment(comment.id)} style={{width:'4rem'}}>Like</button>
+                                        }
+                                        <p style={{ marginLeft: '1rem', position:'relative', top:'.8rem', right:'1rem' }}>{comment.likes && comment.likes.length} likes</p>
+                                    </div>
+                                </div>
+                            ))}
+                            {/* Add a new comment to the post  */}
+                            <textarea 
+                                value={newComment[index] || ''} 
+                                onChange={(event) => {
+                                    const updatedComments = [...newComment];
+                                    updatedComments[index] = event.target.value;
+                                    setNewComment(updatedComments);
+                                }} 
+                                placeholder="Add a comment..."
+                            />
+                            <button onClick={() => handleAddComment(post.id, index)}>Add Comment</button>    
+                        </div>
+                    )}
                 </div>
             ))}
-            {/* Add a new comment to the post  */}
-            <textarea 
-                value={newComment[index] || ''} 
-                onChange={(event) => {
-                    const updatedComments = [...newComment];
-                    updatedComments[index] = event.target.value;
-                    setNewComment(updatedComments);
-                }} 
-                placeholder="Add a comment..."
-            />
-            <button onClick={() => handleAddComment(post.id, index)}>Add Comment</button>
-            
-        </div>}
-    </div>
-))}
-    
+        
             <Modal
                 isOpen={modalIsOpen}
                 onRequestClose={closeModal}
                 contentLabel="Example Modal"
             >
-                <>
                 <h2>Create a post!</h2>
                 <form onSubmit={handleFormSubmit}>
                     <input
@@ -396,10 +378,10 @@ const GameCategoriesPage = () => {
                     />
                     <button type="submit">Submit</button>
                 </form>
-                </>
             </Modal>
         </>
     );
+    
     
     
     
