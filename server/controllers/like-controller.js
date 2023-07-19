@@ -38,10 +38,10 @@ module.exports = {
         console.log("createLikeForPost firing!")
         try {
             const newLike = await Like.create({
-                user_id: req.body.user_id,
+                user_id: req.session.userId,
                 post_id: req.params.postId
             });
-
+    
             res.status(201).json(newLike);
         } catch (err) {
             console.error(err);
@@ -114,11 +114,13 @@ module.exports = {
     // DELETE api/likes/comments/:commentId
     async deleteLikeForComment(req, res) {
         console.log("deleteLikeForComment firing!")
+        console.log("req.body: ", req.body);
+        console.log("req.params: ", req.params);
         try {
             const deletedLike = await Like.destroy({
                 where: {
                     user_id: req.body.user_id,
-                    comment_id: req.params.commentId,
+                    comment_id: parseInt(req.params.commentId, 10),
                 }
             });
             res.json(deletedLike);

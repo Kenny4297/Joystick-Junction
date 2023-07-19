@@ -103,45 +103,52 @@ module.exports = {
 
 
     // Get posts by game id and category
-    // GET api/posts/game/:gameId/category/:category
-    async getPostsByGameAndCategory(req, res) {
-        console.log("Get posts by category API function firing!")
-        try {
-            const postsData = await Post.findAll({
-                where: {
-                    game_id: req.params.gameId,
-                    category: req.params.category,
-                },
-                include: [
-                    { model: User, as: 'user', attributes: ['username', 'profileImage'] },
-                    { model: Like, as: 'likes' },
-                    { 
-                        model: Comment,
-                        as: 'comments', 
-                        attributes: ['id', 'post_id', 'comment_date', 'comment_content'],
-                        include: { 
+// GET api/posts/game/:gameId/category/:category
+async getPostsByGameAndCategory(req, res) {
+    console.log("Get posts by category API function firing!")
+    try {
+        const postsData = await Post.findAll({
+            where: {
+                game_id: req.params.gameId,
+                category: req.params.category,
+            },
+            include: [
+                { model: User, as: 'user', attributes: ['username', 'profileImage'] },
+                { model: Like, as: 'likes' },
+                { 
+                    model: Comment,
+                    as: 'comments', 
+                    attributes: ['id', 'post_id', 'comment_date', 'comment_content'],
+                    include: [ 
+                        { 
                             model: User, 
                             as: 'user', 
                             attributes: ['username', 'profileImage'] 
+                        },
+                        {
+                            model: Like,
+                            as: 'likes',
+                            attributes: ['id', 'user_id', 'comment_id']
                         }
-                    }
-                ]
-            });
-    
-            const plainPostsData = postsData.map(post => post.toJSON());
-    
-            console.log("This is the plain post data", plainPostsData)
-            
-            if(!plainPostsData.length) {
-                return res.status(200).json([]);
-            }
-    
-            res.json(plainPostsData);
-        } catch (err) {
-            console.error(err);
-            res.status(500).json({message: 'An error occurred while retrieving posts'});
+                    ]
+                }
+            ]
+        });
+
+        const plainPostsData = postsData.map(post => post.toJSON());
+
+        console.log("This is the plain post data", plainPostsData)
+        
+        if(!plainPostsData.length) {
+            return res.status(200).json([]);
         }
-    },
+
+        res.json(plainPostsData);
+    } catch (err) {
+        console.error(err);
+        res.status(500).json({message: 'An error occurred while retrieving posts'});
+    }
+},
     
     
     // Update a post

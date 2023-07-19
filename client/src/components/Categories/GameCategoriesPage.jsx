@@ -64,30 +64,28 @@ const GameCategoriesPage = () => {
             console.error(error);
         }
     };
+
+    useEffect(() => {
+        console.log('posts state updated:', posts);
+    }, [posts]);
     
     
     const handleUnlikeComment = async (commentId) => {
-        console.log('handleunline comment firing')
         try {
             const { id: userId } = user;
             const response = await axios.delete(`/api/likes/comments/${commentId}`, { data: { user_id: userId } });
-
-            console.log(response)
-        
+    
             if(response.status === 200) {
                 setPosts(posts.map(post => {
                     return {
                         ...post,
                         comments: post.comments.map(comment => {
                             if(comment.id === commentId) {
-                                // Ensure likes is an array before trying to filter it
-                                const commentLikes = Array.isArray(comment.likes) ? comment.likes : [];
                                 return {
                                     ...comment,
-                                    likes: commentLikes.filter(like => !(like.user_id === userId && like.comment_id === commentId))
+                                    likes: comment.likes.filter(like => like.user_id !== userId)
                                 };
                             }
-                            console.log(comment)
                             return comment;
                         })
                     };
@@ -97,7 +95,6 @@ const GameCategoriesPage = () => {
             console.log(error);
         }
     };
-    
     
 
     const handleFormSubmit = async (event) => {
@@ -167,40 +164,48 @@ const GameCategoriesPage = () => {
 
     const handleLikePost = async (postId) => {
         try {
-            const response = await axios.post('/api/likes/posts', { post_id: postId }, { withCredentials: true });
-            if(response.status === 200) {
-                setPosts(posts.map(post => {
-                    if(post.id === postId) {
-                        return {...post, likes: [...post.likes, response.data]};
-                    }
-                    return post;
-                }));
+            // Optimistically update local state
+            setPosts(posts.map(post => {
+                if (post.id === postId) {
+                    const newLike = { user_id: user.id, post_id: postId };
+                    return { ...post, likes: [...post.likes, newLike], likes_count: post.likes_count + 1 };
+                }
+                return post;
+            }));
+    
+            // Send the request to the server
+            const response = await axios.post(`/api/likes/posts/${postId}`, {}, { withCredentials: true });
+    
+            // If there's an error, undo the optimistic update
+            if (response.status !== 200) {
+                setPosts(posts);  // Revert to the original posts state
             }
         } catch (error) {
             console.error(error);
         }
     };
     
-    
     const handleUnlikePost = async (postId) => {
         try {
             const { id: userId } = user;
-            const response = await axios.delete(`/api/likes/posts`, { data: { post_id: postId, user_id: userId } });
+            const response = await axios.delete(`/api/likes/posts/${postId}`, { data: { user_id: userId } });
+    
             if(response.status === 200) {
                 setPosts(posts.map(post => {
-                    if (post.id === postId) {
+                    if(post.id === postId) {
                         return {
                             ...post,
-                            likes: post.likes.filter(like => !(like.user_id === userId && like.post_id === postId))
+                            likes: post.likes.filter(like => like.user_id !== userId)
                         };
                     }
                     return post;
                 }));
             }
         } catch (error) {
-            console.error(error);
+            console.log(error);
         }
-    };  
+    };
+    
     
 
     useEffect(() => {
@@ -238,7 +243,7 @@ const GameCategoriesPage = () => {
         }
     
         fetchPostsByGameAndCategory();
-    }, [gameId, categoryPage]);
+    }, []);
 
     const handleToggle = (index) => {
         setOpenIndex(openIndex === index ? null : index);
@@ -260,14 +265,40 @@ const GameCategoriesPage = () => {
     
             {Array.isArray(posts) && posts.map((post, index) => (
     <div key={index} className="post">
-        <div style={{ display: 'flex', alignItems: 'center' }}>
-            <img src={post.user.profileImage} alt={post.user.username} style={{width: '6rem', borderRadius: '50%'}} />
-            <div style={{marginLeft: '1rem'}}>
-                <h2>{post.post_title}</h2>
-                <p>{post.post_content}</p>
-                <h5>{post.user.username}</h5>
-            </div>
-        </div> 
+        <div style={{
+    position: 'relative',
+    height: 'auto',
+    border: '0.125rem solid var(--grey)',
+    width:'100%',
+    boxShadow: '0.25rem 0.25rem 0.5rem rgba(0,0,0,0.15)',
+    backgroundColor: '#414141',  // slightly lighter color
+    padding: '0.8rem',
+    margin: '1rem 0',
+    borderRadius: '0.2rem'
+}}>
+    <div style={{ display: 'flex', alignItems: 'center' }}>
+        <img src={post.user.profileImage} alt={post.user.username} style={{width: '6rem', borderRadius: '50%'}} />
+        <div style={{ marginLeft: '1rem' }}>
+            <h2>{post.post_title}</h2>
+            <p>{post.post_content}</p>
+            <h5>{post.user.username}</h5>
+        </div>
+    </div>
+    <div style={{ 
+        display: 'flex', 
+        justifyContent:'center', 
+        height:'3rem', 
+        border:'1px solid green',
+        width:'10rem'
+    }}>
+        {post.likes.find(like => user && like.user_id === user.id)
+            ? <button onClick={() => handleUnlikePost(post.id)} style={{width:'4rem'}}>Unlike</button>
+            : <button onClick={() => handleLikePost(post.id)} style={{width:'4rem'}}>Like</button>
+        }
+        <p style={{ marginLeft: '1rem', position:'relative', top:'.8rem', right:'1rem' }}>{post.likes && post.likes.length} likes</p>
+    </div>
+</div>
+
         <div 
             onClick={() => handleToggle(index)}
             style={{
@@ -335,6 +366,7 @@ const GameCategoriesPage = () => {
                 placeholder="Add a comment..."
             />
             <button onClick={() => handleAddComment(post.id, index)}>Add Comment</button>
+            
         </div>}
     </div>
 ))}
