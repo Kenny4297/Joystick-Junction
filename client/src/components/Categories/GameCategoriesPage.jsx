@@ -8,6 +8,7 @@ import noUser from '../Assets/Images/noUser.png'
 import Accordion from 'react-bootstrap/Accordion';
 import Card from 'react-bootstrap/Card';
 import Button from 'react-bootstrap/Button';
+import StrategyAndTipsMock from "./MockCategories.jsx/StrategyAndTipsMock";
 
 
 Modal.setAppElement('#root');
@@ -27,6 +28,8 @@ const GameCategoriesPage = () => {
     const [openIndex, setOpenIndex] = useState(null);
 
     const [open, setOpen] = useState(false);
+
+    // const mockPosts = [...realPosts, randomPost];
 
     useEffect(() => {
         if (user && user.id) {
@@ -265,6 +268,7 @@ const GameCategoriesPage = () => {
                     margin: '1rem 0',
                     borderRadius: '0.2rem'
                 }}>
+
                     <div style={{ display: 'flex', alignItems: 'center' }}>
                         <img src={post.user.profileImage} alt={post.user.username} style={{width: '6rem', borderRadius: '50%'}} />
                         <div style={{ marginLeft: '1rem' }}>
@@ -272,11 +276,20 @@ const GameCategoriesPage = () => {
                             <p>{post.post_content}</p>
                             <h5>{post.user.username}</h5>
                         </div>
-                {post.likes.find(like => user && like.user_id === user.id)
-                ? <button onClick={() => handleUnlikePost(post.id)}>Unlike</button>
-                : <button onClick={() => handleLikePost(post.id)}>Like</button>
-                }
-                <p>{post.likes && post.likes.length} likes</p>
+                    </div>
+
+                    <div style={{ 
+                        display: 'flex',  
+                        height:'3rem', 
+                        border:'1px solid green',
+                        width:'10rem',
+                        marginBottom:'2rem'
+                    }}>
+                        {post.likes.find(like => user && like.user_id === user.id)
+                            ? <button className="post-comment-like-button" onClick={() => handleUnlikePost(post.id)} style={{width:'4rem'}}>Unlike</button>
+                            : <button className="post-comment-like-button" onClick={() => handleLikePost(post.id)} style={{width:'4rem'}}>Like</button>
+                        }
+                        <p style={{ marginLeft: '1rem', position:'relative', top:'.8rem', right:'1rem' }}>{post.likes && post.likes.length} likes</p>
                     </div>
     
                     <div 
@@ -331,8 +344,8 @@ const GameCategoriesPage = () => {
                                         width:'10rem'
                                     }}>
                                         {comment.likes && comment.likes.find(like => user && like.user_id === user.id)
-                                            ? <button onClick={() => handleUnlikeComment(comment.id)} style={{width:'4rem'}}>Unlike</button>
-                                            : <button onClick={() => handleLikeComment(comment.id)} style={{width:'4rem'}}>Like</button>
+                                            ? <button className="post-comment-like-button" onClick={() => handleUnlikeComment(comment.id)} style={{width:'4rem'}}>Unlike</button>
+                                            : <button className="post-comment-like-button" onClick={() => handleLikeComment(comment.id)} style={{width:'4rem'}}>Like</button>
                                         }
                                         <p style={{ marginLeft: '1rem', position:'relative', top:'.8rem', right:'1rem' }}>{comment.likes && comment.likes.length} likes</p>
                                     </div>
@@ -353,6 +366,8 @@ const GameCategoriesPage = () => {
                     )}
                 </div>
             ))}
+
+            <StrategyAndTipsMock />
         
             <Modal
                 isOpen={modalIsOpen}

@@ -82,7 +82,26 @@ body {
     line-height: 1.5;
 }
 
-.call-to-action-button:hover {
+.post-comment-like-button {
+  display: inline-block;
+  background-color: var(--blue);
+  color: var(--white);
+  border: none;
+  border-radius: 0.3125rem; 
+  text-align: center;
+  text-decoration: none;
+  font-size: 1rem; 
+  cursor: pointer;
+  font-weight: 600;
+  line-height: 1.5;
+}
+
+/* .post-like-button:hover {
+  cursor: pointer;
+
+} */
+
+.call-to-action-button:hover, .post-comment-like-button:hover  {
     background-color: var(--metal);
     color: var(--white);
     outline: 1px solid var(--blue);

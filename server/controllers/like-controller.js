@@ -52,7 +52,7 @@ module.exports = {
                     {
                         model: User,
                         as: 'user',
-                        attributes: ['username', 'profileImage'],  // Include username and profileImage
+                        attributes: ['username', 'profileImage'],
                     }
                 ]
             });
