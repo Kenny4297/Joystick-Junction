@@ -367,7 +367,8 @@ const GameCategoriesPage = () => {
                 </div>
             ))}
 
-            <StrategyAndTipsMock />
+            <StrategyAndTipsMock gameId={gameId} categoryPage={categoryPage} />
+
         
             <Modal
                 isOpen={modalIsOpen}

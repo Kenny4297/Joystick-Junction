@@ -1,7 +1,8 @@
-import { useState, useEffect } from 'react';
+import { useState, useEffect, useContext } from 'react';
 import Max from '../../Assets/Images/Max.jpeg'
 import Gary from '../../Assets/Images/Gary.jpg'
 import Clay from '../../Assets/Images/Clay.jpeg'
+import { UserContext } from '../../../contexts/UserContext';
 
 const mockUsers = [
     { username: "Max", profileImage: Max },
@@ -175,41 +176,99 @@ const mockUsers = [
 ];
 
 
-const StrategyAndTipsMock = () => {
+const StrategyAndTipsMock = ({ gameId, categoryPage }) => {
 
     const [randomPosts, setRandomPosts] = useState([]);
+    const [user, setUser] = useContext(UserContext);
+    const [newComment, setNewComment] = useState([]);
 
     const [isLiked, setIsLiked] = useState(new Array(mockPosts.length).fill(false));
+    const [isCommentLiked, setIsCommentLiked] = useState([]);
+
+    useEffect(() => {
+        if (user && user.id) {
+            console.log(user);
+            console.log(user.id);
+            console.log(user.username);
+
+        }
+    }, [user])
+
+    const handleAddComment = (postIndex, commentContent) => {
+        // Add new comment to the selected post
+        const newPosts = randomPosts.map((post, index) => {
+            if (index !== postIndex) return post;
+            return {
+                ...post,
+                comments: [...post.comments, { user: {username: user.username, profileImage: user.profileImage}, comment_content: commentContent, likes: 0 }],
+            };
+        });
+
+        // Update state with new posts data
+        setRandomPosts(newPosts);
+
+        // Update local storage with new posts data
+        localStorage.setItem(`${gameId}_${categoryPage}`, JSON.stringify(newPosts));
+    };
 
 
     useEffect(() => {
-        let randomizedPosts = mockPosts.map(post => {
-            let postUserIndex = Math.floor(Math.random() * mockUsers.length);
-            post.user = mockUsers[postUserIndex];
-
-            let commentUsers = [...mockUsers];
-            commentUsers.splice(postUserIndex, 1);
-
-            let firstCommentUserIndex = Math.floor(Math.random() * commentUsers.length);
-            post.comments[0].user = commentUsers[firstCommentUserIndex];
-
-            commentUsers.splice(firstCommentUserIndex, 1); 
-            let secondCommentUserIndex = Math.floor(Math.random() * commentUsers.length);
-            post.comments[1].user = commentUsers[secondCommentUserIndex];
-
-            return post;
-        });
-
-        // Randomly select two posts
-        let twoRandomPosts = [];
-        while(twoRandomPosts.length < 2) {
-            let randomIndex = Math.floor(Math.random() * randomizedPosts.length);
-            if(!twoRandomPosts.includes(randomizedPosts[randomIndex])) {
-                twoRandomPosts.push(randomizedPosts[randomIndex]);
+        // create a unique key for this page
+        const storageKey = `${gameId}_${categoryPage}`;
+    
+        // keys for storing and retrieving the like states
+        const postLikedKey = `${gameId}_${categoryPage}_postLiked`;
+        const commentLikedKey = `${gameId}_${categoryPage}_commentLiked`;
+    
+        // retrieve the data from local storage
+        const storedData = localStorage.getItem(storageKey);
+    
+        if (storedData) {
+            // if data exists, parse it and set it as your state
+            setRandomPosts(JSON.parse(storedData));
+        } else {
+            // if no data exists, generate the random posts as you were before
+            let randomizedPosts = mockPosts.map(post => {
+                let postUserIndex = Math.floor(Math.random() * mockUsers.length);
+                post.user = mockUsers[postUserIndex];
+    
+                let commentUsers = [...mockUsers];
+                commentUsers.splice(postUserIndex, 1);
+    
+                let firstCommentUserIndex = Math.floor(Math.random() * commentUsers.length);
+                post.comments[0].user = commentUsers[firstCommentUserIndex];
+    
+                commentUsers.splice(firstCommentUserIndex, 1);
+                let secondCommentUserIndex = Math.floor(Math.random() * commentUsers.length);
+                post.comments[1].user = commentUsers[secondCommentUserIndex];
+    
+                return post;
+            });
+    
+            // Randomly select two posts
+            let twoRandomPosts = [];
+            while(twoRandomPosts.length < 2) {
+                let randomIndex = Math.floor(Math.random() * randomizedPosts.length);
+                if(!twoRandomPosts.includes(randomizedPosts[randomIndex])) {
+                    twoRandomPosts.push(randomizedPosts[randomIndex]);
+                }
             }
+    
+            // store the generated data in local storage
+            localStorage.setItem(storageKey, JSON.stringify(twoRandomPosts));
+    
+            setRandomPosts(twoRandomPosts);
         }
-        setRandomPosts(twoRandomPosts);
+    
+        // Load isLiked state
+        const storedIsLiked = localStorage.getItem(postLikedKey);
+        setIsLiked(storedIsLiked ? JSON.parse(storedIsLiked) : []);
+    
+        // Load isCommentLiked state
+        const storedIsCommentLiked = localStorage.getItem(commentLikedKey);
+        setIsCommentLiked(storedIsCommentLiked ? JSON.parse(storedIsCommentLiked) : []);
     }, []);
+    
     
     const [openIndex, setOpenIndex] = useState(null);
 
@@ -226,17 +285,33 @@ const StrategyAndTipsMock = () => {
                     return newLiked;
                 });
     
-                // If the button is currently in the "Unlike" state (which means that newIsLiked is true), we should decrement. 
-                // Otherwise, we increment the number of likes.
-                return { ...post, likes: newIsLiked ? post.likes + 1 : post.likes - 1 };
+                const updatedPost = { ...post, likes: newIsLiked ? post.likes + 1 : post.likes - 1 };
+                
+                // update localStorage after liking/unliking a post
+                localStorage.setItem(`${gameId}_${categoryPage}`, JSON.stringify(prevPosts.map((p, idx) => idx === postIndex ? updatedPost : p)));
+                localStorage.setItem(`${gameId}_${categoryPage}_postLiked`, JSON.stringify(isLiked.map((liked, idx) => idx === postIndex ? newIsLiked : liked)));
+    
+                return updatedPost;
             } else if (type === 'comment') {
+                const newIsCommentLiked = !((isCommentLiked[postIndex] || [])[commentIndex] || false);
+    
+                setIsCommentLiked(prevLiked => {
+                    const newLiked = JSON.parse(JSON.stringify(prevLiked));
+                    if (!newLiked[postIndex]) newLiked[postIndex] = [];
+                    newLiked[postIndex][commentIndex] = newIsCommentLiked;
+                    return newLiked;
+                });
+    
                 const updatedPost = { ...post };
                 updatedPost.comments = updatedPost.comments.map((comment, j) => {
                     if (j !== commentIndex) return comment;
     
-                    //You'll need to extend isLiked to track comments as well.
-                    return { ...comment, likes: comment.likes + 1 };
+                    return { ...comment, likes: newIsCommentLiked ? comment.likes + 1 : comment.likes - 1 };
                 });
+    
+                // update localStorage after liking/unliking a comment
+                localStorage.setItem(`${gameId}_${categoryPage}`, JSON.stringify(prevPosts.map((p, idx) => idx === postIndex ? updatedPost : p)));
+                localStorage.setItem(`${gameId}_${categoryPage}_commentLiked`, JSON.stringify(isCommentLiked.map((likedPost, idx) => idx === postIndex ? likedPost.map((liked, idx) => idx === commentIndex ? newIsCommentLiked : liked) : likedPost)));
     
                 return updatedPost;
             }
@@ -244,6 +319,8 @@ const StrategyAndTipsMock = () => {
             return post;
         }));
     };
+    
+    
     
     
     
@@ -338,11 +415,37 @@ const StrategyAndTipsMock = () => {
                                             border:'1px solid green',
                                             width:'10rem'
                                         }}>
-                                            <button className="post-comment-like-button" style={{width:'4rem'}} onClick={() => handleLike('comment', index, idx)} >Like</button>
+                                            <button 
+                                                className="post-comment-like-button" 
+                                                style={{width:'4rem'}} 
+                                                onClick={() => handleLike('comment', index, idx)}
+                                            >
+                                                {((isCommentLiked[index] || [])[idx] || false) ? 'Unlike' : 'Like'}
+                                            </button>
                                             <p style={{ marginLeft: '1rem', position:'relative', top:'.8rem', right:'1rem' }}>{comment.likes} likes</p>
                                         </div>
-                                    </div>
+                                            
+                                        </div>
                                 ))}
+                                <textarea 
+                                    value={newComment[index] || ''} 
+                                    onChange={(event) => {
+                                        setNewComment(prevComments => {
+                                            const newComments = [...prevComments];
+                                            newComments[index] = event.target.value;
+                                            return newComments;
+                                        });
+                                    }} 
+                                    placeholder="Add a comment..."
+                                />
+                                <button onClick={() => {
+                                    handleAddComment(index, newComment[index]);
+                                    setNewComment(prevComments => {
+                                        const newComments = [...prevComments];
+                                        newComments[index] = '';
+                                        return newComments;
+                                    });
+                                }}>Add Comment</button>
                             </div>
                         )}
                     </div>
