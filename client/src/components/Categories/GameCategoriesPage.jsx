@@ -4,10 +4,6 @@ import { UserContext } from '../../contexts/UserContext';
 import { useParams, Link } from "react-router-dom";
 import Modal from "react-modal";
 import axios from "axios";  
-import noUser from '../Assets/Images/noUser.png'
-import Accordion from 'react-bootstrap/Accordion';
-import Card from 'react-bootstrap/Card';
-import Button from 'react-bootstrap/Button';
 import StrategyAndTipsMock from "./MockCategories.jsx/StrategyAndTipsMock";
 
 
@@ -38,6 +34,8 @@ const GameCategoriesPage = () => {
         }
     }, [user])
 
+
+    // Modal Section
     const openModal = () => {
         setIsOpen(true);
     };
@@ -45,6 +43,26 @@ const GameCategoriesPage = () => {
     const closeModal = () => {
         setIsOpen(false);
     };
+
+    const customStyles = {
+        content: {
+          top: '50%',
+          left: '50%',
+          right: 'auto',
+          bottom: 'auto',
+          marginRight: '-50%',
+          transform: 'translate(-50%, -50%)',
+          backgroundColor: 'var(--white)',
+          color: 'var(--metal)',
+          borderRadius: '10px',
+          padding: '20px',
+          width: '60%',
+          border: '1px solid var(--grey)'
+        },
+        overlay: {
+          backgroundColor: 'rgba(0, 0, 0, 0.5)',
+        },
+      };
 
 
     const handleLikeComment = async (commentId) => {
@@ -253,7 +271,7 @@ const GameCategoriesPage = () => {
                 </h2>
                 <h1>{gameData.title}</h1>
                 <img src={gameData.thumbnail} alt={gameData.title} style={{width:'25rem'}} />
-                <button onClick={openModal}>Open Modal</button>
+                <button className="open-modal-button" onClick={openModal}>Create a Post</button>
             </div>
     
             {Array.isArray(posts) && posts.map((post, index) => (
@@ -374,7 +392,8 @@ const GameCategoriesPage = () => {
                 isOpen={modalIsOpen}
                 onRequestClose={closeModal}
                 contentLabel="Example Modal"
-            >
+                style={customStyles} // Add the custom styles here
+                >
                 <h2>Create a post!</h2>
                 <form onSubmit={handleFormSubmit}>
                     <input
@@ -384,6 +403,20 @@ const GameCategoriesPage = () => {
                         setPostTitle(event.target.value)
                     }
                     placeholder="Post Title"
+                    style={{ 
+                        width: '100%', 
+                        padding: '10px', 
+                        margin: '10px 0', 
+                        border: '1px solid var(--grey)', 
+                        borderRadius: '4px' 
+                    }}
+                    onFocus={(event) => {
+                        event.target.style.boxShadow = '0 0 5px var(--blue)';
+                        event.target.style.outline = 'none';
+                      }}
+                      onBlur={(event) => {
+                        event.target.style.boxShadow = 'none';
+                      }}
                     />
                     <textarea
                     value={postContent}
@@ -391,10 +424,38 @@ const GameCategoriesPage = () => {
                         setPostContent(event.target.value)
                     }
                     placeholder="Write your post here..."
+                    style={{ 
+                        width: '100%', 
+                        minHeight: '100px', 
+                        padding: '10px', 
+                        margin: '10px 0', 
+                        border: '1px solid var(--grey)', 
+                        borderRadius: '4px', 
+                        resize: 'vertical' 
+                    }}
+                    onFocus={(event) => {
+                        event.target.style.boxShadow = '0 0 5px var(--blue)';
+                      }}
+                      onBlur={(event) => {
+                        event.target.style.boxShadow = 'none';
+                      }}
                     />
-                    <button type="submit">Submit</button>
+                    <button 
+                    type="submit"
+                    style={{ 
+                        backgroundColor: 'var(--blue)', 
+                        border: 'none', 
+                        color: 'var(--white)', 
+                        padding: '10px 20px', 
+                        margin: '10px 0', 
+                        borderRadius: '4px', 
+                        cursor: 'pointer' 
+                    }}
+                    >
+                    Submit
+                    </button>
                 </form>
-            </Modal>
+                </Modal>
         </>
     );
     

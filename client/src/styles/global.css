@@ -1,7 +1,7 @@
 
 /* === typography ====== */ 
 
-h1, h2, h3, h4, h5, h6, p, li, td, th, blockquote, label, textarea, select, span {
+h1, h2, h3, h4, h5, h6, p, li, td, th, blockquote, label, select, span {
     /* color: var(--black); */
 ;
 }
@@ -12,7 +12,7 @@ h1, h2, h3, h4, h5, h6 {
 
 }
 
-p, li, td, th, blockquote, label, textarea, select {
+p, li, td, th, blockquote, label, select {
   font-size: 1.2rem;
   line-height: 165%;
     /* color: var(--black); */
@@ -35,6 +35,27 @@ body {
   margin: 0;
   padding: 0;
   box-sizing: border-box;
+}
+
+textarea {
+  width: 50%;
+  min-height: 100px;
+  padding: 10px;
+  font-size: 1em;
+  border-radius: 4px;
+  border: 1px solid var(--grey);
+  background-color: var(--white);
+  color: var(--metal);
+  resize: vertical; /* This allows users to resize the textarea, but only vertically */
+}
+
+textarea:focus {
+  outline: none;
+  border-color: var(--blue);
+}
+
+textarea::placeholder {
+  color: var(--grey);
 }
 
 /* Color schemes testing */
@@ -67,7 +88,8 @@ body {
 
 }
 
-.call-to-action-button, .reset-search-button, .search-button {
+/* #button */
+.call-to-action-button, .reset-search-button, .search-button, .add-comment, .open-modal-button {
     display: inline-block;
     background-color: var(--blue);
     color: var(--white);
@@ -80,6 +102,22 @@ body {
     cursor: pointer;
     font-weight: 600;
     line-height: 1.5;
+}
+
+.open-modal-button {
+  display: inline-block;
+  background-color: var(--blue);
+  color: var(--white);
+  border: none;
+  padding: 0.625rem 1.25rem; 
+  border-radius: 0.3125rem; 
+  text-align: center;
+  text-decoration: none;
+  font-size: 1rem; 
+  cursor: pointer;
+  font-weight: 600;
+  line-height: 1.5;
+  margin: 1rem 2rem;
 }
 
 .post-comment-like-button {
@@ -96,15 +134,17 @@ body {
   line-height: 1.5;
 }
 
-/* .post-like-button:hover {
-  cursor: pointer;
 
-} */
-
-.call-to-action-button:hover, .post-comment-like-button:hover  {
+.call-to-action-button:hover, .post-comment-like-button:hover, .add-comment:hover {
     background-color: var(--metal);
     color: var(--white);
     outline: 1px solid var(--blue);
+}
+
+.open-modal-button:hover {
+  background-color: var(--metal);
+  color: var(--white);
+  outline: 1px solid var(--blue);
 }
 
 .call-to-action-button:active {
