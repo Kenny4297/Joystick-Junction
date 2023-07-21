@@ -24,8 +24,8 @@ export const UserProvider = ({ children }) => {
                     email,
                 }));
             } catch (error) {
-                console.error(error);
                 console.log("Unable to fetch user data!")
+                setUser(null);
             }
         };
 

@@ -3,7 +3,6 @@
 
 h1, h2, h3, h4, h5, h6, p, li, td, th, blockquote, label, select, span {
     /* color: var(--black); */
-;
 }
 
 h1, h2, h3, h4, h5, h6 {
@@ -89,7 +88,7 @@ textarea::placeholder {
 }
 
 /* #button */
-.call-to-action-button, .reset-search-button, .search-button, .add-comment, .open-modal-button {
+.call-to-action-button, .reset-search-button, .search-button, .add-comment, .open-modal-button, .login-button-login-page, .sign-up-button {
     display: inline-block;
     background-color: var(--blue);
     color: var(--white);
@@ -102,6 +101,10 @@ textarea::placeholder {
     cursor: pointer;
     font-weight: 600;
     line-height: 1.5;
+}
+
+.reset-search-button {
+  margin-bottom:2rem;
 }
 
 .open-modal-button {
@@ -135,7 +138,7 @@ textarea::placeholder {
 }
 
 
-.call-to-action-button:hover, .post-comment-like-button:hover, .add-comment:hover {
+.call-to-action-button:hover, .post-comment-like-button:hover, .add-comment:hover, .login-button-login-page:hover, .sign-up-button:hover {
     background-color: var(--metal);
     color: var(--white);
     outline: 1px solid var(--blue);
@@ -159,16 +162,29 @@ textarea::placeholder {
 
 
 /* Header Section */
-.header-search-bar:focus,
-.header-search-bar:active,
-.header-search-bar:visited,
+.nav-link {
+  position: relative;
+  font-weight: 600;
+  color: white;
+}
+
 .nav-link:hover {
   color: white;
 }
 
-.nav-link {
-  position: relative;
-  font-weight: 600;
+.login-button {
+  color: white;
+}
+
+.login-button:hover {
+  color: var(--blue);
+}
+
+.login-button:focus {
+  color: white;
+}
+
+.login-button:visited {
   color: white;
 }
 
@@ -179,33 +195,14 @@ textarea::placeholder {
   left: 0;
   right: 100%; 
   height: 2px;
-  background: black; 
+  color: var(--blue);
+  background: var(--blue); 
   transition: right 0.3s ease-in; 
 }
 
 .nav-link:hover::after {
   right: 0; 
   color: white
-}
-
-.header-search-button {
-  display: inline-block;
-  padding: .25rem .5rem;
-  text-decoration: none;
-  background-color: var(--white-ash);  
-  color: var(--gingerbread);             
-  border-radius: 3px;
-  text-align: center;
-  height: 2.5rem;
-  margin-left:.25rem;
-  border: 2px solid var(--gingerbread);
-}
-
-.header-search-button:hover {
-  transform: scale(1);
-  color: var(--white-ash);
-  background-color: var(--gingerbread);
-  border: 2px solid var(--white-ash);
 }
 
 @media (max-width: 810px) {
@@ -236,6 +233,160 @@ textarea::placeholder {
 
 
 
+
+/* Login Page */
+.login-container {
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  background-color: var(--metal);
+  border-radius: 10px;
+  box-shadow: 0 0 10px 0 var(--grey);
+  width: 30%;
+  margin: auto;
+  padding: 2em;
+}
+
+.login-header {
+  color: var(--blue);
+  text-decoration: under;
+}
+
+.login-form .form-group label {
+  color: white;
+}
+
+.login-form .form-control {
+  border: 1px solid var(--blue);
+  box-shadow: 0 0 10px 0 var(--grey);
+}
+
+.login-btn {
+  background-color: var(--blue);
+  color: var(--white);
+}
+
+.login-btn:hover {
+  background-color: var(--grey);
+  color: var(--black);
+}
+
+
+
+
+
+
+
+/* Signup page */
+
+/* .cardContainer {
+  display: flex;
+  justify-content: center;
+  box-shadow: 0 0 0 3px rgba(0, 123, 255, 0.25);
+} */
+
+.signupTitle {
+  color: var(--blue);
+  text-align: center;
+  margin-bottom: 20px;
+}
+
+.signupCard {
+  display: flex;
+  flex-direction: row;
+  justify-content: center;
+  align-items: center;
+  padding: 20px;
+  width: 40rem;
+  background-color: var(--metal);
+  margin-bottom: 20px;
+}
+
+
+.formGroup {
+  margin-bottom: 10px;
+}
+
+.formGroup label {
+  color: var(--blue);
+  font-weight: bold;
+}
+
+.formControl {
+  padding: 10px;
+  border: 1px solid var(--blue);
+  border-radius: 5px;
+}
+
+.formControl:focus {
+  border-color: var(--blue);
+  outline: none;
+  box-shadow: 0 0 0 3px rgba(0, 123, 255, 0.25);
+}
+
+
+
+.signupButton {
+  /* margin-top: 20px; */
+}
+
+.signupPrimaryButton {
+  background-color: var(--blue);
+  color: var(--white);
+  border: none;
+}
+
+.alert.signupAlertSuccess {
+  margin-top: 10px;
+  background-color: #d4edda;
+  color: #155724;
+}
+
+.alert.signupAlertFail {
+  margin-top: 10px;
+  background-color: #f8d7da;
+  color: #721c24;
+}
+
+.quickSignupInfo {
+  width: 35%;
+  color: var(--grey);
+  font-size: 1.1em;
+  align-self: flex-start;
+}
+
+.infoGroup {
+  margin: 0;
+  padding: 0;
+}
+
+.infoTitle {
+  margin-bottom: 1rem;
+  font-weight: bold;
+  text-decoration: underline;
+}
+
+.infoItem {
+  margin-bottom: 15px;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+}
+
+.category {
+  margin: 0;
+  margin-bottom: 2px;
+  font-weight: bold;
+}
+
+.example {
+  margin: 0;
+}
+
+
+
+
 /* Featured Games Carousel */
 
 
@@ -243,7 +394,7 @@ textarea::placeholder {
   display: flex;
   justify-content: space-between;
 }
-
+/* #card */
 .featured-games-card, .articles-card {
   position: relative;
   height: auto;
@@ -374,172 +525,86 @@ textarea::placeholder {
 
 
 /* Profile / Account */
+:root {
+  --white: #F8F9FA;
+  --metal: #2E2E2E;
+  --blue: #17A2B8;
+  --black: #000000;
+  --grey: #93989F;
+}
+
 .account-container {
   display: flex;
-}
-
-@media (max-width: 780px) {
-  .account-container {
-    flex-direction: column;
-    justify-content: center;
-    align-items: center;
-  }
-  .form-container {
-    margin-left: 0rem;
-    padding: 0rem 0rem !important;
-    width: auto;
-    /* border: 2px solid green; */
-    color: blue;
-  }
-}
-
-@media (max-width: 470px) {
-  .form-container input {
-    width: 15rem !important;
-  }
-}
-
-.form-container {
-  padding: 3rem 8.5rem;
-  /* border: 2px solid green; */
-  height: 45rem;
-  width: 70%;
-}
-
-.account-h2  {
-  /* padding-top: 3rem; */
-  color: var(--light-teak);
-  border-bottom: 2px solid var(--light-teak);
-  display: inline;
-}
-
-.account-form-label {
-  color: var(--light-teak);
-  font-weight: bold;
-  padding-top: 1rem;
-  /* border: 2px solid green; */
-}
-
-.account-form input {
-  width: 20rem;
-}
-
-.account-password-button {
-  width: 10rem;
-  margin: 0rem 0rem;
-  background-color: white;  
-  border: 2px solid var(--light-teak);
+  justify-content: space-around;
+  padding: 20px;
+  background-color: var(--metal);
   border-radius: 5px;
-  color: var(--light-teak);
+  box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
 }
 
-.account-email-button {
-  width: 15rem;
-  margin: 1rem 0rem;
-  background-color: white;  
-  border: 2px solid var(--light-teak);
+.form-container, .profile-image-container {
+  background-color: var(--white);
+  padding: 20px;
   border-radius: 5px;
-  color: var(--light-teak);
-  /* border: 2px solid red; */
-  margin-top: -2rem;
+  box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+  width: 45%;
 }
 
-.profile-image-container {
-  /* border: 2px solid blue; */
-  width: 30%;
-  margin-right: 7rem;
+.account-form {
   display: flex;
-  align-items: center;
   flex-direction: column;
 }
 
-.remove-image-button {
-  width: 15rem;
-  margin: 1rem 0rem;
-  background-color: white;  
-  border: 2px solid var(--light-teak);
+.form-control {
+  margin-bottom: 20px;
+  border: 1px solid var(--grey);
+  padding: 10px;
   border-radius: 5px;
-  color: var(--light-teak);
-  /* border: 2px solid red; */
-  /* margin-top: -2rem; */
 }
 
-@media (max-width: 780px) {
-  .profile-image-container {
-    margin: 0 auto;
-    width: 25rem;
-  }
+.account-password-button, .update-profile-button, .remove-image-button {
+  padding: 10px 20px;
+  margin: 10px 0;
+  border-radius: 5px;
+  border: none;
+  background-color: var(--blue);
+  color: var(--white);
+  cursor: pointer;
 }
 
-.profile-image-label {
-  color: var(--light-teak);
-  font-weight: bold;
-  font-size: 2rem;
-  border-bottom: 2px solid var(--light-teak);
-  padding-top: 0rem;
-  margin-bottom: 1rem;
+.account-password-button:hover, .update-profile-button:hover, .remove-image-button:hover {
+  background-color: var(--metal);
+  color: var(--white);
+  outline: 1px solid var(--blue);
 }
-
 
 .profile-img {
   width: 20rem;
-  height: 20rem;
-  border: 2px solid black;
-  border-radius: 12.5rem;
-  object-fit: cover;
-}
-
-.profile-image-h2 {
-  color: var(--light-teak);
-  font-weight: bold;
-  font-size: 2rem;
-  border-bottom: 2px solid var(--light-teak);
-  padding-top: 3rem;
-  margin-bottom: 1rem;
-  text-align: center;
-}
-
-.update-profile-button {
-  width: 15rem;
-  height: 3rem;
-  font-size: 1.5rem;
-  font-weight: bold;
-  margin: 1rem 0rem;
-  background-color: white;  
-  border: 2px solid var(--light-teak);
-  border-radius: 5px;
-  color: var(--light-teak);
-  margin-bottom: 10rem;
-  /* border: 2px solid red; */
-}
-
-@media (max-width: 520px ) {
-  .update-profile-button-container {
-    width: 10rem;
-    /* border:2px solid green; */
-  }
-  .update-profile-button {
-    /* border: 2px solid blue; */
-    width: 100%;
-    font-size: 1rem;
-  }
-}
-
-.update-profile-button-container {
-  display: flex;  
-  flex-direction: end;
-  text-align: right;
-}
-
-.file-input {
-  color: var(--light-teak);
-
+  height: auto;
+  border-radius: 50%;
 }
 
 .file-input-label {
-  color: var(--light-teak);
-  font-weight: bold;
+  display: block;
+  margin-top: 20px;
 }
+
+.alert {
+  margin-top: 20px;
+  padding: 10px;
+  border-radius: 5px;
+}
+
+.alert-success {
+  background-color: #d4edda;
+  color: #155724;
+}
+
+.alert-danger {
+  background-color: #f8d7da;
+  color: #721c24;
+}
+
 
 /* Game Page */
 
@@ -584,7 +649,9 @@ textarea::placeholder {
 
 /* Browse Section */
 
-
+.individual-game-link:hover {
+  cursor: pointer;
+}
 
 
 

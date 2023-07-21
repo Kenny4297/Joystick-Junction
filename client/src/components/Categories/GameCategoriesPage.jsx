@@ -264,12 +264,12 @@ const GameCategoriesPage = () => {
 
     return (
         <>
-            <div style={{display:'flex', justifyContent:'center', flexDirection:'column', border:'2px solid green', alignItems:'center'}}>
-                <h2>
+            <div style={{display:'flex', justifyContent:'center', flexDirection:'column', alignItems:'center'}}>
+                <h1 style={{color:'var(--blue)', textDecoration:'underline'}}>
                     {categoryPage.charAt(0).toUpperCase() +
                         categoryPage.slice(1)}
-                </h2>
-                <h1>{gameData.title}</h1>
+                </h1>
+                <h4>{gameData.title}</h4>
                 <img src={gameData.thumbnail} alt={gameData.title} style={{width:'25rem'}} />
                 <button className="open-modal-button" onClick={openModal}>Create a Post</button>
             </div>

@@ -1,11 +1,13 @@
-import { useState } from "react";
+import { useState} from "react";
 import axios from 'axios'
+import { useNavigate } from "react-router-dom";
 
 const LoginPage = () => {
 
   const defForm = { email: "", password: "" }
   const [ formData, setFormData ] = useState(defForm)
   const [ loginResult, setLoginResult ] = useState("")
+  const navigate = useNavigate();
 
   const handleInputChange = (event) => {
     setFormData({...formData, [event.target.name]: event.target.value})
@@ -29,55 +31,66 @@ const LoginPage = () => {
       console.error("Error during login:", error);
     }
   }
+
+  const goToSignUpPage = async () => {
+      navigate('/signup')
+  }
   
 
   return (
     <>
-      <h1>Login Page</h1>
+      <div className="login-container">
+        <h1 className="login-header">Login</h1>
 
-      <form className="form mb-3">
-        <div className="form-group">
-          <label>Email Address</label>
-          <input   
-            type="text"
-            name="email"
-            placeholder="john@gmail.com"
-            className="form-control"
-            value={formData.email}
-            onChange={handleInputChange}
-          />
-        </div>
+        <form className="login-form mb-3">
+          <div className="form-group">
+            <label>Email Address</label>
+            <input   
+              type="text"
+              name="email"
+              placeholder="john@gmail.com"
+              className="form-control"
+              value={formData.email}
+              onChange={handleInputChange}
+            />
+          </div>
 
-        <div className="form-group">
-          <label>Password</label>
-          <input   
-            type="password"
-            name="password"
-            className="form-control"
-            value={formData.password}
-            onChange={handleInputChange}
-          />
-        </div>
+          <div className="form-group">
+            <label>Password</label>
+            <input   
+              type="password"
+              name="password"
+              className="form-control"
+              value={formData.password}
+              onChange={handleInputChange}
+            />
+          </div>
 
-        <div className="form-group mt-2">
-          <button className="btn btn-primary" onClick={handleFormSubmit}>Log Me In!</button>
-        </div>
-      </form>
+          <div className="form-group mt-2">
+            <button className="login-button-login-page" onClick={handleFormSubmit}>Log Me In!</button>
+          </div>
 
-      { loginResult === "success" && (
-        <div className="alert alert-success" role="alert">
-          Login successful!
-          {window.location.href="/"}
-        </div>
-      )}
+          <div className="form-group mt-2">
+            <button className="login-button-login-page" onClick={goToSignUpPage}>Go to Sign Up</button>
+          </div>
+        </form>
 
-      { loginResult === "fail" && (
-        <div className="alert alert-danger" role="alert">
-          Login failed!
-        </div>
-      )}
+        { loginResult === "success" && (
+          <div className="alert alert-success" role="alert">
+            Login successful!
+            {window.location.href="/"}
+          </div>
+        )}
+
+        { loginResult === "fail" && (
+          <div className="alert alert-danger" role="alert">
+            Login failed!
+          </div>
+        )}
+      </div>
     </>
   )
+
 
 }
 

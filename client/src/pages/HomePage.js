@@ -59,7 +59,7 @@ const HomePage = () => {
             </Link>
         </div>
 
-        <StrategyAndTipsMock />
+        {/* <StrategyAndTipsMock /> */}
 
         <FeaturedGamesCarousel />
 

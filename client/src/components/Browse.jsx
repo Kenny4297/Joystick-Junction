@@ -1,7 +1,8 @@
 import React, { useEffect, useRef, useState, useContext } from 'react';
 import axios from 'axios';
-import { Link } from 'react-router-dom';
+import { Link, useNavigate } from 'react-router-dom';
 import { GameContext } from '../contexts/GameContext';
+import { UserContext } from "../contexts/UserContext";
 
 const Browse = () => {
     const [games, setGames] = useState([]);
@@ -21,7 +22,8 @@ const Browse = () => {
     const noGamesFound = isButtonClicked && games.length === 0;
     const [noGamesFoundMessage, setNoGamesFoundMessage] = useState('');
     const [hasSearched, setHasSearched] = useState(false);
-
+    const [user, setUser] = useContext(UserContext);
+    const navigate = useNavigate();
 
 
     const [searchInput, setSearchInput] = useState('');
@@ -169,7 +171,13 @@ const Browse = () => {
     };
 
     const handleGameClick = (game) => {
-        setGameData(game);
+        console.log(user)
+        if (user !== null && user.id !== null) {   
+            setGameData(game);
+            navigate(`/game/${game.id}`);
+        } else {
+            navigate('/signup');
+        }
     }
 
     return (
@@ -203,7 +211,7 @@ const Browse = () => {
                         {isButtonClicked && selectedCategories.length > 0 && (
                             <>
                             <h3>Selected Categories:</h3>
-                            <ul style={{listStyleType:'none', color:'var(--blue)'}}>
+                            <ul style={{listStyleType:'none', color:'var(--blue)', position:'relative', right:'1.5rem'}}>
                                 {selectedCategories.map((category, index) => (
                                     <li key={index}>{category}</li>
                                 ))}
@@ -225,24 +233,22 @@ const Browse = () => {
                 ? game.short_description.slice(0, 100) + '...' 
                 : game.short_description;
             return (
-                <Link key={game.id} to={`/game/${game.id}`} style={{ textDecoration: 'none', }} onClick={() => handleGameClick(game)}>
-                    <div style={{
-                        position: 'relative',
-                        margin: '0 auto',
-                        border: '0.125rem solid grey',
-                        boxShadow: '0.3125rem 0.3125rem 0.625rem rgba(0,0,0,0.15)',
-                        backgroundColor: 'steelblue',
-                        padding: '1rem',
-                        maxWidth:'30rem',
-                        maxHeight:'30rem',
-                        height:'25rem',
-                        width:'20rem'
-                    }}>
-                        <h2>{game.title}</h2>
-                        <img src={game.thumbnail} alt={game.title} style={{width:'100%'}} />
-                        <p style={{color: 'black'}}>{gameDescription}</p>
-                    </div>
-                </Link>
+                <div key={game.id} className="individual-game-link" style={{
+                    position: 'relative',
+                    margin: '0 auto',
+                    border: '0.125rem solid grey',
+                    boxShadow: '0.3125rem 0.3125rem 0.625rem rgba(0,0,0,0.15)',
+                    backgroundColor: 'steelblue',
+                    padding: '1rem',
+                    maxWidth:'30rem',
+                    maxHeight:'30rem',
+                    height:'25rem',
+                    width:'20rem'
+                }} onClick={() => handleGameClick(game)}>
+                    <h2>{game.title}</h2>
+                    <img src={game.thumbnail} alt={game.title} style={{width:'100%'}} />
+                    <p style={{color: 'black'}}>{gameDescription}</p>
+                </div>
             );
         })
     ) : (

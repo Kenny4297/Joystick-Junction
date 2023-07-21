@@ -60,8 +60,8 @@ const Header = () => {
                         <Nav.Link className="header-links" href="/browse">Browse</Nav.Link>
                         {!user ? (
                             <>
-                                <Nav.Link className="header-links" href="/signUp">SignUp</Nav.Link>
-                                <Nav.Link href="/login">Login</Nav.Link>
+                                <Nav.Link className="header-links" href="/signUp">Sign Up</Nav.Link>
+                                <Nav.Link href="/login" className="login-button">Login</Nav.Link>
                             </>
                         ) : (
                             <>
@@ -72,13 +72,13 @@ const Header = () => {
                                     href="##"
                                     onClick={logout}
                                     aria-label="Logout"
-                                    className="header-links"
+                                    className="logout-button"
                                 >
                                     Logout
                                 </Nav.Link>
-                                <Nav.Link className="header-links" href={`/messages/${user.id}`}>
+                                {/* <Nav.Link className="header-links" href={`/messages/${user.id}`}>
                                     Messages
-                                </Nav.Link>
+                                </Nav.Link> */}
                                 {user && user.profileImage && (
                                     <img
                                         src={user.profileImage}

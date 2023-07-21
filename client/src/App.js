@@ -47,7 +47,7 @@ function App() {
                 if (error.response && error.response.status === 401) {
                     setUser(null);
                 } else {
-                    console.error("Error during fetch:", error);
+                    console.error("Unexpected error during fetch:", error);
                 }
             }
         };

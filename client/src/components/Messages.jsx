@@ -46,12 +46,20 @@ const Messages = () => {
         <div>
             {conversations.map((conversation) => (
                 conversation && (
-                    <div key={conversation.id}>
+                    <div 
+                        key={conversation.id} 
+                        style={{ 
+                            position: 'relative', 
+                            height: 'auto',  
+                            width:'5rem',
+                            borderBottom:'2px solid var(--grey)', 
+                            backgroundColor: 'var(--metal)'
+                        }}
+                    >
                         <Link to={`/individualMessages/${userId}/${conversation.otherUserId}`}>
                             <h3>{conversation.username}</h3>
                         </Link>
                     </div>
-
                 )
             ))}
         </div>
