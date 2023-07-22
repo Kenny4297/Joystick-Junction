@@ -1,11 +1,11 @@
-import React, { useEffect, useState } from 'react';
-import axios from 'axios';
-import { useParams } from 'react-router-dom';
+import React, { useEffect, useState } from "react";
+import axios from "axios";
+import { useParams } from "react-router-dom";
 
 const IndividualMessages = () => {
     const { userId, otherUserId } = useParams();
     const [messages, setMessages] = useState([]);
-    const [messageContent, setMessageContent] = useState('');
+    const [messageContent, setMessageContent] = useState("");
 
     useEffect(() => {
         const fetchMessages = async () => {
@@ -15,40 +15,39 @@ const IndividualMessages = () => {
             } catch (err) {
                 console.error(err);
             }
-        }
-    
+        };
+
         fetchMessages();
     }, [userId, otherUserId]);
-    
 
-    const handleMessageChange = (event) => { 
+    const handleMessageChange = (event) => {
         setMessageContent(event.target.value);
-    }
+    };
 
-    const handleSendMessage = async () => { 
+    const handleSendMessage = async () => {
         try {
-            const response = await axios.post('/api/messages/', { message: messageContent, receiverId: otherUserId });
+            const response = await axios.post("/api/messages/", { message: messageContent, receiverId: otherUserId });
             const newMessage = response.data;
-    
-            console.log('New message:', newMessage);
-            
-            setMessages(prevMessages => [...prevMessages, newMessage]); 
-            setMessageContent(''); 
+
+            console.log("New message:", newMessage);
+
+            setMessages((prevMessages) => [...prevMessages, newMessage]);
+            setMessageContent("");
         } catch (err) {
             console.error(err);
         }
-    }
+    };
 
     return (
         <div>
-            {messages.map(message => (
+            {messages.map((message) => (
                 <div key={message.id}>
                     <h3>{message.sender.username}</h3>
                     <p>{message.message_content}</p>
                 </div>
             ))}
             <textarea value={messageContent} onChange={handleMessageChange}></textarea>
-            <button onClick={handleSendMessage}>Send</button> 
+            <button onClick={handleSendMessage}>Send</button>
         </div>
     );
 };

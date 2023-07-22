@@ -76,8 +76,6 @@ textarea::placeholder {
 }
 
 
-
-
 /* Home Page */
 
 .call-to-action-button-container {
@@ -88,7 +86,7 @@ textarea::placeholder {
 }
 
 /* #button */
-.call-to-action-button, .reset-search-button, .search-button, .add-comment, .open-modal-button, .login-button-login-page, .sign-up-button {
+.call-to-action-button, .reset-search-button, .search-button, .add-comment, .open-modal-button, .login-button-login-page, .sign-up-button, .add-comment-button {
     display: inline-block;
     background-color: var(--blue);
     color: var(--white);
@@ -135,10 +133,11 @@ textarea::placeholder {
   cursor: pointer;
   font-weight: 600;
   line-height: 1.5;
+  margin-left: 1rem;
 }
 
-
-.call-to-action-button:hover, .post-comment-like-button:hover, .add-comment:hover, .login-button-login-page:hover, .sign-up-button:hover {
+/* #button hover */
+.call-to-action-button:hover, .post-comment-like-button:hover, .add-comment:hover, .login-button-login-page:hover, .sign-up-button:hover, .add-comment-button:hover {
     background-color: var(--metal);
     color: var(--white);
     outline: 1px solid var(--blue);
@@ -582,6 +581,7 @@ textarea::placeholder {
   width: 20rem;
   height: auto;
   border-radius: 50%;
+  object-fit: cover;
 }
 
 .file-input-label {
@@ -659,4 +659,20 @@ textarea::placeholder {
 /* Footer */
 footer h3, footer p {
   color: white;
+}
+
+/* scroll bar style  */
+::-webkit-scrollbar {
+  width: 10px;
+}
+
+/* Track */
+::-webkit-scrollbar-track {
+  background: grey;
+}
+
+/* Handle */
+::-webkit-scrollbar-thumb {
+  background: var(--blue);
+  border-radius: 50px;
 }

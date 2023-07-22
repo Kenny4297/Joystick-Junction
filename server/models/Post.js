@@ -1,5 +1,5 @@
-const { Model, DataTypes } = require('sequelize');
-const sequelize = require('../config/connection');
+const { Model, DataTypes } = require("sequelize");
+const sequelize = require("../config/connection");
 
 class Post extends Model {}
 
@@ -13,26 +13,26 @@ Post.init(
         },
         user_id: {
             type: DataTypes.INTEGER,
-            allowNull: true, 
+            allowNull: true,
             references: {
-                model: 'user',
-                key: 'id',
-                onDelete: 'SET NULL' 
-            }
+                model: "user",
+                key: "id",
+                onDelete: "SET NULL",
+            },
         },
         game_id: {
             type: DataTypes.STRING,
-            allowNull: false
+            allowNull: false,
         },
         category: {
             type: DataTypes.ENUM,
-            values: ['Strategy-and-Tips', 'Reviews-and-Opinions', 'Bugs-and-Glitches', 'Updates-Patches-DLCs', 'Meetups'],
+            values: ["Strategy-and-Tips", "Reviews-and-Opinions", "Bugs-and-Glitches", "Updates-Patches-DLCs", "Meetups"],
             allowNull: false,
         },
         post_date: {
             type: DataTypes.DATE,
             allowNull: false,
-            defaultValue: DataTypes.NOW
+            defaultValue: DataTypes.NOW,
         },
         post_title: {
             type: DataTypes.STRING,
@@ -46,7 +46,7 @@ Post.init(
         likes_count: {
             type: DataTypes.INTEGER,
             allowNull: false,
-            defaultValue: 0
+            defaultValue: 0,
         },
     },
     {
@@ -54,7 +54,7 @@ Post.init(
         timestamps: false,
         freezeTableName: true,
         underscored: true,
-        modelName: 'post',
+        modelName: "post",
     }
 );
 

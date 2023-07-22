@@ -1,13 +1,12 @@
-const Like = require('../models/Like');
-const User = require('../models/User');
-const Post = require('../models/Post');
-const Comment = require('../models/Comment');
+const Like = require("../models/Like");
+const User = require("../models/User");
+const Post = require("../models/Post");
+const Comment = require("../models/Comment");
 
 module.exports = {
-
     // GET api/likes/posts/:postId
     async getLikesForPost(req, res) {
-        console.log("getLikesForPost firing!")
+        console.log("getLikesForPost firing!");
         try {
             const postId = req.params.postId;
             const likes = await Like.findAll({
@@ -15,48 +14,45 @@ module.exports = {
                     post_id: postId,
                 },
                 include: [
-                    { model: User, as: 'user' },
-                    { model: Post, as: 'post' }
+                    { model: User, as: "user" },
+                    { model: Post, as: "post" },
                 ],
             });
-    
-            if (likes.length === 0) { // Check if the likes array is empty
+
+            if (likes.length === 0) {
                 return res.status(404).json({ message: "No likes found for this post." });
             }
-    
+
             res.json(likes);
         } catch (err) {
             console.error(err);
             res.status(500).json(err);
         }
     },
-    
-
 
     // POST api/likes/posts/
     async createLikeForPost(req, res) {
         try {
             const newLike = await Like.create({
                 user_id: req.session.userId,
-                post_id: req.params.postId
+                post_id: req.params.postId,
             });
-    
-            // After creating a new like, find the associated post and return it
+
             const updatedPost = await Post.findOne({
                 where: { id: req.params.postId },
                 include: [
                     {
                         model: Like,
-                        as: 'likes'
+                        as: "likes",
                     },
                     {
                         model: User,
-                        as: 'user',
-                        attributes: ['username', 'profileImage'],
-                    }
-                ]
+                        as: "user",
+                        attributes: ["username", "profileImage"],
+                    },
+                ],
             });
-    
+
             res.status(201).json(updatedPost);
         } catch (err) {
             console.error(err);
@@ -66,13 +62,13 @@ module.exports = {
 
     // DELETE api/likes/posts/
     async deleteLikeForPost(req, res) {
-        console.log("deleteLikeForPost firing!")
+        console.log("deleteLikeForPost firing!");
         try {
             const deletedLike = await Like.destroy({
                 where: {
                     user_id: req.body.user_id,
                     post_id: req.params.postId,
-                }
+                },
             });
             res.json(deletedLike);
         } catch (err) {
@@ -81,42 +77,40 @@ module.exports = {
         }
     },
 
-     // GET api/likes/comments/:commentId
-     async getLikesForComment(req, res) {
-        console.log("getLikesForComment firing!")
+    // GET api/likes/comments/:commentId
+    async getLikesForComment(req, res) {
+        console.log("getLikesForComment firing!");
         try {
             const commentId = req.params.commentId;
-            console.log(`Fetching likes for comment ID: ${commentId}`); // log commentId
+            console.log(`Fetching likes for comment ID: ${commentId}`);
             const likes = await Like.findAll({
                 where: {
                     comment_id: commentId,
                 },
                 include: [
-                    { model: User, as: 'user' },
-                    { model: Comment, as: 'comment' }
+                    { model: User, as: "user" },
+                    { model: Comment, as: "comment" },
                 ],
             });
-    
-            console.log(`Fetched likes: ${JSON.stringify(likes)}`); 
+
+            console.log(`Fetched likes: ${JSON.stringify(likes)}`);
 
             res.json(likes);
         } catch (err) {
             console.error(err);
             res.status(500).json(err);
         }
-    },   
-    
-    
+    },
 
     // POST api/likes/comments/:commentId
     async createLikeForComment(req, res) {
-        console.log("createLikeForComment firing!")
+        console.log("createLikeForComment firing!");
         console.log(req.session);
 
         try {
             const newLike = await Like.create({
-                user_id: req.session.userId,  
-                comment_id: req.params.commentId
+                user_id: req.session.userId,
+                comment_id: req.params.commentId,
             });
 
             res.status(201).json(newLike);
@@ -128,7 +122,7 @@ module.exports = {
 
     // DELETE api/likes/comments/:commentId
     async deleteLikeForComment(req, res) {
-        console.log("deleteLikeForComment firing!")
+        console.log("deleteLikeForComment firing!");
         console.log("req.body: ", req.body);
         console.log("req.params: ", req.params);
         try {
@@ -136,13 +130,12 @@ module.exports = {
                 where: {
                     user_id: req.body.user_id,
                     comment_id: parseInt(req.params.commentId, 10),
-                }
+                },
             });
             res.json(deletedLike);
         } catch (err) {
             console.log(err);
             res.status(500).json(err);
         }
-    }
-
+    },
 };

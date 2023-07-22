@@ -1,5 +1,4 @@
-import React, { useState, useEffect, createContext } from "react";
-import axios from "axios";
+import React, { useState, createContext } from "react";
 
 export const UserContext = createContext();
 
@@ -10,31 +9,5 @@ export const UserProvider = ({ children }) => {
         email: null,
     });
 
-    useEffect(() => {
-        const fetchUser = async () => {
-            try {
-                const response = await axios.get('/api/users/verify');
-
-                let { id, username, email } = response.data;
-
-                setUser((prevUser) => ({
-                    ...prevUser,
-                    id,
-                    username,
-                    email,
-                }));
-            } catch (error) {
-                console.log("Unable to fetch user data!")
-                setUser(null);
-            }
-        };
-
-        fetchUser();
-    }, []);
-
-    return (
-        <UserContext.Provider value={[user, setUser]}>
-            {children}
-        </UserContext.Provider>
-    );
+    return <UserContext.Provider value={[user, setUser]}>{children}</UserContext.Provider>;
 };

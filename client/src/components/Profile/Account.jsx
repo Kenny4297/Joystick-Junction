@@ -9,19 +9,18 @@ import noUser from "../Assets/Images/noUser.png";
 const Account = () => {
     const { userId } = useParams();
     const [formData, setFormData] = useState({
-        id: '',
-        username: '',
-        email: '',
-        password: '',
-        profileImage: ''
-      });      
+        id: "",
+        username: "",
+        email: "",
+        password: "",
+        profileImage: "",
+    });
 
     const [updateResult, setUpdateResult] = useState("");
     const [userUrl, setUserUrl] = useState(null);
     const navigate = useNavigate();
     const [user, setUser] = useContext(UserContext);
     const [showMessage, setShowMessage] = useState(false);
-    const [showEmailMessage, setShowEmailMessage] = useState(false);
 
     const cld = new cloudinary.Cloudinary({ cloud_name: "diwhrgwml" });
 
@@ -35,30 +34,28 @@ const Account = () => {
 
     const getUserData = useCallback(async () => {
         try {
-          const resp = await Axios.get(`/api/users/verify`);
-          if (resp.data) {
-            setFormData({
-              id: resp.data.id,
-              username: resp.data.username,
-              email: resp.data.email,
-              profileImage: resp.data.profileImage
-            });
-            if (resp.data.profileImage) {
-              setUserUrl(resp.data.profileImage);
+            const resp = await Axios.get(`/api/users/verify`);
+            if (resp.data) {
+                setFormData({
+                    id: resp.data.id,
+                    username: resp.data.username,
+                    email: resp.data.email,
+                    profileImage: resp.data.profileImage,
+                });
+                if (resp.data.profileImage) {
+                    setUserUrl(resp.data.profileImage);
+                }
             }
-          }
         } catch (error) {
-          console.error('Error during verification:', error);
+            console.error("Error during verification:", error);
         }
-      }, []);
-      
+    }, []);
 
     const update = async (event) => {
         event?.preventDefault();
 
         let dataToSend = { ...formData };
 
-        // If password field is empty, remove it from the request
         if (!dataToSend.password) {
             delete dataToSend.password;
         }
@@ -72,7 +69,6 @@ const Account = () => {
         if (resp.status !== 200) {
             return setUpdateResult("fail");
         }
-        // Updating the user context
         setUser({ ...user, profileImage: userUrl });
 
         setUpdateResult("success");
@@ -87,12 +83,7 @@ const Account = () => {
         formData.append("file", event.target.files[0]);
         formData.append("upload_preset", "fxbnekpl");
 
-        const response = await Axios.post(
-            "https://api.cloudinary.com/v1_1/diwhrgwml/image/upload",
-            formData,
-            { withCredentials: false }
-          );
-          
+        const response = await Axios.post("https://api.cloudinary.com/v1_1/diwhrgwml/image/upload", formData, { withCredentials: false });
 
         if (response.data) {
             const publicId = response.data.public_id;
@@ -102,14 +93,14 @@ const Account = () => {
     };
 
     const removeImage = async () => {
-        if(userUrl) {
-            let updatedData = { ...formData, profileImage: "" };  
+        if (userUrl) {
+            let updatedData = { ...formData, profileImage: "" };
 
             const resp = await Axios.put(`/api/users/${userId}`, updatedData);
 
             if (resp.status === 200) {
-                setUserUrl("");  
-                setFormData(updatedData);  
+                setUserUrl("");
+                setFormData(updatedData);
                 alert("Profile image removed successfully!");
             } else {
                 alert("Failed to remove profile image. Please try again.");
@@ -120,11 +111,6 @@ const Account = () => {
     const handleResetPasswordClick = (event) => {
         event.preventDefault();
         setShowMessage(!showMessage);
-    };
-
-    const handleChangeEmailClick = (event) => {
-        event.preventDefault();
-        setShowEmailMessage(!showEmailMessage);
     };
 
     useEffect(() => {
@@ -139,63 +125,21 @@ const Account = () => {
                         Edit Your Profile
                     </h2>
                     <section style={{ width: "50%" }}>
-                        <form
-                            className="account-form"
-                            aria-labelledby="form-label"
-                        >
-                            <label
-                                htmlFor="username"
-                                className="account-form-label"
-                            >
+                        <form className="account-form" aria-labelledby="form-label">
+                            <label htmlFor="username" className="account-form-label">
                                 Username
                             </label>
-                            <input
-                                type="text"
-                                id="username"
-                                className="form-control"
-                                name="username"
-                                placeholder={
-                                    formData.username
-                                }
-                                onChange={handleInputChange}
-                                aria-label="Username"
-                            />
+                            <input type="text" id="username" className="form-control" name="username" placeholder={formData.username} onChange={handleInputChange} aria-label="Username" />
 
-                            <label
-                                htmlFor="email"
-                                className="account-form-label"
-                            >
+                            <label htmlFor="email" className="account-form-label">
                                 Email
                             </label>
-                            <input
-                                type="email"
-                                id="email"
-                                className="form-control"
-                                name="email"
-                                placeholder={
-                                    formData.email
-                                }
-                                onChange={handleInputChange}
-                                aria-label="Email"
-                            />
+                            <input type="email" id="email" className="form-control" name="email" placeholder={formData.email} onChange={handleInputChange} aria-label="Email" />
 
-                            <label
-                                htmlFor="password"
-                                className="account-form-label"
-                            >
+                            <label htmlFor="password" className="account-form-label">
                                 Password
                             </label>
-                            <input
-                                type="password"
-                                id="password"
-                                className="form-control"
-                                name="password"
-                                placeholder={
-                                    '******' // For security, don't display the actual password
-                                }
-                                onChange={handleInputChange}
-                                aria-label="Password"
-                            />
+                            <input type="password" id="password" className="form-control" name="password" placeholder={"******"} onChange={handleInputChange} aria-label="Password" />
 
                             <div
                                 style={{
@@ -203,29 +147,12 @@ const Account = () => {
                                     flexDirection: "column",
                                 }}
                             >
-                                <button
-                                    className="account-password-button"
-                                    onClick={handleResetPasswordClick}
-                                    aria-label="Reset Password"
-                                >
+                                <button className="account-password-button" onClick={handleResetPasswordClick} aria-label="Reset Password">
                                     Reset Password
                                 </button>
-                                {showMessage && (
-                                    <div aria-live="polite">
-                                        Normally you would receive an email
-                                        asking to verify yourself, along with a
-                                        link to reset your password. However,
-                                        for the purpose of this demonstration
-                                        and to protect your privacy, no email
-                                        will be sent.
-                                    </div>
-                                )}
+                                {showMessage && <div aria-live="polite">Normally you would receive an email asking to verify yourself, along with a link to reset your password. However, for the purpose of this demonstration and to protect your privacy, no email will be sent.</div>}
                                 <div className="update-profile-button-container">
-                                    <button
-                                        onClick={update}
-                                        className="update-profile-button"
-                                        aria-label="Update Profile"
-                                    >
+                                    <button onClick={update} className="update-profile-button" aria-label="Update Profile">
                                         Update Profile
                                     </button>
                                 </div>
@@ -245,37 +172,14 @@ const Account = () => {
                 </section>
                 <section className="profile-image-container">
                     <h2 className="profile-image-h2">Edit Profile Image</h2>
-                    {userUrl ? (
-                        <Image
-                            className="profile-img"
-                            cloudName="diwhrgwml"
-                            publicId={userUrl}
-                            alt="Profile Image"
-                        />
-                    ) : (
-                        <img
-                            src={noUser}
-                            alt="No User"
-                            className="profile-img"
-                        />
-                    )}
+                    {userUrl ? <Image className="profile-img" cloudName="diwhrgwml" publicId={userUrl} alt="Profile Image" /> : <img src={noUser} alt="No User" className="profile-img" />}
 
                     <label htmlFor="fileInput" className="file-input-label">
                         Upload File
-                        <input
-                            id="fileInput"
-                            type="file"
-                            className="file-input"
-                            onChange={handleFileChange}
-                            aria-label="Upload File"
-                        />
+                        <input id="fileInput" type="file" className="file-input" onChange={handleFileChange} aria-label="Upload File" />
                     </label>
 
-                    <button 
-                        onClick={removeImage} 
-                        className="remove-image-button"
-                        aria-label="Remove Profile Image"
-                    >
+                    <button onClick={removeImage} className="remove-image-button" aria-label="Remove Profile Image">
                         Remove Profile Image
                     </button>
                 </section>

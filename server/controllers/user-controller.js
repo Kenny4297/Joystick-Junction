@@ -12,14 +12,12 @@ module.exports = {
         const user = await User.findOne({ where: { id: req.session.userId } });
         if (!user) return res.status(401).json({ msg: "unauthorized" });
 
-        return res
-            .status(200)
-            .json({
-                id: user.id,
-                username: user.username,
-                email: user.email,
-                profileImage: user.profileImage,
-            });
+        return res.status(200).json({
+            id: user.id,
+            username: user.username,
+            email: user.email,
+            profileImage: user.profileImage,
+        });
     },
 
     // GET: /api/users/:userId
@@ -30,16 +28,13 @@ module.exports = {
             const user = await User.findOne({
                 where: { id: req.params.userId },
             });
-            if (!user)
-                return res.status(404).json({ message: "User not found" });
-            return res
-                .status(200)
-                .json({
-                    id: user.id,
-                    username: user.username,
-                    email: user.email,
-                    profileImage: user.profileImage,
-                });
+            if (!user) return res.status(404).json({ message: "User not found" });
+            return res.status(200).json({
+                id: user.id,
+                username: user.username,
+                email: user.email,
+                profileImage: user.profileImage,
+            });
         } catch (err) {
             console.error(err);
             res.status(500).json({
@@ -49,44 +44,37 @@ module.exports = {
     },
 
     async createUser(req, res) {
-      const userToInsert = {
-        email: req.body.email,
-        password: req.body.password,
-        username: req.body.username,
-      };
-    
-      try {
-        const user = await User.create(userToInsert);
-    
-        if (!user) {
-          return res.status(400).json({ message: "Unable to create user" });
+        const userToInsert = {
+            email: req.body.email,
+            password: req.body.password,
+            username: req.body.username,
+        };
+
+        try {
+            const user = await User.create(userToInsert);
+
+            if (!user) {
+                return res.status(400).json({ message: "Unable to create user" });
+            }
+
+            req.session.userId = user.id;
+
+            res.status(200).json({
+                id: user.id,
+                email: user.email,
+                username: user.username,
+            });
+        } catch (error) {
+            console.error(error);
+            res.status(500).json({ error: "There was an error while creating the user", details: error.message });
         }
-    
-        // Set up the session for the newly created user
-        req.session.userId = user.id;
-    
-        res.status(200).json({
-          id: user.id,
-          email: user.email,
-          username: user.username,
-        });
-    
-      } catch (error) {
-        console.error(error);
-        res.status(500).json({ error: 'There was an error while creating the user', details: error.message });
-      }
-    },   
-    
+    },
 
     // UPDATE PUT api/users/:id
     async updateUser(req, res) {
         console.log("This is the req.session", req.session);
         const { body, params } = req;
-        if (
-            !req.session ||
-            !req.session.userId ||
-            req.session.userId != params.id
-        ) {
+        if (!req.session || !req.session.userId || req.session.userId != params.id) {
             return res.status(403).json({ message: "Forbidden" });
         }
 
@@ -105,8 +93,7 @@ module.exports = {
             returning: true,
         });
 
-        if (!user)
-            return res.status(400).json({ message: "Unable to update user" });
+        if (!user) return res.status(400).json({ message: "Unable to update user" });
 
         res.status(200).json({
             id: user[0],
@@ -124,16 +111,10 @@ module.exports = {
         const { body } = req;
         const user = await User.findOne({ where: { email: body.email } });
 
-        if (!user)
-            return res
-                .status(400)
-                .json({ message: "Unable to authenticate user" });
+        if (!user) return res.status(400).json({ message: "Unable to authenticate user" });
 
         const isValid = await user.isValidPassword(body.password);
-        if (!isValid)
-            return res
-                .status(400)
-                .json({ message: "Unable to authenticate user" });
+        if (!isValid) return res.status(400).json({ message: "Unable to authenticate user" });
 
         req.session.userId = user.id;
 

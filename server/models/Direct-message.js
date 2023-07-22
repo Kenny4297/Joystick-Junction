@@ -1,5 +1,5 @@
-const { Model, DataTypes } = require('sequelize');
-const sequelize = require('../config/connection');
+const { Model, DataTypes } = require("sequelize");
+const sequelize = require("../config/connection");
 
 class DirectMessage extends Model {}
 
@@ -15,17 +15,17 @@ DirectMessage.init(
             type: DataTypes.INTEGER,
             allowNull: false,
             references: {
-                model: 'user',
-                key: 'id',
-            }
+                model: "user",
+                key: "id",
+            },
         },
         recipient_id: {
             type: DataTypes.INTEGER,
             allowNull: false,
             references: {
-                model: 'user',
-                key: 'id',
-            }
+                model: "user",
+                key: "id",
+            },
         },
         message_content: {
             type: DataTypes.TEXT,
@@ -37,7 +37,7 @@ DirectMessage.init(
         timestamps: true,
         freezeTableName: true,
         underscored: true,
-        modelName: 'directmessage',
+        modelName: "directmessage",
     }
 );
 
