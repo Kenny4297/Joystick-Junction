@@ -35,8 +35,8 @@ const SignupPage = () => {
     };
 
     return (
-        <div>
-            <div className="cardContainer" style={{ display: "flex", flexDirection: "column", border: "2px solid var(--grey)", borderRadius: "10px", boxShadow: "0 0 10px 0 var(--grey)", width: "60%", margin: "0 auto" }}>
+        <>
+            <section className="cardContainer" style={{ display: "flex", flexDirection: "column", border: "2px solid var(--grey)", borderRadius: "10px", boxShadow: "0 0 10px 0 var(--grey)", width: "60%", margin: "0 auto" }}>
                 <div style={{ width: "100%" }}>
                     <h1 className="signupTitle">Sign Up</h1>
                 </div>
@@ -101,8 +101,8 @@ const SignupPage = () => {
                         </div>
                     </div>
                 </div>
-            </div>
-        </div>
+            </section>
+        </>
     );
 };
 

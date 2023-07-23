@@ -56,7 +56,7 @@ const RecentArticles = () => {
     }, []);
 
     return (
-        <div style={{ marginTop: "3rem" }}>
+        <section style={{ marginTop: "3rem" }}>
             <h2 style={{ color: "var(--grey)" }}>Recent Articles</h2>
             <div className="articles-card-container">
                 {games.length > 0 ? (
@@ -75,7 +75,7 @@ const RecentArticles = () => {
                     <p>No games found for {searchedGame ? `the game name "${searchedGame}"` : "the selected categories or name"}.</p>
                 )}
             </div>
-        </div>
+        </section>
     );
 };
 

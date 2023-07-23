@@ -292,20 +292,8 @@ const GameCategoriesPage = () => {
 
     return (
         <>
-            <div
-                style={{
-                    display: "flex",
-                    justifyContent: "center",
-                    flexDirection: "column",
-                    alignItems: "center",
-                }}
-            >
-                <h1
-                    style={{
-                        color: "var(--blue)",
-                        textDecoration: "underline",
-                    }}
-                >
+            <section className="game-categories-container">
+                <h1>
                     {categoryPage.charAt(0).toUpperCase() +
                         categoryPage.slice(1)}
                 </h1>
@@ -318,54 +306,29 @@ const GameCategoriesPage = () => {
                 <button className="open-modal-button" onClick={openModal}>
                     Create a Post
                 </button>
-            </div>
+            </section>
 
             <StrategyAndTipsMock gameId={gameId} categoryPage={categoryPage} />
 
             {Array.isArray(posts) &&
                 posts.map((post, index) => (
-                    <div
+                    <section
                         key={index}
-                        className="post"
-                        style={{
-                            position: "relative",
-                            height: "auto",
-                            border: "0.125rem solid var(--grey)",
-                            width: "100%",
-                            boxShadow:
-                                "0.25rem 0.25rem 0.5rem rgba(0,0,0,0.15)",
-                            backgroundColor: "#414141",
-                            padding: "0.8rem",
-                            margin: "1rem 0",
-                            borderRadius: "0.2rem",
-                        }}
+                        className="post-mapping-section-container"
                     >
-                        <div style={{ display: "flex", alignItems: "center" }}>
+                        <section className="post-mapping-image-section" >
                             <img
                                 src={post.user.profileImage}
                                 alt={post.user.username}
-                                style={{
-                                    width: "6rem",
-                                    height: "6rem",
-                                    objectFit: "cover",
-                                    borderRadius: "50%",
-                                }}
                             />
                             <div style={{ marginLeft: "1rem" }}>
                                 <h2>{post.post_title}</h2>
                                 <p>{post.post_content}</p>
                                 <h5>{post.user.username}</h5>
                             </div>
-                        </div>
+                        </section>
 
-                        <div
-                            style={{
-                                display: "flex",
-                                height: "3rem",
-                                width: "10rem",
-                                marginBottom: "2rem",
-                            }}
-                        >
+                        <section className="like-button-section">
                             {post.likes &&
                             post.likes.find(
                                 (like) => user && like.user_id === user.id
@@ -386,65 +349,26 @@ const GameCategoriesPage = () => {
                                     Like
                                 </button>
                             )}
-                            <p
-                                style={{
-                                    marginLeft: "1rem",
-                                    position: "relative",
-                                    top: ".8rem",
-                                    right: "1rem",
-                                }}
-                            >
+                            <p>
                                 {post.likes && post.likes.length} likes
                             </p>
-                        </div>
+                        </section>
 
                         <div
                             onClick={() => handleToggle(index)}
-                            style={{
-                                cursor: "pointer",
-                                backgroundColor: "var(--metal)",
-                                color: "var(--white)",
-                                padding: "1rem",
-                                textAlign: "center",
-                                borderBottom:
-                                    openIndex === index
-                                        ? "none"
-                                        : "1px solid var(--grey)",
-                                borderTopLeftRadius: "0.25rem",
-                                borderTopRightRadius: "0.25rem",
-                                width: "max-content",
-                                alignSelf: "center",
-                            }}
+                            className={`accordion-container ${openIndex === index ? "open" : "closed"}`}
                         >
                             Comments {openIndex === index ? "▲" : "▼"}
                         </div>
 
                         {openIndex === index && (
-                            <div
-                                style={{
-                                    padding: "1rem",
-                                    borderBottomLeftRadius: "0.25rem",
-                                    borderBottomRightRadius: "0.25rem",
-                                }}
-                            >
+                            <section className="accordion-comment-section-container">
                                 {/* Comment section */}
                                 {post.comments &&
                                     post.comments.length > 0 &&
                                     post.comments.map((comment, idx) => (
-                                        <div
+                                        <section className="accordion-comment-section"
                                             key={idx}
-                                            style={{
-                                                position: "relative",
-                                                height: "auto",
-                                                border: "0.125rem solid var(--grey)",
-                                                width: "100%",
-                                                boxShadow:
-                                                    "0.25rem 0.25rem 0.5rem rgba(0,0,0,0.15)",
-                                                backgroundColor: "#414141",
-                                                padding: "0.8rem",
-                                                margin: "1rem 0",
-                                                borderRadius: "0.2rem",
-                                            }}
                                         >
                                             <div
                                                 style={{
@@ -458,12 +382,6 @@ const GameCategoriesPage = () => {
                                                             .profileImage
                                                     }
                                                     alt={comment.user.username}
-                                                    style={{
-                                                        width: "6rem",
-                                                        height: "6rem",
-                                                        borderRadius: "50%",
-                                                        objectFit: "cover",
-                                                    }}
                                                 />
                                                 <div
                                                     style={{
@@ -480,14 +398,7 @@ const GameCategoriesPage = () => {
                                                     </h5>
                                                 </div>
                                             </div>
-                                            <div
-                                                style={{
-                                                    display: "flex",
-                                                    justifyContent: "center",
-                                                    height: "3rem",
-                                                    width: "10rem",
-                                                }}
-                                            >
+                                            <div className="accordion-comment-like-section">
                                                 {comment.likes &&
                                                 comment.likes.find(
                                                     (like) =>
@@ -522,22 +433,14 @@ const GameCategoriesPage = () => {
                                                         Like
                                                     </button>
                                                 )}
-                                                <p
-                                                    style={{
-                                                        marginLeft: "1rem",
-                                                        paddingLeft: ".5rem",
-                                                        position: "relative",
-                                                        top: ".8rem",
-                                                        right: "1rem",
-                                                    }}
-                                                >
+                                                <p>
                                                     {comment.likes &&
                                                         comment.likes
                                                             .length}{" "}
                                                     likes
                                                 </p>
                                             </div>
-                                        </div>
+                                        </section>
                                     ))}
                                 {/* Add a new comment to the post  */}
                                 <textarea
@@ -558,9 +461,9 @@ const GameCategoriesPage = () => {
                                 >
                                     Add Comment
                                 </button>
-                            </div>
+                            </section>
                         )}
-                    </div>
+                    </section>
                 ))}
 
             <Modal
@@ -569,65 +472,43 @@ const GameCategoriesPage = () => {
                 contentLabel="Example Modal"
                 style={customStyles}
             >
-                <h2>Create a post!</h2>
-                <form onSubmit={handleFormSubmit}>
-                    <input
-                        type="text"
-                        value={postTitle}
-                        onChange={(event) => setPostTitle(event.target.value)}
-                        placeholder="Post Title"
-                        style={{
-                            width: "100%",
-                            padding: "10px",
-                            margin: "10px 0",
-                            border: "1px solid var(--grey)",
-                            borderRadius: "4px",
-                        }}
-                        onFocus={(event) => {
-                            event.target.style.boxShadow =
-                                "0 0 5px var(--blue)";
-                            event.target.style.outline = "none";
-                        }}
-                        onBlur={(event) => {
-                            event.target.style.boxShadow = "none";
-                        }}
-                    />
-                    <textarea
-                        value={postContent}
-                        onChange={(event) => setPostContent(event.target.value)}
-                        placeholder="Write your post here..."
-                        style={{
-                            width: "100%",
-                            minHeight: "100px",
-                            padding: "10px",
-                            margin: "10px 0",
-                            border: "1px solid var(--grey)",
-                            borderRadius: "4px",
-                            resize: "vertical",
-                        }}
-                        onFocus={(event) => {
-                            event.target.style.boxShadow =
-                                "0 0 5px var(--blue)";
-                        }}
-                        onBlur={(event) => {
-                            event.target.style.boxShadow = "none";
-                        }}
-                    />
-                    <button
-                        type="submit"
-                        style={{
-                            backgroundColor: "var(--blue)",
-                            border: "none",
-                            color: "var(--white)",
-                            padding: "10px 20px",
-                            margin: "10px 0",
-                            borderRadius: "4px",
-                            cursor: "pointer",
-                        }}
-                    >
-                        Submit
-                    </button>
-                </form>
+                <div className="modal-section">
+                    <h2>Create a post!</h2>
+                    <form onSubmit={handleFormSubmit}>
+                        <input
+                            type="text"
+                            value={postTitle}
+                            onChange={(event) => setPostTitle(event.target.value)}
+                            placeholder="Post Title"
+                            onFocus={(event) => {
+                                event.target.style.boxShadow =
+                                    "0 0 5px var(--blue)";
+                                event.target.style.outline = "none";
+                            }}
+                            onBlur={(event) => {
+                                event.target.style.boxShadow = "none";
+                            }}
+                        />
+                        <textarea
+                            value={postContent}
+                            onChange={(event) => setPostContent(event.target.value)}
+                            placeholder="Write your post here..."
+                            onFocus={(event) => {
+                                event.target.style.boxShadow =
+                                    "0 0 5px var(--blue)";
+                            }}
+                            onBlur={(event) => {
+                                event.target.style.boxShadow = "none";
+                            }}
+                        />
+                        <button
+                            type="submit"
+                            className="modal-submit-button"
+                        >
+                            Submit
+                        </button>
+                    </form>
+                </div>
             </Modal>
         </>
     );

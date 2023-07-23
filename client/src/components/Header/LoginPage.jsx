@@ -43,7 +43,7 @@ const LoginPage = () => {
 
     return (
         <>
-            <div className="login-container">
+            <section className="login-container">
                 <h1 className="login-header">Login</h1>
 
                 <form className="login-form mb-3">
@@ -74,7 +74,7 @@ const LoginPage = () => {
                         Login failed!
                     </div>
                 )}
-            </div>
+            </section>
         </>
     );
 };

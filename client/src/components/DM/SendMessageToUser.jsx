@@ -35,7 +35,7 @@ const SendMessageToUser = () => {
     }
 
     return (
-        <div>
+        <section>
             <h1>Send {userData.username} a message!</h1>
             <textarea 
                 value={message} 
@@ -43,7 +43,7 @@ const SendMessageToUser = () => {
                 placeholder="Type your message here..."
             />
             <button onClick={sendMessage}>Submit</button>
-        </div>
+        </section>
     );
 };
 

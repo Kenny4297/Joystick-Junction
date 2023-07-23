@@ -3,7 +3,7 @@ import Carousel from 'react-bootstrap/Carousel';
 
 function GameCarousel({ games, heading, handleGameClick }) {
     return (
-        <div>
+        <section>
             <h2 className="featured-games-card-heading">{heading}</h2>
             <div className="featured-games-card">
                 <Carousel interval={null} indicators={false}>
@@ -35,7 +35,7 @@ function GameCarousel({ games, heading, handleGameClick }) {
                     ))}
                 </Carousel>
             </div>
-        </div>
+        </section>
     );
 }
 

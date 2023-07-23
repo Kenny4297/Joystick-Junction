@@ -168,7 +168,7 @@ const Browse = () => {
     };
 
     return (
-        <>
+        <section>
             <div>
                 <div style={{ display: "flex", flexDirection: "column", justifyContent: "center", alignItems: "center", marginTop: "4rem" }}>
                     <h2>Search for a game by its title</h2>
@@ -279,7 +279,7 @@ const Browse = () => {
                     </div>
                 )}
             </div>
-        </>
+        </section>
     );
 };
 

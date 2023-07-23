@@ -48,11 +48,11 @@ function FeaturedGamesCarousel() {
     };
 
     return (
-        <div className="featured-games-card-container">
+        <section className="featured-games-card-container">
             <GameCarousel games={featuredGames} heading="Featured Games" handleGameClick={handleGameClick} />
             <GameCarousel games={hotGames} heading="What's Hot" handleGameClick={handleGameClick} />
             <GameCarousel games={lovedGames} heading="Gotta Love It" handleGameClick={handleGameClick} />
-        </div>
+        </section>
     );
 }
 

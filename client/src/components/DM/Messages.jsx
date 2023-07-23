@@ -43,7 +43,7 @@ const Messages = () => {
     }, [userId]);
 
     return (
-        <div>
+        <section>
             {conversations.map((conversation) => (
                 conversation && (
                     <div 
@@ -62,7 +62,7 @@ const Messages = () => {
                     </div>
                 )
             ))}
-        </div>
+        </section>
     );
 };
 

@@ -15,7 +15,7 @@ const HomePage = () => {
     }, [user]);
 
     return (
-        <>
+        <section>
             <div style={{ display: "flex", flexDirection: "column", justifyContent: "center", alignItems: "center", textAlign: "center", marginBottom: "1rem" }}>
                 <h1 style={{ fontSize: "3.5rem" }}>Joystick Junction</h1>
                 <p style={{ fontSize: "1.5rem", color: "var(--grey)" }}>Discover, Collaborate, Dominate</p>
@@ -31,7 +31,7 @@ const HomePage = () => {
             <FeaturedGamesCarousel />
 
             <RecentArticles />
-        </>
+        </section>
     );
 };
 

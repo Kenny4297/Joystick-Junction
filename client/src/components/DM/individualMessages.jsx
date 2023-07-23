@@ -39,7 +39,7 @@ const IndividualMessages = () => {
     };
 
     return (
-        <div>
+        <section>
             {messages.map((message) => (
                 <div key={message.id}>
                     <h3>{message.sender.username}</h3>
@@ -48,7 +48,7 @@ const IndividualMessages = () => {
             ))}
             <textarea value={messageContent} onChange={handleMessageChange}></textarea>
             <button onClick={handleSendMessage}>Send</button>
-        </div>
+        </section>
     );
 };
 

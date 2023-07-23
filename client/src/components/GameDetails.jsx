@@ -11,7 +11,7 @@ const GameDetails = () => {
     }, [gameId, fetchGameById]);
 
     return (
-        <div style={{ display: "flex", justifyContent: "center", alignItems: "center", flexDirection: "column" }}>
+        <section style={{ display: "flex", justifyContent: "center", alignItems: "center", flexDirection: "column" }}>
             <div style={{ display: "flex", width: "100%", justifyContent: "space-evenly" }}>
                 <div style={{ display: "flex", flexDirection: "column", paddingTop: "3rem" }}>
                     <h1 style={{ color: "var(--white)", textAlign: "center" }}>{gameData.title}</h1>
@@ -61,7 +61,7 @@ const GameDetails = () => {
                     Meetups
                 </Link>
             </div>
-        </div>
+        </section>
     );
 };
 

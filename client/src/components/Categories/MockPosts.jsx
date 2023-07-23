@@ -1380,27 +1380,13 @@ const StrategyAndTipsMock = ({ gameId, categoryPage }) => {
             {Array.isArray(randomPosts) &&
                 randomPosts.map((post, index) => {
                     return (
-                        <div
+                        <section
                             key={index}
-                            className="post"
-                            style={{
-                                position: "relative",
-                                height: "auto",
-                                border: "0.125rem solid var(--grey)",
-                                width: "100%",
-                                boxShadow: "0.25rem 0.25rem 0.5rem rgba(0,0,0,0.15)",
-                                backgroundColor: "#414141",
-                                padding: "0.8rem",
-                                margin: "1rem 0",
-                                borderRadius: "0.2rem",
-                            }}
+                            className="post-mapping-section-container"
+            
                         >
-                            <div
-                                style={{
-                                    display: "flex",
-                                    alignItems: "center",
-                                }}
-                            >
+                            <section className="post-mapping-image-section" >
+                    
                                 <img
                                     src={post.user.profileImage}
                                     alt={post.user.username}
@@ -1416,7 +1402,7 @@ const StrategyAndTipsMock = ({ gameId, categoryPage }) => {
                                     <p>{post.post_content}</p>
                                     <h5>{post.user.username}</h5>
                                 </div>
-                            </div>
+                            </section>
 
                             <div
                                 style={{
@@ -1567,7 +1553,7 @@ const StrategyAndTipsMock = ({ gameId, categoryPage }) => {
                                     </button>
                                 </div>
                             )}
-                        </div>
+                        </section>
                     );
                 })}
         </>

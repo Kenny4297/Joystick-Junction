@@ -1,22 +1,8 @@
-
-/* === typography ====== */ 
-
-h1, h2, h3, h4, h5, h6, p, li, td, th, blockquote, label, select, span {
-    /* color: var(--black); */
-}
-
+/* === typography === */ 
 h1, h2, h3, h4, h5, h6 {
   font-weight: bold;
-    color: var(--black);
-
-}
-
-p, li, td, th, blockquote, label, select {
-  font-size: 1.2rem;
-  line-height: 165%;
-    /* color: var(--black); */
-
-}
+  color: var(--black);
+} 
 
 input {
     color: var(--black);
@@ -45,7 +31,7 @@ textarea {
   border: 1px solid var(--grey);
   background-color: var(--white);
   color: var(--metal);
-  resize: vertical; /* This allows users to resize the textarea, but only vertically */
+  resize: vertical; 
 }
 
 textarea:focus {
@@ -57,52 +43,151 @@ textarea::placeholder {
   color: var(--grey);
 }
 
-/* Color schemes testing */
+/* === Color Palette === */
 
 :root {
   --white: #F8F9FA;
-  /* Original Metal */
-  /* --metal: #343A40; */
-
   --metal: #2E2E2E;
-
   --blue: #17A2B8;
   --black: #000000;
-
-  /* Original Grey */
-  /* --grey: #6C757D; */
-
   --grey: #93989F;
 }
 
+/*  === Game Categories ===*/
 
-/* Home Page */
-
-.call-to-action-button-container {
+.game-categories-container {
   display: flex;
   justify-content: center;
-  margin-bottom: 3rem;
+  flex-direction: column;
+  align-items: center;
+}
+
+.game-categories-container h1 {
+  color: var(--blue);
+  text-decoration: underline;
+}
+
+.post-map-section {
 
 }
 
-/* #button */
-.call-to-action-button, .reset-search-button, .search-button, .add-comment, .open-modal-button, .login-button-login-page, .sign-up-button, .add-comment-button {
-    display: inline-block;
-    background-color: var(--blue);
-    color: var(--white);
-    border: none;
-    padding: 0.625rem 1.25rem; 
-    border-radius: 0.3125rem; 
-    text-align: center;
-    text-decoration: none;
-    font-size: 1rem; 
-    cursor: pointer;
-    font-weight: 600;
-    line-height: 1.5;
+/* Posts section */
+
+.post-mapping-section-container {
+  position: relative;
+  height: auto;
+  border: 0.125rem solid var(--grey);
+  box-shadow: 0.25rem 0.25rem 0.5rem rgba(0,0,0,0.15);
+  background-color: #414141;
+  padding: 0.8rem;
+  margin: 1rem 0rem;
+  border-radius: 0.2rem;
 }
 
-.reset-search-button {
-  margin-bottom:2rem;
+.post-mapping-image-section {
+  display: flex;
+  align-items: center;
+}
+
+.post-mapping-image-section img {
+  width: 6rem;
+  height: 6rem;
+  object-fit: cover;
+  border-radius: 50%;
+}
+
+.like-button-section {
+  display: flex;
+  height: 3rem;
+  width: 10rem;
+  margin-bottom: 2rem;
+}
+
+.like-button-section p {
+  margin-left: 1rem;
+  position: relative;
+  top: .8rem;
+  right: 1rem;
+}
+
+.accordion-container {
+  cursor: pointer;
+  background-color: var(--metal);
+  color: var(--white);
+  padding: 1rem;
+  text-align: center;
+  border-top-left-radius: 0.25rem;
+  border-top-right-radius: 0.25rem;
+  width: max-content;
+  align-self: center;
+}
+
+.accordion-container.open {
+  border-bottom: none;
+}
+
+.accordion-container.closed {
+  border-bottom: 1px solid var(--grey);
+}
+
+.accordion-comment-section-container {
+  padding: 1rem;
+  border-bottom-left-radius: 0.25rem;
+  border-bottom-right-radius: 0.25rem;
+  border: 1px solid red;
+}
+
+.accordion-comment-section {
+  position: relative;
+  height: auto;
+  border: 0.125rem solid var(--grey);
+  width: 100%;
+  box-shadow: 0.25rem 0.25rem 0.5rem rgba(0,0,0,0.15); 
+  background-color: #414141;
+  padding: 0.8rem;
+  margin: 1rem 0;
+  border-radius: 0.2rem;
+}
+
+.accordion-comment-section img {
+  width: 6rem;
+  height: 6rem;
+  border-radius: 50%;
+  object-fit: cover;
+}
+
+.accordion-comment-like-section {
+  display: flex;
+  justify-content: center;
+  height: 3rem;
+  width: 10rem;
+  /* border: 2px solid blue; */
+}
+
+.accordion-comment-like-section p {
+  position: relative;
+  margin-left: 1rem;
+  padding-left: .25rem;
+  top: .8rem;
+  right: 1rem;
+}
+
+.modal-section input {
+  width: 100%;
+  padding: 1rem;
+  margin: 1rem 0rem;
+  border: 1px solid var(--grey);
+  border-radius: .5rem;
+}
+
+.modal-section textarea {
+  width: 100%;
+  min-height: 6.25rem;
+  padding: 1rem;
+  margin: 1rem 0rem;
+  border: 1px solid var(--grey);
+  border-radius: .4rem;
+  resize: vertical;
 }
 
 .open-modal-button {
@@ -121,8 +206,21 @@ textarea::placeholder {
   margin: 1rem 2rem;
 }
 
+
+
+
+
+
+
+
+
+
+
 .post-comment-like-button {
   display: inline-block;
+  position: relative;
+  top:.5rem;
+  right:.5rem;
   background-color: var(--blue);
   color: var(--white);
   border: none;
@@ -132,21 +230,69 @@ textarea::placeholder {
   font-size: 1rem; 
   cursor: pointer;
   font-weight: 600;
-  line-height: 1.5;
+  line-height: 1;
+  height: 2rem;
   margin-left: 1rem;
 }
 
+
+
+
+
+
+
+.post-mapping-section h3 {
+  margin-bottom: 10px;
+}
+
+.post-mapping-section button {
+  display: block;
+  margin-top: 10px;
+}
+
+
+
+
+/* Home Page */
+
+.call-to-action-button-container {
+  display: flex;
+  justify-content: center;
+  margin-bottom: 3rem;
+
+}
+
+/* #button */
+.call-to-action-button, .reset-search-button, .search-button, .add-comment, .open-modal-button, .login-button-login-page, .sign-up-button, .add-comment-button, .modal-submit-button {
+    display: inline-block;
+    background-color: var(--blue);
+    color: var(--white);
+    border: none;
+    padding: 0.625rem 1.25rem; 
+    border-radius: 0.3125rem; 
+    text-align: center;
+    text-decoration: none;
+    font-size: 1rem; 
+    cursor: pointer;
+    font-weight: 600;
+    line-height: 1.5;
+}
+
+.reset-search-button {
+  margin-bottom:2rem;
+}
+
+
+
+
+
+
+
 /* #button hover */
-.call-to-action-button:hover, .post-comment-like-button:hover, .add-comment:hover, .login-button-login-page:hover, .sign-up-button:hover, .add-comment-button:hover {
+.call-to-action-button:hover, .post-comment-like-button:hover, .add-comment:hover, .login-button-login-page:hover, .sign-up-button:hover, .add-comment-button:hover, .open-modal-button:hover, .modal-submit-button:hover {
     background-color: var(--metal);
     color: var(--white);
     outline: 1px solid var(--blue);
-}
-
-.open-modal-button:hover {
-  background-color: var(--metal);
-  color: var(--white);
-  outline: 1px solid var(--blue);
 }
 
 .call-to-action-button:active {
@@ -628,24 +774,7 @@ textarea::placeholder {
 
 
 
-/* Posts section */
 
-.post {
-  border: 1px solid #ccc;
-  border-radius: 10px;
-  padding: 20px;
-  margin-bottom: 20px;
-  background-color: var(--grey);
-}
-
-.post h3 {
-  margin-bottom: 10px;
-}
-
-.post button {
-  display: block;
-  margin-top: 10px;
-}
 
 /* Browse Section */
 
