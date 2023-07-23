@@ -4,8 +4,8 @@ const Footer = () => {
     const year = new Date().getFullYear();
 
     return (
-        <footer style={{ backgroundColor: "#101010", color: "#fff", padding: "3rem", position: "relative", bottom: "0", width: "100%" }}>
-            <section style={{ display: "flex", justifyContent: "space-between" }}>
+        <footer>
+            <section className="footer-information-section">
                 <div>
                     <h3>Joystick Junction</h3>
                     <p>Discuss and share your favorite games, strategies, and experiences with others!</p>
@@ -16,7 +16,8 @@ const Footer = () => {
                     {/* <p>Phone: (123) 456-7890</p> */}
                 </div>
             </section>
-            <section style={{ marginTop: "20px", borderTop: "1px solid #fff", paddingTop: "20px", textAlign: "center" }}>
+
+            <section className="footer-legal-section">
                 <p>© {year} Gaming Forum. All Rights Reserved.</p>
                 <p>Privacy Policy | Terms of Service</p>
             </section>

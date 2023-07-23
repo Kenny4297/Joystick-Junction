@@ -1,11 +1,12 @@
 import { useState } from "react";
-import { useNavigate } from "react-router-dom";
+import { useNavigate, useLocation } from "react-router-dom";
 
 const SignupPage = () => {
     const defForm = { email: "", password: "", username: "" };
     const [formData, setFormData] = useState(defForm);
     const [signupResult, setSignupResult] = useState("");
     const navigate = useNavigate();
+    const location = useLocation();
 
     const handleInputChange = (event) => {
         setFormData({ ...formData, [event.target.name]: event.target.value });
@@ -21,85 +22,88 @@ const SignupPage = () => {
                 "Content-Type": "application/json",
             },
         });
-
+    
         if (!query.ok) {
             setSignupResult("fail");
         } else {
             await query.json();
             setSignupResult("success");
+            // Here we navigate to the "from" path if available, otherwise, to a default path
+            navigate(location.state?.from || "/defaultPath");
         }
     };
+    
 
-    const goToSignUpPage = async () => {
-        navigate("/login");
+    const goToLoginPage = async () => {
+        navigate("/login", { state: location.state });
+
     };
 
     return (
         <>
-            <section className="cardContainer" style={{ display: "flex", flexDirection: "column", border: "2px solid var(--grey)", borderRadius: "10px", boxShadow: "0 0 10px 0 var(--grey)", width: "60%", margin: "0 auto" }}>
-                <div style={{ width: "100%" }}>
-                    <h1 className="signupTitle">Sign Up</h1>
-                </div>
-                <div className="signupCard" style={{ display: "flex", width: "100%", justifyContent: "space-evenly" }}>
-                    <div className="signupContent">
-                        <form className="signupForm" style={{ display: "flex", flexDirection: "column" }}>
-                            <div className="formGroup" style={{ display: "flex", flexDirection: "column" }}>
-                                <label>Email Address</label>
-                                <input type="text" name="email" placeholder="john@gmail.com" className="formControl" value={formData.email} onChange={handleInputChange} />
-                            </div>
+            <section className="sign-up-card-container">
+                    <h1>Sign Up</h1>
+                    <div className="sign-up-card">
+                        <div>
+                            <form className="signupForm">
+                                <div className="form-group">
+                                    <label>Email Address</label>
+                                    <input type="text" name="email" placeholder="john@gmail.com" className="form-control" value={formData.email} onChange={handleInputChange} />
+                                </div>
 
-                            <div className="formGroup" style={{ display: "flex", flexDirection: "column" }}>
-                                <label>Username</label>
-                                <input type="text" name="username" placeholder="JohnDoe" className="formControl" value={formData.username} onChange={handleInputChange} />
-                            </div>
+                                <div className="form-group">
+                                    <label>Username</label>
+                                    <input type="text" name="username" placeholder="JohnDoe" className="form-control" value={formData.username} onChange={handleInputChange} />
+                                </div>
 
-                            <div className="formGroup" style={{ display: "flex", flexDirection: "column" }}>
-                                <label>Password</label>
-                                <input type="password" name="password" className="formControl" value={formData.password} onChange={handleInputChange} />
-                            </div>
+                                <div className="form-group">
+                                    <label>Password</label>
+                                    <input type="password" name="password" className="form-control" value={formData.password} onChange={handleInputChange} />
+                                </div>
 
-                            <div className="formGroup signupButton">
-                                <button className="sign-up-button" onClick={handleFormSubmit}>
-                                    Sign Me Up!
-                                </button>
-                            </div>
+                                <div style={{marginBottom:'.5rem'}}>
+                                    <button className="sign-up-button" onClick={handleFormSubmit}>
+                                        Sign Me Up!
+                                    </button>
+                                </div>
 
-                            <div className="formGroup signupButton">
-                                <button className="sign-up-button" onClick={goToSignUpPage}>
-                                    Go to Login
-                                </button>
-                            </div>
-                        </form>
+                                <div>
+                                    <button className="sign-up-button" onClick={goToLoginPage}>
+                                        Go to Login
+                                    </button>
+                                </div>
+                            </form>
 
-                        {signupResult === "success" && (
-                            <div className="alert signupAlertSuccess" role="alert">
-                                Signup successful!
-                            </div>
-                        )}
+                            {signupResult === "success" && (
+                                <div className="alert signupAlertSuccess" role="alert">
+                                    Sign up successful!
+                                </div>
+                            )}
 
-                        {signupResult === "fail" && (
-                            <div className="alert signupAlertFail" role="alert">
-                                Signup failed!
-                            </div>
-                        )}
-                    </div>
-                    <div className="quickSignupInfo" style={{ border: "2px solid var(--blue)", textAlign: "center" }}>
-                        <div className="infoGroup">
-                            <p className="infoTitle">Quick Sign Up</p>
-                            <div className="infoItem">
-                                <p className="category">Email:</p>
-                                <p className="example">t@t.com</p>
-                            </div>
-                            <div className="infoItem">
-                                <p className="category">Username:</p>
-                                <p className="example">Tom</p>
-                            </div>
-                            <div className="infoItem">
-                                <p className="category">Password:</p>
-                                <p className="example">t</p>
+                            {signupResult === "fail" && (
+                                <div className="alert signupAlertFail" role="alert">
+                                    Sign up failed!
+                                </div>
+                            )}
+                        </div>
+
+                        <div className="quick-sign-up-info">
+                            <div className="info-group">
+                                <p className="info-title">Quick Sign Up</p>
+                                <div className="info-item">
+                                    <p className="category">Email:</p>
+                                    <p className="example">t@t.com</p>
+                                </div>
+                                <div className="info-item">
+                                    <p className="category">Username:</p>
+                                    <p className="example">Tom</p>
+                                </div>
+                                <div className="info-item">
+                                    <p className="category">Password:</p>
+                                    <p className="example">t</p>
+                                </div>
                             </div>
                         </div>
-                    </div>
                 </div>
             </section>
         </>

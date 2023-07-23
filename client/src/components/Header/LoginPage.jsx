@@ -1,18 +1,20 @@
 import { useState, useEffect } from "react";
 import axios from "axios";
-import { useNavigate } from "react-router-dom";
+import { useNavigate, useLocation } from "react-router-dom";
 
 const LoginPage = () => {
     const defForm = { email: "", password: "" };
     const [formData, setFormData] = useState(defForm);
     const [loginResult, setLoginResult] = useState("");
     const navigate = useNavigate();
+    const location = useLocation();
+
 
     const handleInputChange = (event) => {
         setFormData({ ...formData, [event.target.name]: event.target.value });
     };
 
-    const handleFormSubmit = async (event) => {
+   const handleFormSubmit = async (event) => {
         console.log(formData);
         event.preventDefault();
 
@@ -23,6 +25,7 @@ const LoginPage = () => {
 
             if (result && !result.err) {
                 setLoginResult("success");
+                navigate(location.state?.from || "/defaultPath");
             } else {
                 setLoginResult("fail");
             }
@@ -31,8 +34,9 @@ const LoginPage = () => {
         }
     };
 
+
     const goToSignUpPage = async () => {
-        navigate("/signup");
+        navigate("/login", { state: location.state });
     };
 
     useEffect(() => {

@@ -53,6 +53,41 @@ textarea::placeholder {
   --grey: #93989F;
 }
 
+
+/* === Common Button Style Section === */
+/* #button */
+.call-to-action-button, .reset-search-button, .search-button, .add-comment, .open-modal-button, .login-button-login-page, .sign-up-button, .add-comment-button, .modal-submit-button {
+    display: inline-block;
+    background-color: var(--blue);
+    color: var(--white);
+    border: none;
+    padding: 0.625rem 1.25rem; 
+    border-radius: 0.3125rem; 
+    text-align: center;
+    text-decoration: none;
+    font-size: 1rem; 
+    cursor: pointer;
+    font-weight: 600;
+    line-height: 1.5;
+}
+
+.reset-search-button {
+  margin-bottom:2rem;
+}
+
+/* #button hover */
+.call-to-action-button:hover, .post-comment-like-button:hover, .add-comment:hover, .login-button-login-page:hover, .sign-up-button:hover, .add-comment-button:hover, .open-modal-button:hover, .modal-submit-button:hover {
+    background-color: var(--metal);
+    color: var(--white);
+    outline: 1px solid var(--blue);
+}
+
+.call-to-action-button:active {
+    background-color: var(--grey);
+    color: var(--white);
+    border: 1px solid var(--metal);
+}
+
 /*  === Game Categories ===*/
 
 .game-categories-container {
@@ -67,11 +102,7 @@ textarea::placeholder {
   text-decoration: underline;
 }
 
-.post-map-section {
-
-}
-
-/* Posts section */
+/* === Posts section === */
 
 .post-mapping-section-container {
   position: relative;
@@ -206,16 +237,6 @@ textarea::placeholder {
   margin: 1rem 2rem;
 }
 
-
-
-
-
-
-
-
-
-
-
 .post-comment-like-button {
   display: inline-block;
   position: relative;
@@ -235,12 +256,6 @@ textarea::placeholder {
   margin-left: 1rem;
 }
 
-
-
-
-
-
-
 .post-mapping-section h3 {
   margin-bottom: 10px;
 }
@@ -253,52 +268,101 @@ textarea::placeholder {
 
 
 
-/* Home Page */
+/* === Game Details Page === */
+.games-details-section {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  flex-direction: column;
+}
+
+.game-details-game-description {
+  display: flex;
+  width: 100%;
+  justify-content: space-evenly;
+}
+
+.game-details-game-title-and-image {
+  display: flex;
+  flex-direction: column;
+  padding-top: 3rem;
+}
+
+.game-details-game-title-and-image h1 {
+  color: var(--white);
+  text-align: center;
+}
+
+.game-details-game-details {
+  text-align: center;
+  padding: 2rem;
+  width: 30%;
+  border: 0.125rem solid #93989F;
+  min-width: 20rem;
+  max-width: 20rem;
+  box-shadow: 0.5rem 0.5rem 1rem rgba(0,0,0,0.3);
+  background-color: #404040;
+  position: relative;
+  height: auto;
+}
+
+.game-details-game-details p {
+  color: var(--white);
+}
+
+.game-details-game-details a {
+  color: var(--blue);
+}
+
+.game-details-categories-selection {
+  display: flex;
+  width: 100%;
+  justify-content: space-evenly;
+  padding-bottom: 5rem;
+  padding-top: 2rem;
+}
+
+
+
+
+
+
+/* === Home Page === */
 
 .call-to-action-button-container {
   display: flex;
   justify-content: center;
   margin-bottom: 3rem;
-
+  color: black;
 }
 
-/* #button */
-.call-to-action-button, .reset-search-button, .search-button, .add-comment, .open-modal-button, .login-button-login-page, .sign-up-button, .add-comment-button, .modal-submit-button {
-    display: inline-block;
-    background-color: var(--blue);
-    color: var(--white);
-    border: none;
-    padding: 0.625rem 1.25rem; 
-    border-radius: 0.3125rem; 
-    text-align: center;
-    text-decoration: none;
-    font-size: 1rem; 
-    cursor: pointer;
-    font-weight: 600;
-    line-height: 1.5;
+.call-to-action-button {
+  color: black;
 }
 
-.reset-search-button {
-  margin-bottom:2rem;
+.homepage-introduction-section {
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  text-align: center;
+  margin-bottom: 1rem;
 }
 
-
-
-
-
-
-
-/* #button hover */
-.call-to-action-button:hover, .post-comment-like-button:hover, .add-comment:hover, .login-button-login-page:hover, .sign-up-button:hover, .add-comment-button:hover, .open-modal-button:hover, .modal-submit-button:hover {
-    background-color: var(--metal);
-    color: var(--white);
-    outline: 1px solid var(--blue);
+.homepage-introduction-section h1 {
+  font-size: 3.5rem;
+  color: var(--white);
 }
 
-.call-to-action-button:active {
-    background-color: var(--grey);
-    color: var(--white);
-    border: 1px solid var(--metal);
+.homepage-introduction-section p:nth-of-type(1) {
+  font-size: 1.5rem;
+  color: var(--grey);
+}
+
+.homepage-introduction-section p:nth-of-type(2) {
+  width: 30rem;
+  color: var(--blue);
+  font-size: 1.2rem;
 }
 
 
@@ -306,7 +370,17 @@ textarea::placeholder {
 
 
 
-/* Header Section */
+
+
+
+/* === Header Section === */
+
+header {
+  display: flex;
+  justify-content: flex-end;
+  z-index: -1;
+}
+
 .nav-link {
   position: relative;
   font-weight: 600;
@@ -379,7 +453,7 @@ textarea::placeholder {
 
 
 
-/* Login Page */
+/* === Login Page === */
 .login-container {
   display: flex;
   flex-direction: column;
@@ -425,55 +499,59 @@ textarea::placeholder {
 
 /* Signup page */
 
-/* .cardContainer {
+.sign-up-card-container {
   display: flex;
-  justify-content: center;
-  box-shadow: 0 0 0 3px rgba(0, 123, 255, 0.25);
-} */
-
-.signupTitle {
-  color: var(--blue);
-  text-align: center;
-  margin-bottom: 20px;
+  flex-direction: column;
+  border: 2px solid var(--grey);
+  border-radius: 1rem;
+  box-shadow: 0 0 10px 0 var(--grey);
+  width: 60%;
+  margin: 0 auto;
 }
 
-.signupCard {
+.sign-up-card-container h1 {
+  width: 100%;
+  color: var(--blue);
+  text-align: center;
+  margin-bottom: 1.5rem;
+  margin-top: 1rem;
+}
+
+.sign-up-card {
   display: flex;
   flex-direction: row;
-  justify-content: center;
+  justify-content: space-evenly;
   align-items: center;
   padding: 20px;
-  width: 40rem;
+  width: 100%;
   background-color: var(--metal);
   margin-bottom: 20px;
 }
-
-
-.formGroup {
-  margin-bottom: 10px;
+.sign-up-card-container form {
+  display: flex;
+  flex-direction: column;
 }
 
-.formGroup label {
+.form-group {
+  display: flex;
+  flex-direction: column;
+}
+
+.form-group label {
   color: var(--blue);
   font-weight: bold;
 }
 
-.formControl {
+.form-control {
   padding: 10px;
   border: 1px solid var(--blue);
   border-radius: 5px;
 }
 
-.formControl:focus {
+.form-control:focus {
   border-color: var(--blue);
   outline: none;
   box-shadow: 0 0 0 3px rgba(0, 123, 255, 0.25);
-}
-
-
-
-.signupButton {
-  /* margin-top: 20px; */
 }
 
 .signupPrimaryButton {
@@ -494,25 +572,31 @@ textarea::placeholder {
   color: #721c24;
 }
 
-.quickSignupInfo {
+.quick-sign-up-info {
   width: 35%;
   color: var(--grey);
   font-size: 1.1em;
   align-self: flex-start;
+  margin-top:1rem;
+  border: 2px solid var(--blue);
 }
 
-.infoGroup {
+.quick-sign-up-info p {
+  text-align: center;
+}
+
+.info-group {
   margin: 0;
   padding: 0;
 }
 
-.infoTitle {
+.info-title {
   margin-bottom: 1rem;
   font-weight: bold;
   text-decoration: underline;
 }
 
-.infoItem {
+.info-item {
   margin-bottom: 15px;
   display: flex;
   flex-direction: column;
@@ -776,16 +860,135 @@ textarea::placeholder {
 
 
 
-/* Browse Section */
+/* === Browse Section === */
+
+.browse-container {
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  margin: 0 auto;
+  /* margin-top: 4rem; */
+  margin-bottom: 2rem;
+  padding: 2rem;
+  border: 0.125rem solid var(--blue);
+  box-shadow: 0 0 0.2rem 0.1rem var(--grey);
+  width: 50%;
+}
+
+
+.browse-container h2 {
+  color: white;
+}
+
+.browse-search-bar {
+  text-align: center;
+  margin-bottom: 2rem;
+  margin-top: 1rem;
+}
+
+.tailor-your-exploration-container h3 {
+  text-align: center;
+  color: white;
+}
+
+.tailor-your-exploration-section h2 {
+  text-align: center;
+  margin-top: 3rem;
+  color: white;
+}
+
+.display-games-section {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(20rem, 1fr));
+  justify-content: center;
+  gap: 1rem;
+}
+
+.individual-game-link {
+  position: relative;
+  margin: 0 auto;
+  border: 0.125rem solid grey;
+  box-shadow: 0.3125rem 0.3125rem 0.625rem rgba(0,0,0,0.15);
+  background-color: steelblue;
+  padding: 1rem;
+  max-width: 30rem;
+  max-height: 30rem;
+  height: 25rem;
+  width: 20rem;
+}
 
 .individual-game-link:hover {
   cursor: pointer;
 }
 
+.checkbox-section {
+  display: flex;
+  margin-right: 1.8rem;
+  width: 100%;
+  flex-wrap: wrap;
+}
+
+.checkbox-section form {
+  width: 100%;
+  display: flex;
+  justify-content: center;
+}
+
+.individual-checkboxes-container {
+  display: flex;
+  justify-content: space-between;
+  flex-wrap: wrap;
+  border: 0.125rem solid var(--blue);
+  box-shadow: 0 0 0.2rem 0.1rem var(--grey);
+  width: fit-content;
+  align-items: flex-start;
+  padding: 1rem;
+}
+
+.individual-checkboxes {
+  flex: 1 0 auto;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+}
+
+
+
+
+
+
 
 
 
 /* Footer */
+footer {
+  background-color: #101010;
+  color: var(--white);
+  padding: 3rem;
+  position: relative;
+  bottom: 0;
+  width: 100%;
+}
+
+.footer-information-section {
+  display: flex;
+  justify-content: space-between;
+}
+
+.footer-legal-section {
+  margin-top: 1.8rem;
+  border-top: 1px solid var(--white);
+  padding-top: 1.8rem;
+  text-align: center;
+}
+
+
+
+
+
+
 footer h3, footer p {
   color: white;
 }

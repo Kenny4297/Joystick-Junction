@@ -398,7 +398,7 @@ const GameCategoriesPage = () => {
                                                     </h5>
                                                 </div>
                                             </div>
-                                            <div className="accordion-comment-like-section">
+                                            <section className="accordion-comment-like-section">
                                                 {comment.likes &&
                                                 comment.likes.find(
                                                     (like) =>
@@ -439,28 +439,31 @@ const GameCategoriesPage = () => {
                                                             .length}{" "}
                                                     likes
                                                 </p>
-                                            </div>
+                                            </section>
                                         </section>
                                     ))}
                                 {/* Add a new comment to the post  */}
-                                <textarea
-                                    value={newComment[index] || ""}
-                                    onChange={(event) => {
-                                        const updatedComments = [...newComment];
-                                        updatedComments[index] =
-                                            event.target.value;
-                                        setNewComment(updatedComments);
-                                    }}
-                                    placeholder="Add a comment..."
-                                />
-                                <button
-                                    className="add-comment-button"
-                                    onClick={() =>
-                                        handleAddComment(post.id, index)
-                                    }
-                                >
-                                    Add Comment
-                                </button>
+                                <div style={{display:'flex', flexDirection:'column'}}>
+                                    <textarea
+                                        value={newComment[index] || ""}
+                                        onChange={(event) => {
+                                            const updatedComments = [...newComment];
+                                            updatedComments[index] =
+                                                event.target.value;
+                                            setNewComment(updatedComments);
+                                        }}
+                                        placeholder="Add a comment..."
+                                    />
+                                    <button
+                                        className="add-comment-button"
+                                        style={{width:'10rem', marginTop:'.5rem'}}
+                                        onClick={() =>
+                                            handleAddComment(post.id, index)
+                                        }
+                                    >
+                                        Add Comment
+                                    </button>
+                                </div>
                             </section>
                         )}
                     </section>

@@ -11,40 +11,27 @@ const GameDetails = () => {
     }, [gameId, fetchGameById]);
 
     return (
-        <section style={{ display: "flex", justifyContent: "center", alignItems: "center", flexDirection: "column" }}>
-            <div style={{ display: "flex", width: "100%", justifyContent: "space-evenly" }}>
-                <div style={{ display: "flex", flexDirection: "column", paddingTop: "3rem" }}>
-                    <h1 style={{ color: "var(--white)", textAlign: "center" }}>{gameData.title}</h1>
+        <section className="games-details-section">
+            <div className="game-details-game-description">
+                <div className="game-details-game-title-and-image">
+                    <h1>{gameData.title}</h1>
                     <img src={gameData.thumbnail} alt={gameData.title} />
                 </div>
 
-                <div
-                    style={{
-                        textAlign: "center",
-                        padding: "2rem",
-                        width: "30%",
-                        border: "0.125rem solid #93989F",
-                        minWidth: "20rem",
-                        maxWidth: "20rem",
-                        boxShadow: "0.5rem 0.5rem 1rem rgba(0,0,0,0.3)",
-                        backgroundColor: "#404040",
-                        position: "relative",
-                        height: "auto",
-                    }}
-                >
-                    <p style={{ color: "#F8F9FA" }}>Developer: {gameData.developer}</p>
-                    <p style={{ color: "#F8F9FA" }}>Genre: {gameData.genre}</p>
-                    <p style={{ color: "#F8F9FA" }}>{gameData.platform}</p>
-                    <p style={{ color: "#F8F9FA" }}>Publisher: {gameData.publisher}</p>
-                    <p style={{ color: "#F8F9FA" }}>Release Date: {gameData.release_date}</p>
-                    <p style={{ color: "#F8F9FA" }}>{gameData.short_description}</p>
-                    <a style={{ color: "#17A2B8" }} href={gameData.game_url}>
+                <div className="game-details-game-details">
+                    <p>Developer: {gameData.developer}</p>
+                    <p>Genre: {gameData.genre}</p>
+                    <p>{gameData.platform}</p>
+                    <p>Publisher: {gameData.publisher}</p>
+                    <p>Release Date: {gameData.release_date}</p>
+                    <p>{gameData.short_description}</p>
+                    <a href={gameData.game_url}>
                         Play Now!
                     </a>
                 </div>
             </div>
 
-            <div style={{ display: "flex", width: "100%", justifyContent: "space-evenly", paddingBottom: "5rem", paddingTop: "2rem" }}>
+            <div className="game-details-categories-selection">
                 <Link className="button-link" to={`/games/${gameId}/Strategy-and-Tips`}>
                     Strategy and Tips
                 </Link>

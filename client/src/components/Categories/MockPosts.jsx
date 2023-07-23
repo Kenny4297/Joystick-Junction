@@ -1267,34 +1267,37 @@ const StrategyAndTipsMock = ({ gameId, categoryPage }) => {
 
     useEffect(() => {
         const storageKey = `${gameId}_${categoryPage}`;
-
+    
         const postLikedKey = `${gameId}_${categoryPage}_postLiked`;
         const commentLikedKey = `${gameId}_${categoryPage}_commentLiked`;
-
+    
         const storedData = localStorage.getItem(storageKey);
-
+    
         let categorizedPosts = mockPosts[categoryPage];
-
+    
         if (storedData) {
             setRandomPosts(JSON.parse(storedData));
         } else {
             let randomizedPosts = categorizedPosts.map((post) => {
                 let postUserIndex = Math.floor(Math.random() * mockUsers.length);
                 post.user = mockUsers[postUserIndex];
-
+                post.likes = Math.floor(Math.random() * 10) +1; 
+    
                 let commentUsers = [...mockUsers];
                 commentUsers.splice(postUserIndex, 1);
-
+    
                 let firstCommentUserIndex = Math.floor(Math.random() * commentUsers.length);
                 post.comments[0].user = commentUsers[firstCommentUserIndex];
-
+                post.comments[0].likes = Math.floor(Math.random() * 10) +1;
+    
                 commentUsers.splice(firstCommentUserIndex, 1);
                 let secondCommentUserIndex = Math.floor(Math.random() * commentUsers.length);
                 post.comments[1].user = commentUsers[secondCommentUserIndex];
-
+                post.comments[1].likes = Math.floor(Math.random() * 10) +1;
+    
                 return post;
             });
-
+    
             let twoRandomPosts = [];
             while (twoRandomPosts.length < 2) {
                 let randomIndex = Math.floor(Math.random() * randomizedPosts.length);
@@ -1302,18 +1305,19 @@ const StrategyAndTipsMock = ({ gameId, categoryPage }) => {
                     twoRandomPosts.push(randomizedPosts[randomIndex]);
                 }
             }
-
+    
             localStorage.setItem(storageKey, JSON.stringify(twoRandomPosts));
-
+    
             setRandomPosts(twoRandomPosts);
         }
-
+    
         const storedIsLiked = localStorage.getItem(postLikedKey);
         setIsLiked(storedIsLiked ? JSON.parse(storedIsLiked) : []);
-
+    
         const storedIsCommentLiked = localStorage.getItem(commentLikedKey);
         setIsCommentLiked(storedIsCommentLiked ? JSON.parse(storedIsCommentLiked) : []);
     }, [gameId, categoryPage]);
+    
 
     const [openIndex, setOpenIndex] = useState(null);
 
@@ -1390,12 +1394,6 @@ const StrategyAndTipsMock = ({ gameId, categoryPage }) => {
                                 <img
                                     src={post.user.profileImage}
                                     alt={post.user.username}
-                                    style={{
-                                        width: "6rem",
-                                        height: "6rem",
-                                        objectFit: "cover",
-                                        borderRadius: "50%",
-                                    }}
                                 />
                                 <div style={{ marginLeft: "1rem" }}>
                                     <h2>{post.post_title}</h2>
@@ -1404,73 +1402,30 @@ const StrategyAndTipsMock = ({ gameId, categoryPage }) => {
                                 </div>
                             </section>
 
-                            <div
-                                style={{
-                                    display: "flex",
-                                    height: "3rem",
-                                    width: "10rem",
-                                    marginBottom: "2rem",
-                                }}
-                            >
+                            <section className="like-button-section">
                                 <button className="post-comment-like-button" style={{ width: "4rem" }} onClick={() => handleLike("post", index)}>
                                     {isLiked[index] ? "Unlike" : "Like"}
                                 </button>
-                                <p
-                                    style={{
-                                        marginLeft: "1rem",
-                                        paddingLeft: ".5rem",
-                                        position: "relative",
-                                        top: ".8rem",
-                                        right: "1rem",
-                                    }}
-                                >
+                                <p>
                                     {post.likes} likes{" "}
                                 </p>
-                            </div>
+                            </section>
 
                             <div
                                 onClick={() => handleToggle(index)}
-                                style={{
-                                    cursor: "pointer",
-                                    backgroundColor: "var(--metal)",
-                                    color: "var(--white)",
-                                    padding: "1rem",
-                                    textAlign: "center",
-                                    borderBottom: openIndex === index ? "none" : "1px solid var(--grey)",
-                                    borderTopLeftRadius: "0.25rem",
-                                    borderTopRightRadius: "0.25rem",
-                                    width: "max-content",
-                                    alignSelf: "center",
-                                }}
+                                className={`accordion-container ${openIndex === index ? "open" : "closed"}`}
                             >
                                 Comments {openIndex === index ? "▲" : "▼"}
                             </div>
 
                             {openIndex === index && (
-                                <div
-                                    style={{
-                                        padding: "1rem",
-                                        borderBottomLeftRadius: "0.25rem",
-                                        borderBottomRightRadius: "0.25rem",
-                                    }}
-                                >
+                                <section className="accordion-comment-section-container">
+                                    {/* Comment section */}
                                     {post.comments &&
                                         post.comments.length > 0 &&
                                         post.comments.map((comment, idx) => (
-                                            <div
-                                                key={idx}
-                                                style={{
-                                                    position: "relative",
-                                                    height: "auto",
-                                                    border: "0.125rem solid var(--grey)",
-                                                    width: "100%",
-                                                    boxShadow: "0.25rem 0.25rem 0.5rem rgba(0,0,0,0.15)",
-                                                    backgroundColor: "#414141",
-                                                    padding: "0.8rem",
-                                                    margin: "1rem 0",
-                                                    borderRadius: "0.2rem",
-                                                }}
-                                            >
+                                            <section className="accordion-comment-section"
+                                                key={idx}>
                                                 <div
                                                     style={{
                                                         display: "flex",
@@ -1480,12 +1435,6 @@ const StrategyAndTipsMock = ({ gameId, categoryPage }) => {
                                                     <img
                                                         src={comment.user.profileImage}
                                                         alt={comment.user.username}
-                                                        style={{
-                                                            width: "6rem",
-                                                            height: "6rem",
-                                                            objectFit: "cover",
-                                                            borderRadius: "50%",
-                                                        }}
                                                     />
                                                     <div
                                                         style={{
@@ -1496,14 +1445,7 @@ const StrategyAndTipsMock = ({ gameId, categoryPage }) => {
                                                         <h5>{comment.user.username}</h5>
                                                     </div>
                                                 </div>
-                                                <div
-                                                    style={{
-                                                        display: "flex",
-                                                        justifyContent: "center",
-                                                        height: "3rem",
-                                                        width: "10rem",
-                                                    }}
-                                                >
+                                                <section className="accordion-comment-like-section">
                                                     <button
                                                         className="post-comment-like-button"
                                                         style={{
@@ -1513,45 +1455,41 @@ const StrategyAndTipsMock = ({ gameId, categoryPage }) => {
                                                     >
                                                         {(isCommentLiked[index] || [])[idx] || false ? "Unlike" : "Like"}
                                                     </button>
-                                                    <p
-                                                        style={{
-                                                            marginLeft: "1rem",
-                                                            paddingLeft: ".5rem",
-                                                            position: "relative",
-                                                            top: ".8rem",
-                                                            right: "1rem",
-                                                        }}
-                                                    >
+                                                    <p>
                                                         {comment.likes} likes
                                                     </p>
-                                                </div>
-                                            </div>
+                                                </section>
+                                            </section>
                                         ))}
-                                    <textarea
-                                        value={newComment[index] || ""}
-                                        onChange={(event) => {
-                                            setNewComment((prevComments) => {
-                                                const newComments = [...prevComments];
-                                                newComments[index] = event.target.value;
-                                                return newComments;
-                                            });
-                                        }}
-                                        placeholder="Add a comment..."
-                                    />
-                                    <button
-                                        className="add-comment"
-                                        onClick={() => {
-                                            handleAddComment(index, newComment[index]);
-                                            setNewComment((prevComments) => {
-                                                const newComments = [...prevComments];
-                                                newComments[index] = "";
-                                                return newComments;
-                                            });
-                                        }}
-                                    >
-                                        Add Comment
-                                    </button>
-                                </div>
+                                    {/* Add a new comment to the post  */}
+                                    <div style={{display:'flex', flexDirection:'column'}}>
+                                        <textarea
+                                            value={newComment[index] || ""}
+                                            onChange={(event) => {
+                                                setNewComment((prevComments) => {
+                                                    const newComments = [...prevComments];
+                                                    newComments[index] = event.target.value;
+                                                    return newComments;
+                                                });
+                                            }}
+                                            placeholder="Add a comment..."
+                                        />
+                                        <button
+                                            className="add-comment-button"
+                                            style={{width:'10rem', marginTop:'.5rem'}}
+                                            onClick={() => {
+                                                handleAddComment(index, newComment[index]);
+                                                setNewComment((prevComments) => {
+                                                    const newComments = [...prevComments];
+                                                    newComments[index] = "";
+                                                    return newComments;
+                                                });
+                                            }}
+                                        >
+                                            Add Comment
+                                        </button>
+                                    </div>
+                                </section>
                             )}
                         </section>
                     );
