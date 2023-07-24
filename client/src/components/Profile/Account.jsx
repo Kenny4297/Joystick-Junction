@@ -119,9 +119,11 @@ const Account = () => {
 
     return (
         <>
+        <h2 style={{textAlign: 'center', color: 'white'}}>Account</h2>
             <section className="account-container">
+                
                 <section className="form-container">
-                    <h2 className="account-h2" id="form-label">
+                    <h2 id="form-label">
                         Edit Your Profile
                     </h2>
                     <section style={{ width: "50%" }}>

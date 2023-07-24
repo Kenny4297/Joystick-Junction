@@ -19,7 +19,7 @@ const HomePage = () => {
             <div className="homepage-introduction-section">
                 <h1 id="homepage-introduction-heading">Joystick Junction</h1>
                 <p id="homepage-introduction-tagline">Discover, Collaborate, Dominate</p>
-                <p id="homepage-introduction-description">Joystick Junction is your one-stop hub for all things gaming. Whether you're a casual player or a hardcore gamer, there's something here for everyone!</p>
+                <p className="homepage-introduction-description" id="homepage-introduction-description">Joystick Junction is your one-stop hub for all things gaming. Whether you're a casual player or a hardcore gamer, there's something here for everyone!</p>
             </div>
 
             <div className="call-to-action-button-container">

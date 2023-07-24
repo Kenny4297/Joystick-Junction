@@ -47,27 +47,35 @@ function App() {
         <BrowserRouter>
             <UserContext.Provider value={[user, setUser]}>
                 <GameProvider>
+                <div className="site-container">
+                    <div>
                     <Header user={user} />
-                    <div style={{ margin: "1rem 4rem 2rem 4rem" }}>
-                        <Routes>
-                            <Route path="/" element={<HomePage />} />
-                            <Route path="/login" element={<LoginPage />} />
-                            <Route path="/profile/:userId" element={<Account />} />
-                            <Route path="/signup" element={<SignupPage />} />
-                            <Route path="/game/:gameId" element={<GameDetails />} />
-
-                            <Route path="/games/:gameId/:categoryPage" element={<GameCategoriesPage />} />
-
-                            <Route path="/users/:userId" element={<SendMessageToUser />} />
-
-                            <Route path="/messages/:userId" element={<Messages />} />
-                            <Route path="/individualMessages/:userId/:otherUserId" element={<IndividualMessages />} />
-
-                            <Route path="/browse" element={<Browse />} />
-                            <Route path="/recentArticles" element={<RecentArticles />} />
-                        </Routes>
                     </div>
+                    
+                        <div style={{ margin: "1rem 4rem 2rem 4rem" }}>
+                            <Routes>
+                                <Route path="/" element={<HomePage />} />
+                                <Route path="/login" element={<LoginPage />} />
+                                <Route path="/profile/:userId" element={<Account />} />
+                                <Route path="/signup" element={<SignupPage />} />
+                                <Route path="/game/:gameId" element={<GameDetails />} />
+
+                                <Route path="/games/:gameId/:categoryPage" element={<GameCategoriesPage />} />
+
+                                <Route path="/users/:userId" element={<SendMessageToUser />} />
+
+                                <Route path="/messages/:userId" element={<Messages />} />
+                                <Route path="/individualMessages/:userId/:otherUserId" element={<IndividualMessages />} />
+
+                                <Route path="/browse" element={<Browse />} />
+                                <Route path="/recentArticles" element={<RecentArticles />} />
+                            </Routes>
+                        
+                        </div>
                     <Footer />
+                    </div>
+                    
+                    
                 </GameProvider>
             </UserContext.Provider>
         </BrowserRouter>

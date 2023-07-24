@@ -301,7 +301,6 @@ const GameCategoriesPage = () => {
                 <img
                     src={gameData.thumbnail}
                     alt={gameData.title}
-                    style={{ width: "25rem" }}
                     aria-label={gameData.title}
                 />
                 <button className="open-modal-button" onClick={openModal} aria-label="Create a Post">
@@ -452,7 +451,7 @@ const GameCategoriesPage = () => {
                                         </section>
                                     ))}
                                 {/* Add a new comment to the post  */}
-                                <div style={{display:'flex', flexDirection:'column'}}>
+                                <div className="add-a-new-comment">
                                     <textarea
                                         value={newComment[index] || ""}
                                         onChange={(event) => {

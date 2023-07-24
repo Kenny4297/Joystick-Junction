@@ -201,7 +201,7 @@ const Browse = () => {
                                 <h3>Selected Categories:</h3>
                                 <ul>
                                     {selectedCategories.map((category, index) => (
-                                        <li key={index}>{category}</li>
+                                        <li className="selected-categories" key={index}>{category}</li>
                                     ))}
                                 </ul>
                             </>
@@ -224,7 +224,7 @@ const Browse = () => {
                                 </div>
                             );
                         })
-                    : isSearchingByCategories && <p>No games found for the selected categories.</p>}
+                    : isSearchingByCategories && <p className="no-games-checkbox-message">No games found for the selected categories. Try again!</p>}
             </div>
             {!isButtonClicked && !isLoading && !games.length && (
                 <div className="checkbox-section" aria-label="Categories filter">

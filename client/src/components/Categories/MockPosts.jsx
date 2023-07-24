@@ -16,7 +16,7 @@ const mockPosts = {
             user: {
                 username: mockUsers[Math.floor(Math.random() * mockUsers.length)],
             },
-            post_title: "Help! I am stuck on level 4! (Solved)",
+            post_title: "Help! I am stuck on level 4!",
             post_content: "I can't seem to get past level 4! Any suggestions?",
             likes: 0,
             comments: [
@@ -40,7 +40,7 @@ const mockPosts = {
             user: {
                 username: mockUsers[Math.floor(Math.random() * mockUsers.length)],
             },
-            post_title: "How to defeat the boss in level 7? (Solved)",
+            post_title: "How to defeat the boss in level 7?",
             post_content: "I'm having a hard time defeating the boss in level 7. Any tips?",
             likes: 0,
             comments: [
@@ -64,7 +64,7 @@ const mockPosts = {
             user: {
                 username: mockUsers[Math.floor(Math.random() * mockUsers.length)],
             },
-            post_title: "Running out of health potions too fast! (Solved)",
+            post_title: "Running out of health potions too fast!",
             post_content: "Is there any way to preserve health potions?",
             likes: 0,
             comments: [
@@ -88,7 +88,7 @@ const mockPosts = {
             user: {
                 username: mockUsers[Math.floor(Math.random() * mockUsers.length)],
             },
-            post_title: "Can't find the secret treasure in level 5? (Solved)",
+            post_title: "Can't find the secret treasure in level 5?",
             post_content: "I've heard there's a secret treasure in level 5. Where is it?",
             likes: 0,
             comments: [
@@ -112,7 +112,7 @@ const mockPosts = {
             user: {
                 username: mockUsers[Math.floor(Math.random() * mockUsers.length)],
             },
-            post_title: "How to improve crafting skills? (Solved)",
+            post_title: "How to improve crafting skills?",
             post_content: "I want to craft higher level items. How can I improve my skills?",
             likes: 0,
             comments: [
@@ -136,7 +136,7 @@ const mockPosts = {
             user: {
                 username: mockUsers[Math.floor(Math.random() * mockUsers.length)],
             },
-            post_title: "Where to find magic stones? (Solved)",
+            post_title: "Where to find magic stones?",
             post_content: "I need magic stones to upgrade my gear. Any known locations?",
             likes: 0,
             comments: [
@@ -160,7 +160,7 @@ const mockPosts = {
             user: {
                 username: mockUsers[Math.floor(Math.random() * mockUsers.length)],
             },
-            post_title: "Stuck in the puzzle in level 9!  (Solved)",
+            post_title: "Stuck in the puzzle in level 9!",
             post_content: "The puzzle in level 9 seems impossible. Can anyone help?",
             likes: 0,
             comments: [
@@ -184,7 +184,7 @@ const mockPosts = {
             user: {
                 username: mockUsers[Math.floor(Math.random() * mockUsers.length)],
             },
-            post_title: "How to tame magical creatures? (Solved)",
+            post_title: "How to tame magical creatures?",
             post_content: "I want to tame magical creatures. Is there a specific method for it?",
             likes: 0,
             comments: [
@@ -1464,7 +1464,7 @@ const StrategyAndTipsMock = ({ gameId, categoryPage }) => {
                                             </section>
                                         ))}
                                     {/* Add a new comment to the post  */}
-                                    <div style={{display:'flex', flexDirection:'column'}}>
+                                    <div className="add-a-new-comment">
                                         <textarea
                                             value={newComment[index] || ""}
                                             onChange={(event) => {

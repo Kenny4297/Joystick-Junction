@@ -1,21 +1,18 @@
-/* === typography === */ 
+/* === Typography === */ 
 h1, h2, h3, h4, h5, h6 {
   font-weight: bold;
   color: var(--black);
 } 
 
 input {
-    color: var(--black);
-
+  color: var(--black);
 }
 
 p {
   margin-bottom: 1rem;
-  /* color: var(--black); */
 }
 
 body {
-  /* height: 100vh; */
   background-color: var(--metal);
   margin: 0;
   padding: 0;
@@ -43,6 +40,15 @@ textarea::placeholder {
   color: var(--grey);
 }
 
+.site-container {
+  display: flex;
+  flex-direction: column;
+  min-height: 100vh;
+  position: relative;
+}
+
+
+
 /* === Color Palette === */
 
 :root {
@@ -52,6 +58,7 @@ textarea::placeholder {
   --black: #000000;
   --grey: #93989F;
 }
+
 
 
 /* === Common Button Style Section === */
@@ -68,7 +75,6 @@ textarea::placeholder {
     font-size: 1rem; 
     cursor: pointer;
     font-weight: 600;
-    line-height: 1.5;
 }
 
 .reset-search-button {
@@ -88,8 +94,16 @@ textarea::placeholder {
     border: 1px solid var(--metal);
 }
 
-/*  === Game Categories ===*/
 
+
+/* === Header === */
+.Header {
+  z-index: 1000;
+}
+
+
+
+/*  === Game Categories ===*/
 .game-categories-container {
   display: flex;
   justify-content: center;
@@ -100,10 +114,15 @@ textarea::placeholder {
 .game-categories-container h1 {
   color: var(--blue);
   text-decoration: underline;
+  text-align: center;
 }
 
-/* === Posts section === */
+.game-categories-container img {
+  width: 25rem;
+}
 
+
+/* === Posts section === */
 .post-mapping-section-container {
   position: relative;
   height: auto;
@@ -192,7 +211,6 @@ textarea::placeholder {
   justify-content: center;
   height: 3rem;
   width: 10rem;
-  /* border: 2px solid blue; */
 }
 
 .accordion-comment-like-section p {
@@ -257,14 +275,22 @@ textarea::placeholder {
 }
 
 .post-mapping-section h3 {
-  margin-bottom: 10px;
+  margin-bottom: 1rem;
 }
 
 .post-mapping-section button {
   display: block;
-  margin-top: 10px;
+  margin-top: 1rem;
 }
 
+.add-a-new-comment {
+  display: flex;
+  flex-direction: column;
+}
+
+.add-a-new-comment textarea {
+  width: 30rem;
+}
 
 
 
@@ -280,6 +306,7 @@ textarea::placeholder {
   display: flex;
   width: 100%;
   justify-content: space-evenly;
+  /* border: 2px solid red; */
 }
 
 .game-details-game-title-and-image {
@@ -298,8 +325,7 @@ textarea::placeholder {
   padding: 2rem;
   width: 30%;
   border: 0.125rem solid #93989F;
-  min-width: 20rem;
-  max-width: 20rem;
+  width: 20rem;
   box-shadow: 0.5rem 0.5rem 1rem rgba(0,0,0,0.3);
   background-color: #404040;
   position: relative;
@@ -315,20 +341,38 @@ textarea::placeholder {
 }
 
 .game-details-categories-selection {
-  display: flex;
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
   width: 100%;
-  justify-content: space-evenly;
+  margin-top: 2rem;
+  justify-items: center;
   padding-bottom: 5rem;
   padding-top: 2rem;
+  gap: 1rem; 
+  border: 2px solid red;
+}
+
+.game-details-button-link {
+  width: 13rem;
+  background: #17A2B8;
+  color: #F8F9FA;
+  padding: 10px 20px;
+  border-radius: 5px;
+  text-decoration: none;
+  text-align: center;
+  box-shadow: 0 4px 8px 0 rgba(0, 0, 0, 0.2), 0 6px 20px 0 rgba(0, 0, 0, 0.19);
+  transition: background-color 0.075s ease;
+}
+
+.game-details-button-link:hover {
+  background: #2E2E2E;
+  color:var(--white);
+  outline:1px solid var(--grey)
 }
 
 
 
-
-
-
 /* === Home Page === */
-
 .browse-heading h1 {
   text-align: center;
   text-decoration: underline;
@@ -373,18 +417,12 @@ textarea::placeholder {
 
 
 
-
-
-
-
-
-
 /* === Header Section === */
-
 header {
   display: flex;
   justify-content: flex-end;
   z-index: -1;
+  /* border: 2px solid red; */
 }
 
 .nav-link {
@@ -430,33 +468,6 @@ header {
   color: white
 }
 
-@media (max-width: 810px) {
-  .header-links {
-    font-size:.82rem;
-    position: relative;
-    top:.1rem;
-  }
-}
-
-@media (max-width: 767.5px) {
-  .profile-pic {
-    display: none;
-  }
-  .nav-link {
-    font-size: 2rem;
-  }
-  .navbar-collapse {
-    /* background-color: blue; */
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    flex-direction: column;
-    text-align: center;
-  }
-}
-
-
-
 
 
 /* === Login Page === */
@@ -468,7 +479,7 @@ header {
   background-color: var(--metal);
   border-radius: 10px;
   box-shadow: 0 0 10px 0 var(--grey);
-  width: 30%;
+  width: 40rem;
   margin: auto;
   padding: 2em;
 }
@@ -480,6 +491,7 @@ header {
 
 .login-form .form-group label {
   color: white;
+  width: 20rem;
 }
 
 .login-form .form-control {
@@ -499,18 +511,14 @@ header {
 
 
 
-
-
-
-
-/* Signup page */
+/* Sign-up page */
 
 .sign-up-card-container {
   display: flex;
   flex-direction: column;
   border: 2px solid var(--grey);
   border-radius: 1rem;
-  box-shadow: 0 0 10px 0 var(--grey);
+  box-shadow: 0 0 1rem 0 var(--grey);
   width: 60%;
   margin: 0 auto;
 }
@@ -528,10 +536,10 @@ header {
   flex-direction: row;
   justify-content: space-evenly;
   align-items: center;
-  padding: 20px;
+  padding: 1.25;
   width: 100%;
   background-color: var(--metal);
-  margin-bottom: 20px;
+  margin-bottom: 1.25rem;
 }
 .sign-up-card-container form {
   display: flex;
@@ -549,7 +557,7 @@ header {
 }
 
 .form-control {
-  padding: 10px;
+  padding: 1rem;
   border: 1px solid var(--blue);
   border-radius: 5px;
 }
@@ -561,13 +569,13 @@ header {
 }
 
 .alert.sign-up-alert-success {
-  margin-top: 10px;
+  margin-top: 1rem;
   background-color: #d4edda;
   color: #155724;
 }
 
 .alert.sign-up-alert-fail {
-  margin-top: 10px;
+  margin-top: 1rem;
   background-color: #f8d7da;
   color: #721c24;
 }
@@ -597,7 +605,7 @@ header {
 }
 
 .info-item {
-  margin-bottom: 15px;
+  margin-bottom: 1rem;
   display: flex;
   flex-direction: column;
   align-items: center;
@@ -615,14 +623,14 @@ header {
 
 
 
-
 /* Featured Games Carousel */
-
-
-.featured-games-card-container, .articles-card-container {
+.featured-games-card-container, .articles-card-container  {
   display: flex;
-  justify-content: space-between;
+  flex-wrap: wrap;
+  justify-content: space-evenly;
+  border: 2px solid green; 
 }
+
 /* #card */
 .featured-games-card, .articles-card {
   position: relative;
@@ -640,6 +648,7 @@ header {
 
 .featured-games-card {
   height: 22.5rem;
+  border: 2px solid red;
 }
 
 .articles-card-heading {
@@ -651,6 +660,12 @@ header {
   color: var(--blue);
   font-size: 1.5rem;
   margin-bottom: 1rem;
+}
+
+.featured-games-carousel {
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: space-between;
 }
 
 .featured-games-carousel-item {
@@ -673,9 +688,11 @@ header {
   text-align: center;
 }
 
+
+
+/* === Articles === */
 .articles-card-subheading {
   padding-top: 1rem;
-
 }
 
 .featured-games-carousel-caption h3, .articles-card-subheading {
@@ -693,16 +710,14 @@ header {
   color: var(--white);
   font-size: 1rem;
   padding: 0rem 2rem;
-  /* text-align: center; */
 }
 
 .articles-card-additional-text {
-  font-style: 'italic'; 
+  font-style: italic; 
   font-weight: bold;
   color: var(--blue);
   text-align: center;
   padding: 0rem 1rem;
-
 }
 
 .carousel {
@@ -734,7 +749,6 @@ header {
   top: -2rem;
 }
 
-
 .carousel-control-next-icon {
   background-image: url('../components/Assets/Images/rightArrow.png');
 }
@@ -745,38 +759,22 @@ header {
 
 
 
-
-
-
-
-
-
-
-
 /* Profile / Account */
-:root {
-  --white: #F8F9FA;
-  --metal: #2E2E2E;
-  --blue: #17A2B8;
-  --black: #000000;
-  --grey: #93989F;
-}
-
 .account-container {
   display: flex;
-  justify-content: space-around;
-  padding: 20px;
+  justify-content: center;
+  padding: 1.5rem;
   background-color: var(--metal);
-  border-radius: 5px;
-  box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+  border: 2px solid red;
 }
 
 .form-container, .profile-image-container {
   background-color: var(--white);
-  padding: 20px;
+  padding: 1.8rem;
   border-radius: 5px;
   box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
-  width: 45%;
+  width: 30rem;
+  margin: 1rem;
 }
 
 .account-form {
@@ -784,16 +782,20 @@ header {
   flex-direction: column;
 }
 
+.account-form input {
+  width: 20rem;
+}
+
 .form-control {
-  margin-bottom: 20px;
+  margin-bottom: 1.25rem;
   border: 1px solid var(--grey);
-  padding: 10px;
+  padding: 1rem;
   border-radius: 5px;
 }
 
 .account-password-button, .update-profile-button, .remove-image-button {
-  padding: 10px 20px;
-  margin: 10px 0;
+  padding: 1rem 1.25rem;
+  margin: 1rem 0;
   border-radius: 5px;
   border: none;
   background-color: var(--blue);
@@ -816,12 +818,12 @@ header {
 
 .file-input-label {
   display: block;
-  margin-top: 20px;
+  margin-top: 1.25rem;
 }
 
 .alert {
-  margin-top: 20px;
-  padding: 10px;
+  margin-top: 1.25rem;
+  padding: 1rem;
   border-radius: 5px;
 }
 
@@ -836,12 +838,12 @@ header {
 }
 
 
-/* Game Page */
 
+/* Game Page */
 .button-link {
   background: #17A2B8;
   color: #F8F9FA;
-  padding: 10px 20px;
+  padding: 1rem 1.25;
   border-radius: 5px;
   text-decoration: none;
   box-shadow: 0 4px 8px 0 rgba(0, 0, 0, 0.2), 0 6px 20px 0 rgba(0, 0, 0, 0.19);
@@ -856,19 +858,13 @@ header {
 
 
 
-
-
-
-
 /* === Browse Section === */
-
 .browse-container {
   display: flex;
   flex-direction: column;
   justify-content: center;
   align-items: center;
   margin: 0 auto;
-  /* margin-top: 4rem; */
   margin-bottom: 2rem;
   padding: 2rem;
   border: 0.125rem solid var(--blue);
@@ -876,9 +872,25 @@ header {
   width: 50%;
 }
 
-
 .browse-container h2 {
   color: white;
+  text-align: center;
+}
+
+.selected-categories {
+  color: var(--blue);
+  list-style-type: none;
+  width: auto;
+  margin-right: 3rem;
+  /* border: 2px solid green; */
+}
+
+.no-games-checkbox-message {
+  color: var(--blue) !important;
+  font-weight: bold;
+  text-decoration: underline;
+  /* border: 2px solid green; */
+  text-align: center;
 }
 
 .browse-search-bar {
@@ -913,7 +925,6 @@ header {
   position: relative;
   right: 1.5rem;
 }
-
 
 .display-games-section {
   display: grid;
@@ -989,15 +1000,6 @@ header {
 }
 
 
-
-
-
-
-
-
-
-
-
 /* Footer */
 footer {
   background-color: #101010;
@@ -1006,6 +1008,7 @@ footer {
   position: relative;
   bottom: 0;
   width: 100%;
+  margin-top: auto;
 }
 
 .footer-information-section {
@@ -1020,15 +1023,13 @@ footer {
   text-align: center;
 }
 
-
-
-
-
-
 footer h3, footer p {
   color: white;
 }
 
+
+
+/*  === Scroll Bar === */
 /* scroll bar style  */
 ::-webkit-scrollbar {
   width: 10px;
@@ -1044,3 +1045,159 @@ footer h3, footer p {
   background: var(--blue);
   border-radius: 50px;
 }
+
+
+
+/* === Media Queries === */
+
+@media (max-width: 430px) {
+  .game-categories-container img {
+    width: 20rem;
+  }
+}
+
+@media (max-width: 500px) {
+  .post-mapping-image-section img, .accordion-comment-section img {
+    display: none;
+  }
+}
+
+@media (max-width: 500px) {
+  .homepage-introduction-section p:nth-of-type(2){
+    width: 15rem;
+  }
+}
+
+@media (max-width: 700px) {
+  .add-a-new-comment textarea {
+    width: 20rem;
+  }
+}
+
+@media (max-width: 500px) {
+  .add-a-new-comment textarea {
+    width: 100%;
+  }
+}
+
+@media (max-width: 900px) {
+  .game-details-game-description {
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+  }
+  .game-details-game-title-and-image img {
+    width: 20rem;
+  }
+}
+
+@media (max-width: 500px) {
+  .game-details-game-title-and-image img {
+    width: 13rem;
+    margin: 0 auto;
+  }
+}
+
+.game-details-game-details {
+  width: 13rem;
+  height: 30rem;
+  border: 2px solid blue;
+}
+
+@media (max-width: 500px) {
+  .homepage-introduction-section p:nth-of-type(2){
+    width: 15rem;
+  }
+}
+
+@media (max-width: 810px) {
+  .header-links {
+    font-size:.82rem;
+    position: relative;
+    top:.1rem;
+  }
+}
+
+@media (max-width: 767.5px) {
+  .profile-pic {
+    display: none;
+  }
+  .nav-link {
+    font-size: 2rem;
+  }
+  .navbar-collapse {
+    /* background-color: blue; */
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    flex-direction: column;
+    text-align: center;
+  }
+}
+
+@media (max-width: 800px) {
+  .login-container {
+    width: 90%;
+  }
+  .login-form {
+    width: 90%;
+  }
+}
+
+@media (max-width: 460px) {
+  .login-container {
+    width: 90%; 
+  }
+  .login-form .form-group label {
+    width: 50%;
+  }
+  .login-form {
+    width: 100%;
+  }
+}
+
+@media (max-width: 900px) {
+  .sign-up-card-container {
+    width: 20rem;
+  }
+  .sign-up-card {
+    display: flex;
+    flex-direction: column-reverse;
+    align-items: center;
+    justify-content: center;
+    margin: 0 auto;
+    width: 100%;
+  }
+  .quick-sign-up-info {
+    align-self: center;
+    width: 15rem;
+  }
+}
+
+@media (max-width: 450px) {
+  .sign-up-card-container {
+    width: 15rem;
+  }
+}
+
+@media (max-width: 1100px) {
+  .browse-container h2 {
+    font-size: 1.5rem;
+  }
+  .browse-container {
+    width: 100%;
+  }
+}
+
+@media ( max-width: 600px ) {
+  .browse-container input {
+    display: block;
+    width: 100%;
+    margin: 0 auto;
+    border: 2px solid green;
+  }
+  .browse-container h2 {
+    font-size: 1rem;
+  }
+}
+

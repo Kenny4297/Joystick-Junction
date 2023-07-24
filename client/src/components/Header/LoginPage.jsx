@@ -61,13 +61,13 @@ const LoginPage = () => {
                         <input type="password" name="password" className="form-control" value={formData.password} onChange={handleInputChange} aria-labelledby="passwordLabel" aria-required="true" />
                     </div>
 
-                    <div className="form-group mt-2">
+                    <div className="mt-2">
                         <button className="login-button-login-page" onClick={handleFormSubmit}>
                             Log Me In!
                         </button>
                     </div>
 
-                    <div className="form-group mt-2">
+                    <div className="mt-2">
                         <button className="login-button-login-page" onClick={goToSignUpPage}>
                             Go to Sign Up
                         </button>

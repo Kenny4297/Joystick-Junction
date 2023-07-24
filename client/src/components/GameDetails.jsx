@@ -32,19 +32,19 @@ const GameDetails = () => {
             </div>
 
             <div className="game-details-categories-selection" aria-label="categories-selection">
-                <Link className="button-link" to={`/games/${gameId}/Strategy-and-Tips`}  aria-label="strategy-and-tips">
+                <Link className="game-details-button-link" to={`/games/${gameId}/Strategy-and-Tips`}  aria-label="strategy-and-tips">
                     Strategy and Tips
                 </Link>
-                <Link className="button-link" to={`/games/${gameId}/Reviews-and-Opinions`} aria-label="reviews-and-opinions">
+                <Link className="game-details-button-link" to={`/games/${gameId}/Reviews-and-Opinions`} aria-label="reviews-and-opinions">
                     Reviews and Opinions
                 </Link>
-                <Link className="button-link" to={`/games/${gameId}/Bugs-and-Glitches`} aria-label="bugs-and-glitches">
+                <Link className="game-details-button-link" to={`/games/${gameId}/Bugs-and-Glitches`} aria-label="bugs-and-glitches">
                     Bugs and Glitches
                 </Link>
-                <Link className="button-link" to={`/games/${gameId}/Updates-Patches-DLCs`} aria-label="updates-patches-dlcs">
+                <Link className="game-details-button-link" to={`/games/${gameId}/Updates-Patches-DLCs`} aria-label="updates-patches-dlcs">
                     Updates, Patches, DLC's
                 </Link>
-                <Link className="button-link" to={`/games/${gameId}/Meetups`} aria-label="meetups">
+                <Link className="game-details-button-link" to={`/games/${gameId}/Meetups`} aria-label="meetups">
                     Meetups
                 </Link>
             </div>
