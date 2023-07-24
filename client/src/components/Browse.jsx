@@ -173,7 +173,7 @@ const Browse = () => {
             <div className="browse-container" aria-labelledby="game-search-heading">
                 <h2 id="game-search-heading">Search for a game by its title</h2>
                 <form onSubmit={fetchGamesByName} aria-label="Game search">
-                    <input type="text" className="browse-search-bar" value={searchInput} onChange={(event) => setSearchInput(event.target.value)} aria-label="Search input"/>
+                    <input type="text" className="browse-search-bar" value={searchInput} onChange={(event) => setSearchInput(event.target.value)} aria-label="Search input" />
                 </form>
                 {hasSearched && (
                     <button className="reset-search-button" onClick={resetSearch}>
@@ -201,7 +201,9 @@ const Browse = () => {
                                 <h3>Selected Categories:</h3>
                                 <ul>
                                     {selectedCategories.map((category, index) => (
-                                        <li className="selected-categories" key={index}>{category}</li>
+                                        <li className="selected-categories" key={index}>
+                                            {category}
+                                        </li>
                                     ))}
                                 </ul>
                             </>
@@ -212,26 +214,21 @@ const Browse = () => {
             <div className="display-games-section" role="list">
                 {games.length > 0
                     ? games.map((game) => {
-                            const gameDescription = game.short_description.length > 100 ? game.short_description.slice(0, 100) + "..." : game.short_description;
-                            return (
-                                <div
-                                    key={game.id}
-                                    className="individual-game-link" onClick={() => handleGameClick(game)} role="listitem" aria-labelledby={`game-title-${game.id}`} aria-describedby={`game-description-${game.id}`}
-                                >
-                                    <h2 id={`game-title-${game.id}`}>{game.title}</h2>
-                                    <img src={game.thumbnail} alt={game.title} style={{ width: "100%" }} />
-                                    <p id={`game-description-${game.id}`}>{gameDescription}</p>
-                                </div>
-                            );
-                        })
+                          const gameDescription = game.short_description.length > 100 ? game.short_description.slice(0, 100) + "..." : game.short_description;
+                          return (
+                              <div key={game.id} className="individual-game-link" onClick={() => handleGameClick(game)} role="listitem" aria-labelledby={`game-title-${game.id}`} aria-describedby={`game-description-${game.id}`}>
+                                  <h2 id={`game-title-${game.id}`}>{game.title}</h2>
+                                  <img src={game.thumbnail} alt={game.title} style={{ width: "100%" }} />
+                                  <p id={`game-description-${game.id}`}>{gameDescription}</p>
+                              </div>
+                          );
+                      })
                     : isSearchingByCategories && <p className="no-games-checkbox-message">No games found for the selected categories. Try again!</p>}
             </div>
             {!isButtonClicked && !isLoading && !games.length && (
                 <div className="checkbox-section" aria-label="Categories filter">
-
                     <form onSubmit={fetchGamesByCategories}>
                         <div className="individual-checkboxes-container">
-
                             <div className="individual-checkboxes">
                                 <h4>Main Categories</h4>
                                 <ul>{mainCategoryCheckboxes}</ul>

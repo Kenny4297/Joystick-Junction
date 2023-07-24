@@ -1267,37 +1267,37 @@ const StrategyAndTipsMock = ({ gameId, categoryPage }) => {
 
     useEffect(() => {
         const storageKey = `${gameId}_${categoryPage}`;
-    
+
         const postLikedKey = `${gameId}_${categoryPage}_postLiked`;
         const commentLikedKey = `${gameId}_${categoryPage}_commentLiked`;
-    
+
         const storedData = localStorage.getItem(storageKey);
-    
+
         let categorizedPosts = mockPosts[categoryPage];
-    
+
         if (storedData) {
             setRandomPosts(JSON.parse(storedData));
         } else {
             let randomizedPosts = categorizedPosts.map((post) => {
                 let postUserIndex = Math.floor(Math.random() * mockUsers.length);
                 post.user = mockUsers[postUserIndex];
-                post.likes = Math.floor(Math.random() * 10) +1; 
-    
+                post.likes = Math.floor(Math.random() * 10) + 1;
+
                 let commentUsers = [...mockUsers];
                 commentUsers.splice(postUserIndex, 1);
-    
+
                 let firstCommentUserIndex = Math.floor(Math.random() * commentUsers.length);
                 post.comments[0].user = commentUsers[firstCommentUserIndex];
-                post.comments[0].likes = Math.floor(Math.random() * 10) +1;
-    
+                post.comments[0].likes = Math.floor(Math.random() * 10) + 1;
+
                 commentUsers.splice(firstCommentUserIndex, 1);
                 let secondCommentUserIndex = Math.floor(Math.random() * commentUsers.length);
                 post.comments[1].user = commentUsers[secondCommentUserIndex];
-                post.comments[1].likes = Math.floor(Math.random() * 10) +1;
-    
+                post.comments[1].likes = Math.floor(Math.random() * 10) + 1;
+
                 return post;
             });
-    
+
             let twoRandomPosts = [];
             while (twoRandomPosts.length < 2) {
                 let randomIndex = Math.floor(Math.random() * randomizedPosts.length);
@@ -1305,19 +1305,18 @@ const StrategyAndTipsMock = ({ gameId, categoryPage }) => {
                     twoRandomPosts.push(randomizedPosts[randomIndex]);
                 }
             }
-    
+
             localStorage.setItem(storageKey, JSON.stringify(twoRandomPosts));
-    
+
             setRandomPosts(twoRandomPosts);
         }
-    
+
         const storedIsLiked = localStorage.getItem(postLikedKey);
         setIsLiked(storedIsLiked ? JSON.parse(storedIsLiked) : []);
-    
+
         const storedIsCommentLiked = localStorage.getItem(commentLikedKey);
         setIsCommentLiked(storedIsCommentLiked ? JSON.parse(storedIsCommentLiked) : []);
     }, [gameId, categoryPage]);
-    
 
     const [openIndex, setOpenIndex] = useState(null);
 
@@ -1384,17 +1383,9 @@ const StrategyAndTipsMock = ({ gameId, categoryPage }) => {
             {Array.isArray(randomPosts) &&
                 randomPosts.map((post, index) => {
                     return (
-                        <section
-                            key={index}
-                            className="post-mapping-section-container"
-            
-                        >
-                            <section className="post-mapping-image-section" >
-                                <img
-                                    src={post.user.profileImage}
-                                    alt={post.user.username}
-                                    aria-label={post.user.username}
-                                />
+                        <section key={index} className="post-mapping-section-container">
+                            <section className="post-mapping-image-section">
+                                <img src={post.user.profileImage} alt={post.user.username} aria-label={post.user.username} />
                                 <div style={{ marginLeft: "1rem" }}>
                                     <h2>{post.post_title}</h2>
                                     <p>{post.post_content}</p>
@@ -1406,15 +1397,10 @@ const StrategyAndTipsMock = ({ gameId, categoryPage }) => {
                                 <button className="post-comment-like-button" style={{ width: "4rem" }} onClick={() => handleLike("post", index)} aria-pressed={isLiked[index] ? "true" : "false"} aria-label="like button for post">
                                     {isLiked[index] ? "Unlike" : "Like"}
                                 </button>
-                                <p>
-                                    {post.likes} likes{" "}
-                                </p>
+                                <p>{post.likes} likes </p>
                             </section>
 
-                            <div
-                                onClick={() => handleToggle(index)}
-                                className={`accordion-container ${openIndex === index ? "open" : "closed"}`}
-                            >
+                            <div onClick={() => handleToggle(index)} className={`accordion-container ${openIndex === index ? "open" : "closed"}`}>
                                 Comments {openIndex === index ? "▲" : "▼"}
                             </div>
 
@@ -1424,19 +1410,14 @@ const StrategyAndTipsMock = ({ gameId, categoryPage }) => {
                                     {post.comments &&
                                         post.comments.length > 0 &&
                                         post.comments.map((comment, idx) => (
-                                            <section className="accordion-comment-section"
-                                                key={idx} dby={comment.user.username}>
+                                            <section className="accordion-comment-section" key={idx} dby={comment.user.username}>
                                                 <div
                                                     style={{
                                                         display: "flex",
                                                         alignItems: "center",
                                                     }}
                                                 >
-                                                    <img
-                                                        src={comment.user.profileImage}
-                                                        alt={comment.user.username}
-                                                        aria-label={comment.user.username}
-                                                    />
+                                                    <img src={comment.user.profileImage} alt={comment.user.username} aria-label={comment.user.username} />
                                                     <div
                                                         style={{
                                                             marginLeft: "1rem",
@@ -1452,14 +1433,13 @@ const StrategyAndTipsMock = ({ gameId, categoryPage }) => {
                                                         style={{
                                                             width: "4rem",
                                                         }}
-                                                        onClick={() => handleLike("comment", index, idx)} aria-pressed={isLiked[index] ? "true" : "false"} 
+                                                        onClick={() => handleLike("comment", index, idx)}
+                                                        aria-pressed={isLiked[index] ? "true" : "false"}
                                                         aria-label="like button for post"
                                                     >
                                                         {(isCommentLiked[index] || [])[idx] || false ? "Unlike" : "Like"}
                                                     </button>
-                                                    <p>
-                                                        {comment.likes} likes
-                                                    </p>
+                                                    <p>{comment.likes} likes</p>
                                                 </section>
                                             </section>
                                         ))}
@@ -1479,7 +1459,7 @@ const StrategyAndTipsMock = ({ gameId, categoryPage }) => {
                                         />
                                         <button
                                             className="add-comment-button"
-                                            style={{width:'10rem', marginTop:'.5rem'}}
+                                            style={{ width: "10rem", marginTop: ".5rem" }}
                                             onClick={() => {
                                                 handleAddComment(index, newComment[index]);
                                                 setNewComment((prevComments) => {

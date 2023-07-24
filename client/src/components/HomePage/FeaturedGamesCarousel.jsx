@@ -2,12 +2,14 @@ import React, { useEffect, useState, useContext } from "react";
 import axios from "axios";
 import { useNavigate } from "react-router-dom";
 import { GameContext } from "../../contexts/GameContext";
-import GameCarousel from './GameCarousel';
+import { UserContext } from "../../contexts/UserContext";
+import GameCarousel from "./GameCarousel";
 
 function FeaturedGamesCarousel() {
     const [featuredGames, setFeaturedGames] = useState([]);
     const [hotGames, setHotGames] = useState([]);
     const [lovedGames, setLovedGames] = useState([]);
+    const [user] = useContext(UserContext);
     const navigate = useNavigate();
 
     const { setGameData } = useContext(GameContext);
@@ -17,8 +19,7 @@ function FeaturedGamesCarousel() {
             method: "GET",
             url: "https://free-to-play-games-database.p.rapidapi.com/api/games",
             headers: {
-                "X-RapidAPI-Key":
-                    "5353e51751msha2b28d9e3384746p1a9b44jsne8dbb6955924",
+                "X-RapidAPI-Key": "5353e51751msha2b28d9e3384746p1a9b44jsne8dbb6955924",
                 "X-RapidAPI-Host": "free-to-play-games-database.p.rapidapi.com",
             },
         };
@@ -32,10 +33,7 @@ function FeaturedGamesCarousel() {
                 setHotGames(shuffledGames.slice(5, 10));
                 setLovedGames(shuffledGames.slice(10, 15));
             } catch (error) {
-                console.error(
-                    "There was an error retrieving the games:",
-                    error
-                );
+                console.error("There was an error retrieving the games:", error);
             }
         };
 
@@ -43,8 +41,13 @@ function FeaturedGamesCarousel() {
     }, []);
 
     const handleGameClick = (game) => {
-        setGameData(game);
-        navigate(`/game/${game.id}`);
+        console.log(user);
+        if (user !== null && user.id !== null) {
+            setGameData(game);
+            navigate(`/game/${game.id}`);
+        } else {
+            navigate("/signup", { state: { from: `/game/${game.id}` } });
+        }
     };
 
     return (

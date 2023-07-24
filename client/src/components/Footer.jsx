@@ -7,11 +7,15 @@ const Footer = () => {
         <footer>
             <section className="footer-information-section" aria-label="information-section">
                 <div>
-                    <h3 id="joystick-junction-footer" aria-label="joystick-junction-footer">Joystick Junction</h3>
+                    <h3 id="joystick-junction-footer" aria-label="joystick-junction-footer">
+                        Joystick Junction
+                    </h3>
                     <p>Discuss and share your favorite games, strategies, and experiences with others!</p>
                 </div>
                 <div>
-                    <h3 id="contact-us-footer" aria-label="contact-us-footer">Contact Us</h3>
+                    <h3 id="contact-us-footer" aria-label="contact-us-footer">
+                        Contact Us
+                    </h3>
                     <p>Email: geckob4i@gmail.com</p>
                     {/* <p>Phone: (123) 456-7890</p> */}
                 </div>

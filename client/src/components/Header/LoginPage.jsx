@@ -9,12 +9,11 @@ const LoginPage = () => {
     const navigate = useNavigate();
     const location = useLocation();
 
-
     const handleInputChange = (event) => {
         setFormData({ ...formData, [event.target.name]: event.target.value });
     };
 
-   const handleFormSubmit = async (event) => {
+    const handleFormSubmit = async (event) => {
         console.log(formData);
         event.preventDefault();
 
@@ -34,7 +33,6 @@ const LoginPage = () => {
         }
     };
 
-
     const goToSignUpPage = async () => {
         navigate("/login", { state: location.state });
     };
@@ -48,7 +46,9 @@ const LoginPage = () => {
     return (
         <>
             <section className="login-container">
-                <h1 className="login-header" id="loginHeader">Login</h1>
+                <h1 className="login-header" id="loginHeader">
+                    Login
+                </h1>
 
                 <form className="login-form mb-3" aria-labelledby="loginHeader">
                     <div className="form-group">

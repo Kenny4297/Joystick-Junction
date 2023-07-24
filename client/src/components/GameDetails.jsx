@@ -32,7 +32,7 @@ const GameDetails = () => {
             </div>
 
             <div className="game-details-categories-selection" aria-label="categories-selection">
-                <Link className="game-details-button-link" to={`/games/${gameId}/Strategy-and-Tips`}  aria-label="strategy-and-tips">
+                <Link className="game-details-button-link" to={`/games/${gameId}/Strategy-and-Tips`} aria-label="strategy-and-tips">
                     Strategy and Tips
                 </Link>
                 <Link className="game-details-button-link" to={`/games/${gameId}/Reviews-and-Opinions`} aria-label="reviews-and-opinions">

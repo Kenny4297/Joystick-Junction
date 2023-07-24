@@ -57,13 +57,17 @@ const RecentArticles = () => {
 
     return (
         <section style={{ marginTop: "3rem" }} aria-labelledby="recent-articles-heading">
-            <h2 id="recent-articles-heading" style={{ color: "var(--grey)" }}>Recent Articles</h2>
+            <h2 id="recent-articles-heading" style={{ color: "var(--grey)" }}>
+                Recent Articles
+            </h2>
             <div className="articles-card-container" role="list">
                 {games.length > 0 ? (
                     games.map((game, index) => {
                         return (
                             <div className="articles-card" key={game.id} onClick={() => setClickedGame(clickedGame === game.id ? null : game.id)} role="listitem" aria-labelledby={`game-title-${index}`} aria-describedby={`game-description-${index}`}>
-                                <h3 id={`game-title-${index}`} className="articles-card-heading">{game.title}</h3>
+                                <h3 id={`game-title-${index}`} className="articles-card-heading">
+                                    {game.title}
+                                </h3>
                                 <img src={game.thumbnail} alt={game.title} className="articles-card-image" />
                                 <h4 className="articles-card-subheading">{articleTitlesIndex[index]}</h4>
                                 <p className="articles-card-description">{gameDescriptions[index]}</p>

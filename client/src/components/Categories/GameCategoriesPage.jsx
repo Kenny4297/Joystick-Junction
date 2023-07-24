@@ -58,22 +58,14 @@ const GameCategoriesPage = () => {
 
     const handleLikeComment = async (commentId) => {
         try {
-            const response = await axios.post(
-                `/api/likes/comments/${commentId}`,
-                {},
-                { withCredentials: true }
-            );
+            const response = await axios.post(`/api/likes/comments/${commentId}`, {}, { withCredentials: true });
             setPosts(
                 posts.map((post) => {
                     return {
                         ...post,
                         comments: post.comments.map((comment) => {
                             if (comment.id === commentId) {
-                                const commentLikes = Array.isArray(
-                                    comment.likes
-                                )
-                                    ? comment.likes
-                                    : [];
+                                const commentLikes = Array.isArray(comment.likes) ? comment.likes : [];
                                 return {
                                     ...comment,
                                     likes: [...commentLikes, response.data],
@@ -96,10 +88,7 @@ const GameCategoriesPage = () => {
     const handleUnlikeComment = async (commentId) => {
         try {
             const { id: userId } = user;
-            const response = await axios.delete(
-                `/api/likes/comments/${commentId}`,
-                { data: { user_id: userId } }
-            );
+            const response = await axios.delete(`/api/likes/comments/${commentId}`, { data: { user_id: userId } });
 
             if (response.status === 200) {
                 setPosts(
@@ -110,9 +99,7 @@ const GameCategoriesPage = () => {
                                 if (comment.id === commentId) {
                                     return {
                                         ...comment,
-                                        likes: comment.likes.filter(
-                                            (like) => like.user_id !== userId
-                                        ),
+                                        likes: comment.likes.filter((like) => like.user_id !== userId),
                                     };
                                 }
                                 return comment;
@@ -158,11 +145,7 @@ const GameCategoriesPage = () => {
         console.log("post.id:", postId);
         console.log("index:", index);
         try {
-            await axios.post(
-                "/api/comments",
-                { post_id: postId, comment_content: newComment[index] },
-                { withCredentials: true }
-            );
+            await axios.post("/api/comments", { post_id: postId, comment_content: newComment[index] }, { withCredentials: true });
 
             const updatedNewComments = [...newComment];
             if (updatedNewComments[index] === undefined) {
@@ -198,18 +181,10 @@ const GameCategoriesPage = () => {
 
     const handleLikePost = async (postId) => {
         try {
-            const response = await axios.post(
-                `/api/likes/posts/${postId}`,
-                {},
-                { withCredentials: true }
-            );
+            const response = await axios.post(`/api/likes/posts/${postId}`, {}, { withCredentials: true });
 
             if (response.status === 201) {
-                setPosts(
-                    posts.map((post) =>
-                        post.id === postId ? response.data : post
-                    )
-                );
+                setPosts(posts.map((post) => (post.id === postId ? response.data : post)));
             }
         } catch (error) {
             console.error("Error in handleLikePost:", error);
@@ -229,9 +204,7 @@ const GameCategoriesPage = () => {
                         if (post.id === postId) {
                             return {
                                 ...post,
-                                likes: post.likes.filter(
-                                    (like) => like.user_id !== userId
-                                ),
+                                likes: post.likes.filter((like) => like.user_id !== userId),
                             };
                         }
                         return post;
@@ -251,17 +224,14 @@ const GameCategoriesPage = () => {
         const fetchPostsByGameAndCategory = async () => {
             console.log("Test test?");
             try {
-                const postResponse = await axios.get(
-                    `/api/posts/game/${gameId}/category/${categoryPage}`
-                );
+                const postResponse = await axios.get(`/api/posts/game/${gameId}/category/${categoryPage}`);
                 console.log("Post response:", postResponse);
 
                 if (postResponse.data.length) {
                     const updatedPostData = postResponse.data.map((post) => {
                         return {
                             ...post,
-                            comments:
-                                post.comments.length > 0 ? post.comments : [],
+                            comments: post.comments.length > 0 ? post.comments : [],
                             likes: post.likes || [],
                         };
                     });
@@ -274,9 +244,7 @@ const GameCategoriesPage = () => {
             } catch (err) {
                 console.error(err);
                 if (err.response && err.response.status === 404) {
-                    console.error(
-                        `No posts found for game ${gameId} and category ${categoryPage}`
-                    );
+                    console.error(`No posts found for game ${gameId} and category ${categoryPage}`);
                     setPosts([]);
                 }
             }
@@ -293,16 +261,9 @@ const GameCategoriesPage = () => {
     return (
         <>
             <section className="game-categories-container">
-                <h1>
-                    {categoryPage.charAt(0).toUpperCase() +
-                        categoryPage.slice(1)}
-                </h1>
+                <h1>{categoryPage.charAt(0).toUpperCase() + categoryPage.slice(1)}</h1>
                 <h4>{gameData.title}</h4>
-                <img
-                    src={gameData.thumbnail}
-                    alt={gameData.title}
-                    aria-label={gameData.title}
-                />
+                <img src={gameData.thumbnail} alt={gameData.title} aria-label={gameData.title} />
                 <button className="open-modal-button" onClick={openModal} aria-label="Create a Post">
                     Create a Post
                 </button>
@@ -312,16 +273,9 @@ const GameCategoriesPage = () => {
 
             {Array.isArray(posts) &&
                 posts.map((post, index) => (
-                    <section
-                        key={index}
-                        className="post-mapping-section-container"
-                    >
-                        <section className="post-mapping-image-section" >
-                            <img
-                                src={post.user.profileImage}
-                                alt={post.user.username}
-                                aria-label={post.user.username}
-                            />
+                    <section key={index} className="post-mapping-section-container">
+                        <section className="post-mapping-image-section">
+                            <img src={post.user.profileImage} alt={post.user.username} aria-label={post.user.username} />
                             <div style={{ marginLeft: "1rem" }}>
                                 <h2>{post.post_title}</h2>
                                 <p>{post.post_content}</p>
@@ -330,38 +284,19 @@ const GameCategoriesPage = () => {
                         </section>
 
                         <section className="like-button-section">
-                            {post.likes &&
-                            post.likes.find(
-                                (like) => user && like.user_id === user.id
-                            ) ? (
-                                <button
-                                    className="post-comment-like-button"
-                                    onClick={() => handleUnlikePost(post.id)}
-                                    style={{ width: "4rem" }}
-                                    aria-label="Unlike"
-                                >
+                            {post.likes && post.likes.find((like) => user && like.user_id === user.id) ? (
+                                <button className="post-comment-like-button" onClick={() => handleUnlikePost(post.id)} style={{ width: "4rem" }} aria-label="Unlike">
                                     Unlike
                                 </button>
                             ) : (
-                                <button
-                                    className="post-comment-like-button"
-                                    onClick={() => handleLikePost(post.id)}
-                                    style={{ width: "4rem" }}
-                                    aria-label="Like"
-                                >
+                                <button className="post-comment-like-button" onClick={() => handleLikePost(post.id)} style={{ width: "4rem" }} aria-label="Like">
                                     Like
                                 </button>
                             )}
-                            <p>
-                                {post.likes && post.likes.length} likes
-                            </p>
+                            <p>{post.likes && post.likes.length} likes</p>
                         </section>
 
-                        <div
-                            onClick={() => handleToggle(index)}
-                            aria-expanded={openIndex === index}
-                            className={`accordion-container ${openIndex === index ? "open" : "closed"}`}
-                        >
+                        <div onClick={() => handleToggle(index)} aria-expanded={openIndex === index} className={`accordion-container ${openIndex === index ? "open" : "closed"}`}>
                             Comments {openIndex === index ? "▲" : "▼"}
                         </div>
 
@@ -371,53 +306,28 @@ const GameCategoriesPage = () => {
                                 {post.comments &&
                                     post.comments.length > 0 &&
                                     post.comments.map((comment, idx) => (
-                                        <section className="accordion-comment-section"
-                                            key={idx}
-                                            aria-labelledby={comment.user.username}
-                                        >
+                                        <section className="accordion-comment-section" key={idx} aria-labelledby={comment.user.username}>
                                             <div
                                                 style={{
                                                     display: "flex",
                                                     alignItems: "center",
                                                 }}
                                             >
-                                                <img
-                                                    src={
-                                                        comment.user
-                                                            .profileImage
-                                                    }
-                                                    alt={comment.user.username}
-                                                    aria-label={comment.user.username}
-                                                />
+                                                <img src={comment.user.profileImage} alt={comment.user.username} aria-label={comment.user.username} />
                                                 <div
                                                     style={{
                                                         marginLeft: "1rem",
                                                     }}
                                                 >
-                                                    <p>
-                                                        {
-                                                            comment.comment_content
-                                                        }
-                                                    </p>
-                                                    <h5>
-                                                        {comment.user.username}
-                                                    </h5>
+                                                    <p>{comment.comment_content}</p>
+                                                    <h5>{comment.user.username}</h5>
                                                 </div>
                                             </div>
                                             <section className="accordion-comment-like-section">
-                                                {comment.likes &&
-                                                comment.likes.find(
-                                                    (like) =>
-                                                        user &&
-                                                        like.user_id === user.id
-                                                ) ? (
+                                                {comment.likes && comment.likes.find((like) => user && like.user_id === user.id) ? (
                                                     <button
                                                         className="post-comment-like-button"
-                                                        onClick={() =>
-                                                            handleUnlikeComment(
-                                                                comment.id
-                                                            )
-                                                        }
+                                                        onClick={() => handleUnlikeComment(comment.id)}
                                                         style={{
                                                             width: "4rem",
                                                         }}
@@ -428,11 +338,7 @@ const GameCategoriesPage = () => {
                                                 ) : (
                                                     <button
                                                         className="post-comment-like-button"
-                                                        onClick={() =>
-                                                            handleLikeComment(
-                                                                comment.id
-                                                            )
-                                                        }
+                                                        onClick={() => handleLikeComment(comment.id)}
                                                         style={{
                                                             width: "4rem",
                                                         }}
@@ -441,12 +347,7 @@ const GameCategoriesPage = () => {
                                                         Like
                                                     </button>
                                                 )}
-                                                <p>
-                                                    {comment.likes &&
-                                                        comment.likes
-                                                            .length}{" "}
-                                                    likes
-                                                </p>
+                                                <p>{comment.likes && comment.likes.length} likes</p>
                                             </section>
                                         </section>
                                     ))}
@@ -456,21 +357,13 @@ const GameCategoriesPage = () => {
                                         value={newComment[index] || ""}
                                         onChange={(event) => {
                                             const updatedComments = [...newComment];
-                                            updatedComments[index] =
-                                                event.target.value;
+                                            updatedComments[index] = event.target.value;
                                             setNewComment(updatedComments);
                                         }}
                                         placeholder="Add a comment..."
                                         aria-label="Add a comment"
                                     />
-                                    <button
-                                        className="add-comment-button"
-                                        style={{width:'10rem', marginTop:'.5rem'}}
-                                        onClick={() =>
-                                            handleAddComment(post.id, index)
-                                        }
-                                        aria-label="Add Comment"
-                                    >
+                                    <button className="add-comment-button" style={{ width: "10rem", marginTop: ".5rem" }} onClick={() => handleAddComment(post.id, index)} aria-label="Add Comment">
                                         Add Comment
                                     </button>
                                 </div>
@@ -479,16 +372,9 @@ const GameCategoriesPage = () => {
                     </section>
                 ))}
 
-            <Modal
-                isOpen={modalIsOpen}
-                onRequestClose={closeModal}
-                contentLabel="Example Modal"
-                style={customStyles}
-                aria-modal="true"
-                aria-labelledby="modal-title"
-            >
+            <Modal isOpen={modalIsOpen} onRequestClose={closeModal} contentLabel="Example Modal" style={customStyles} aria-modal="true" aria-labelledby="modal-title">
                 <div className="modal-section">
-                    <h2 id="modal-title" >Create a post!</h2>
+                    <h2 id="modal-title">Create a post!</h2>
                     <form onSubmit={handleFormSubmit}>
                         <input
                             type="text"
@@ -496,8 +382,7 @@ const GameCategoriesPage = () => {
                             onChange={(event) => setPostTitle(event.target.value)}
                             placeholder="Post Title"
                             onFocus={(event) => {
-                                event.target.style.boxShadow =
-                                    "0 0 5px var(--blue)";
+                                event.target.style.boxShadow = "0 0 5px var(--blue)";
                                 event.target.style.outline = "none";
                             }}
                             onBlur={(event) => {
@@ -510,19 +395,14 @@ const GameCategoriesPage = () => {
                             onChange={(event) => setPostContent(event.target.value)}
                             placeholder="Write your post here..."
                             onFocus={(event) => {
-                                event.target.style.boxShadow =
-                                    "0 0 5px var(--blue)";
+                                event.target.style.boxShadow = "0 0 5px var(--blue)";
                             }}
                             onBlur={(event) => {
                                 event.target.style.boxShadow = "none";
                             }}
                             aria-label="Write your post here"
                         />
-                        <button
-                            type="submit"
-                            className="modal-submit-button"
-                            aria-label="Submit"
-                        >
+                        <button type="submit" className="modal-submit-button" aria-label="Submit">
                             Submit
                         </button>
                     </form>
