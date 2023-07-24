@@ -168,12 +168,12 @@ const Browse = () => {
     };
 
     return (
-        <section>
-            <h1 style={{textAlign: 'center', textDecoration: 'underline', color: 'var(--blue)'}}>Browse</h1>
-            <div className="browse-container">
-                <h2>Search for a game by its title</h2>
-                <form onSubmit={fetchGamesByName}>
-                    <input type="text" className="browse-search-bar" value={searchInput} onChange={(event) => setSearchInput(event.target.value)}/>
+        <section className="browse-heading" aria-labelledby="browse-heading">
+            <h1 id="browse-heading">Browse</h1>
+            <div className="browse-container" aria-labelledby="game-search-heading">
+                <h2 id="game-search-heading">Search for a game by its title</h2>
+                <form onSubmit={fetchGamesByName} aria-label="Game search">
+                    <input type="text" className="browse-search-bar" value={searchInput} onChange={(event) => setSearchInput(event.target.value)} aria-label="Search input"/>
                 </form>
                 {hasSearched && (
                     <button className="reset-search-button" onClick={resetSearch}>
@@ -184,12 +184,12 @@ const Browse = () => {
             {noGamesFoundMessage && <p>{noGamesFoundMessage}</p>}
 
             {!searchInput.length && (
-                <section className="tailor-your-exploration-container">
+                <section className="tailor-your-exploration-container" aria-labelledby="tailor-exploration-heading">
                     <h3>Or...</h3>
-                    <section className="tailor-your-exploration-section" style={{ textAlign: "center" }}>
+                    <section className="tailor-your-exploration-section" aria-labelledby="tailor-exploration-heading">
                         <h2>Tailor Your Exploration!</h2>
-                        <p style={{ textAlign: "center", color: "var(--blue)" }}>Select any combination of categories you want in your ideal game!</p>
-                        <form onSubmit={fetchGamesByCategories}>
+                        <p>Select any combination of categories you want in your ideal game!</p>
+                        <form onSubmit={fetchGamesByCategories} aria-label="Category search">
                             {!isButtonClicked && (
                                 <button type="submit" disabled={selectedCategories.length === 0} className="search-button" style={{ marginBottom: "1rem" }}>
                                     Search
@@ -199,7 +199,7 @@ const Browse = () => {
                         {isButtonClicked && selectedCategories.length > 0 && (
                             <>
                                 <h3>Selected Categories:</h3>
-                                <ul style={{ listStyleType: "none", color: "var(--blue)", position: "relative", right: "1.5rem" }}>
+                                <ul>
                                     {selectedCategories.map((category, index) => (
                                         <li key={index}>{category}</li>
                                     ))}
@@ -209,53 +209,52 @@ const Browse = () => {
                     </section>
                 </section>
             )}
-            <div className="display-games-section">
+            <div className="display-games-section" role="list">
                 {games.length > 0
                     ? games.map((game) => {
                             const gameDescription = game.short_description.length > 100 ? game.short_description.slice(0, 100) + "..." : game.short_description;
                             return (
                                 <div
                                     key={game.id}
-                                    className="individual-game-link"
-                                    onClick={() => handleGameClick(game)}
+                                    className="individual-game-link" onClick={() => handleGameClick(game)} role="listitem" aria-labelledby={`game-title-${game.id}`} aria-describedby={`game-description-${game.id}`}
                                 >
-                                    <h2>{game.title}</h2>
+                                    <h2 id={`game-title-${game.id}`}>{game.title}</h2>
                                     <img src={game.thumbnail} alt={game.title} style={{ width: "100%" }} />
-                                    <p style={{ color: "black" }}>{gameDescription}</p>
+                                    <p id={`game-description-${game.id}`}>{gameDescription}</p>
                                 </div>
                             );
                         })
                     : isSearchingByCategories && <p>No games found for the selected categories.</p>}
             </div>
             {!isButtonClicked && !isLoading && !games.length && (
-                <div className="checkbox-section">
+                <div className="checkbox-section" aria-label="Categories filter">
 
                     <form onSubmit={fetchGamesByCategories}>
                         <div className="individual-checkboxes-container">
 
                             <div className="individual-checkboxes">
                                 <h4>Main Categories</h4>
-                                <ul style={{ listStyleType: "none" }}>{mainCategoryCheckboxes}</ul>
+                                <ul>{mainCategoryCheckboxes}</ul>
                             </div>
 
                             <div className="individual-checkboxes">
                                 <h4>Game Types</h4>
-                                <ul style={{ columns: 2, columnGap: "2rem", listStyleType: "none" }}>{typesCategoryCheckboxes}</ul>
+                                <ul>{typesCategoryCheckboxes}</ul>
                             </div>
 
                             <div className="individual-checkboxes">
                                 <h4>Multiplayer</h4>
-                                <ul style={{ listStyleType: "none" }}>{multiplayerCategoryCheckboxes}</ul>
+                                <ul>{multiplayerCategoryCheckboxes}</ul>
                             </div>
 
                             <div className="individual-checkboxes">
                                 <h4>POV</h4>
-                                <ul style={{ listStyleType: "none" }}>{POVCategoryCheckboxes}</ul>
+                                <ul>{POVCategoryCheckboxes}</ul>
                             </div>
 
                             <div className="individual-checkboxes">
                                 <h4>Random</h4>
-                                <ul style={{ listStyleType: "none" }}>{randomCategoryCheckboxes}</ul>
+                                <ul>{randomCategoryCheckboxes}</ul>
                             </div>
                         </div>
                     </form>

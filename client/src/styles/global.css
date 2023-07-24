@@ -329,6 +329,12 @@ textarea::placeholder {
 
 /* === Home Page === */
 
+.browse-heading h1 {
+  text-align: center;
+  text-decoration: underline;
+  color: var(--blue);
+}
+
 .call-to-action-button-container {
   display: flex;
   justify-content: center;
@@ -554,19 +560,13 @@ header {
   box-shadow: 0 0 0 3px rgba(0, 123, 255, 0.25);
 }
 
-.signupPrimaryButton {
-  background-color: var(--blue);
-  color: var(--white);
-  border: none;
-}
-
-.alert.signupAlertSuccess {
+.alert.sign-up-alert-success {
   margin-top: 10px;
   background-color: #d4edda;
   color: #155724;
 }
 
-.alert.signupAlertFail {
+.alert.sign-up-alert-fail {
   margin-top: 10px;
   background-color: #f8d7da;
   color: #721c24;
@@ -887,6 +887,10 @@ header {
   margin-top: 1rem;
 }
 
+.tailor-your-exploration-section {
+  text-align: center;
+}
+
 .tailor-your-exploration-container h3 {
   text-align: center;
   color: white;
@@ -898,11 +902,32 @@ header {
   color: white;
 }
 
+.tailor-your-exploration-section p {
+  text-align: center;
+  color: var(--blue);
+}
+
+.tailor-exploration-heading ul {
+  list-style-type: none;
+  color: var(--blue);
+  position: relative;
+  right: 1.5rem;
+}
+
+
 .display-games-section {
   display: grid;
   grid-template-columns: repeat(auto-fit, minmax(20rem, 1fr));
   justify-content: center;
   gap: 1rem;
+}
+
+.display-games-section h2 {
+  text-align: center;
+}
+
+.display-games-section p {
+  color: black;
 }
 
 .individual-game-link {
@@ -953,6 +978,17 @@ header {
   align-items: center;
   justify-content: center;
 }
+
+.individual-checkboxes ul {
+  list-style-type: none;
+}
+
+.individual-checkboxes:nth-child(2) ul {
+  columns: 2;
+  column-gap: 2rem;
+}
+
+
 
 
 

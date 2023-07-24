@@ -48,17 +48,17 @@ const LoginPage = () => {
     return (
         <>
             <section className="login-container">
-                <h1 className="login-header">Login</h1>
+                <h1 className="login-header" id="loginHeader">Login</h1>
 
-                <form className="login-form mb-3">
+                <form className="login-form mb-3" aria-labelledby="loginHeader">
                     <div className="form-group">
-                        <label>Email Address</label>
-                        <input type="text" name="email" placeholder="john@gmail.com" className="form-control" value={formData.email} onChange={handleInputChange} />
+                        <label id="emailLabel">Email Address</label>
+                        <input type="text" name="email" placeholder="john@gmail.com" className="form-control" value={formData.email} onChange={handleInputChange} aria-labelledby="emailLabel" aria-required="true" />
                     </div>
 
                     <div className="form-group">
-                        <label>Password</label>
-                        <input type="password" name="password" className="form-control" value={formData.password} onChange={handleInputChange} />
+                        <label id="passwordLabel">Password</label>
+                        <input type="password" name="password" className="form-control" value={formData.password} onChange={handleInputChange} aria-labelledby="passwordLabel" aria-required="true" />
                     </div>
 
                     <div className="form-group mt-2">

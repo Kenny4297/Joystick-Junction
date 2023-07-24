@@ -42,23 +42,23 @@ const SignupPage = () => {
     return (
         <>
             <section className="sign-up-card-container">
-                    <h1>Sign Up</h1>
+                    <h1 id="sign-up-header">Sign Up</h1>
                     <div className="sign-up-card">
                         <div>
-                            <form className="signupForm">
+                            <form aria-labelledby="sign-up-header">
                                 <div className="form-group">
-                                    <label>Email Address</label>
-                                    <input type="text" name="email" placeholder="john@gmail.com" className="form-control" value={formData.email} onChange={handleInputChange} />
+                                    <label id="email-sign-up-label">Email Address</label>
+                                    <input type="text" name="email" placeholder="john@gmail.com" className="form-control" value={formData.email} onChange={handleInputChange} aria-labelledby="emailSignUpLabel" aria-required="true" />
                                 </div>
 
                                 <div className="form-group">
-                                    <label>Username</label>
-                                    <input type="text" name="username" placeholder="JohnDoe" className="form-control" value={formData.username} onChange={handleInputChange} />
+                                    <label id="username-sign-up-label">Username</label>
+                                    <input type="text" name="username" placeholder="JohnDoe" className="form-control" value={formData.username} onChange={handleInputChange}aria-labelledby="username-sign-up-label" aria-required="true" />
                                 </div>
 
                                 <div className="form-group">
-                                    <label>Password</label>
-                                    <input type="password" name="password" className="form-control" value={formData.password} onChange={handleInputChange} />
+                                    <label id="password-sign-up-label">Password</label>
+                                    <input type="password" name="password" className="form-control" value={formData.password} onChange={handleInputChange} aria-labelledby="passwordSignUpLabel" aria-required="true" />
                                 </div>
 
                                 <div style={{marginBottom:'.5rem'}}>
@@ -75,13 +75,13 @@ const SignupPage = () => {
                             </form>
 
                             {signupResult === "success" && (
-                                <div className="alert signupAlertSuccess" role="alert">
+                                <div className="alert sign-up-alert-success" role="alert">
                                     Sign up successful!
                                 </div>
                             )}
 
                             {signupResult === "fail" && (
-                                <div className="alert signupAlertFail" role="alert">
+                                <div className="alert sign-up-alert-fail" role="alert">
                                     Sign up failed!
                                 </div>
                             )}

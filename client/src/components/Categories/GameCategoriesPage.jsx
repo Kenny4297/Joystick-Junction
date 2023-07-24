@@ -302,8 +302,9 @@ const GameCategoriesPage = () => {
                     src={gameData.thumbnail}
                     alt={gameData.title}
                     style={{ width: "25rem" }}
+                    aria-label={gameData.title}
                 />
-                <button className="open-modal-button" onClick={openModal}>
+                <button className="open-modal-button" onClick={openModal} aria-label="Create a Post">
                     Create a Post
                 </button>
             </section>
@@ -320,6 +321,7 @@ const GameCategoriesPage = () => {
                             <img
                                 src={post.user.profileImage}
                                 alt={post.user.username}
+                                aria-label={post.user.username}
                             />
                             <div style={{ marginLeft: "1rem" }}>
                                 <h2>{post.post_title}</h2>
@@ -337,6 +339,7 @@ const GameCategoriesPage = () => {
                                     className="post-comment-like-button"
                                     onClick={() => handleUnlikePost(post.id)}
                                     style={{ width: "4rem" }}
+                                    aria-label="Unlike"
                                 >
                                     Unlike
                                 </button>
@@ -345,6 +348,7 @@ const GameCategoriesPage = () => {
                                     className="post-comment-like-button"
                                     onClick={() => handleLikePost(post.id)}
                                     style={{ width: "4rem" }}
+                                    aria-label="Like"
                                 >
                                     Like
                                 </button>
@@ -356,6 +360,7 @@ const GameCategoriesPage = () => {
 
                         <div
                             onClick={() => handleToggle(index)}
+                            aria-expanded={openIndex === index}
                             className={`accordion-container ${openIndex === index ? "open" : "closed"}`}
                         >
                             Comments {openIndex === index ? "▲" : "▼"}
@@ -369,6 +374,7 @@ const GameCategoriesPage = () => {
                                     post.comments.map((comment, idx) => (
                                         <section className="accordion-comment-section"
                                             key={idx}
+                                            aria-labelledby={comment.user.username}
                                         >
                                             <div
                                                 style={{
@@ -382,6 +388,7 @@ const GameCategoriesPage = () => {
                                                             .profileImage
                                                     }
                                                     alt={comment.user.username}
+                                                    aria-label={comment.user.username}
                                                 />
                                                 <div
                                                     style={{
@@ -415,6 +422,7 @@ const GameCategoriesPage = () => {
                                                         style={{
                                                             width: "4rem",
                                                         }}
+                                                        aria-label="Unlike"
                                                     >
                                                         Unlike
                                                     </button>
@@ -429,6 +437,7 @@ const GameCategoriesPage = () => {
                                                         style={{
                                                             width: "4rem",
                                                         }}
+                                                        aria-label="Like"
                                                     >
                                                         Like
                                                     </button>
@@ -453,6 +462,7 @@ const GameCategoriesPage = () => {
                                             setNewComment(updatedComments);
                                         }}
                                         placeholder="Add a comment..."
+                                        aria-label="Add a comment"
                                     />
                                     <button
                                         className="add-comment-button"
@@ -460,6 +470,7 @@ const GameCategoriesPage = () => {
                                         onClick={() =>
                                             handleAddComment(post.id, index)
                                         }
+                                        aria-label="Add Comment"
                                     >
                                         Add Comment
                                     </button>
@@ -474,9 +485,11 @@ const GameCategoriesPage = () => {
                 onRequestClose={closeModal}
                 contentLabel="Example Modal"
                 style={customStyles}
+                aria-modal="true"
+                aria-labelledby="modal-title"
             >
                 <div className="modal-section">
-                    <h2>Create a post!</h2>
+                    <h2 id="modal-title" >Create a post!</h2>
                     <form onSubmit={handleFormSubmit}>
                         <input
                             type="text"
@@ -491,6 +504,7 @@ const GameCategoriesPage = () => {
                             onBlur={(event) => {
                                 event.target.style.boxShadow = "none";
                             }}
+                            aria-label="Post Title"
                         />
                         <textarea
                             value={postContent}
@@ -503,10 +517,12 @@ const GameCategoriesPage = () => {
                             onBlur={(event) => {
                                 event.target.style.boxShadow = "none";
                             }}
+                            aria-label="Write your post here"
                         />
                         <button
                             type="submit"
                             className="modal-submit-button"
+                            aria-label="Submit"
                         >
                             Submit
                         </button>

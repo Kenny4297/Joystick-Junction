@@ -1390,10 +1390,10 @@ const StrategyAndTipsMock = ({ gameId, categoryPage }) => {
             
                         >
                             <section className="post-mapping-image-section" >
-                    
                                 <img
                                     src={post.user.profileImage}
                                     alt={post.user.username}
+                                    aria-label={post.user.username}
                                 />
                                 <div style={{ marginLeft: "1rem" }}>
                                     <h2>{post.post_title}</h2>
@@ -1403,7 +1403,7 @@ const StrategyAndTipsMock = ({ gameId, categoryPage }) => {
                             </section>
 
                             <section className="like-button-section">
-                                <button className="post-comment-like-button" style={{ width: "4rem" }} onClick={() => handleLike("post", index)}>
+                                <button className="post-comment-like-button" style={{ width: "4rem" }} onClick={() => handleLike("post", index)} aria-pressed={isLiked[index] ? "true" : "false"} aria-label="like button for post">
                                     {isLiked[index] ? "Unlike" : "Like"}
                                 </button>
                                 <p>
@@ -1425,7 +1425,7 @@ const StrategyAndTipsMock = ({ gameId, categoryPage }) => {
                                         post.comments.length > 0 &&
                                         post.comments.map((comment, idx) => (
                                             <section className="accordion-comment-section"
-                                                key={idx}>
+                                                key={idx} dby={comment.user.username}>
                                                 <div
                                                     style={{
                                                         display: "flex",
@@ -1435,6 +1435,7 @@ const StrategyAndTipsMock = ({ gameId, categoryPage }) => {
                                                     <img
                                                         src={comment.user.profileImage}
                                                         alt={comment.user.username}
+                                                        aria-label={comment.user.username}
                                                     />
                                                     <div
                                                         style={{
@@ -1451,7 +1452,8 @@ const StrategyAndTipsMock = ({ gameId, categoryPage }) => {
                                                         style={{
                                                             width: "4rem",
                                                         }}
-                                                        onClick={() => handleLike("comment", index, idx)}
+                                                        onClick={() => handleLike("comment", index, idx)} aria-pressed={isLiked[index] ? "true" : "false"} 
+                                                        aria-label="like button for post"
                                                     >
                                                         {(isCommentLiked[index] || [])[idx] || false ? "Unlike" : "Like"}
                                                     </button>
@@ -1473,6 +1475,7 @@ const StrategyAndTipsMock = ({ gameId, categoryPage }) => {
                                                 });
                                             }}
                                             placeholder="Add a comment..."
+                                            aria-label="Add a comment"
                                         />
                                         <button
                                             className="add-comment-button"
@@ -1485,6 +1488,7 @@ const StrategyAndTipsMock = ({ gameId, categoryPage }) => {
                                                     return newComments;
                                                 });
                                             }}
+                                            aria-label="Add Comment"
                                         >
                                             Add Comment
                                         </button>
