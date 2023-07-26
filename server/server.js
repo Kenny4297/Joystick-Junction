@@ -4,6 +4,7 @@ const express = require('express');
 const cors = require('cors');
 const sequelize = require('./config/connection');
 const path = require('path');
+const { Comment, Post, User, DirectMessage, Like } = require('./models');
 
 const routes = require('./routes');
 
@@ -36,16 +37,40 @@ app.use(routes);
 
 app.use(express.static(path.join(__dirname, 'public')));
 
+
+
+//! =====! Deleting tables section!
+//* This will not delete the database ever
 const syncOptions = { force: false };
+
+
+//* This will delete the database in development but not production
+// const syncOptions = process.env.NODE_ENV === "production" ? { force: false } : { force: true };
+
+//! =================================================
+
 
 // If the environment is not production, 'force' is set to false to avoid dropping and recreating all tables
 if (process.env.NODE_ENV !== "production") {
   syncOptions.force = false;
 }
 
-sequelize.sync(syncOptions).then(() => {
+
+// sequelize.sync(syncOptions).then(() => {
+//   app.listen(PORT, () => console.log(`Now listening on port ${PORT}`));
+// }).catch((error) => {
+//   console.error('Unable to sync database:', error);
+// });
+
+User.sync(syncOptions)
+.then(() => Post.sync(syncOptions))
+.then(() => Comment.sync(syncOptions))
+.then(() => DirectMessage.sync(syncOptions))
+.then(() => Like.sync(syncOptions))
+.then(() => {
   app.listen(PORT, () => console.log(`Now listening on port ${PORT}`));
-}).catch((error) => {
+})
+.catch((error) => {
   console.error('Unable to sync database:', error);
 });
 

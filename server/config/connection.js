@@ -9,7 +9,7 @@ require('dotenv').config({ path: path.resolve(__dirname, '../../.env') });
 //       host: 'localhost',
 //       dialect: 'mysql',
 //       port: 3306,
-//       logging: false
+//       logging: console.log
 //     });
 
 const sequelize = process.env.JAWSDB_URL
@@ -18,7 +18,7 @@ const sequelize = process.env.JAWSDB_URL
       host: 'localhost',
       dialect: 'mysql',
       port: 3306,
-      logging: false
+      logging: console.log
   });
 
 
