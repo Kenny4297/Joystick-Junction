@@ -515,6 +515,10 @@ header {
   color: var(--black);
 }
 
+.error-message {
+  color: white;
+}
+
 
 
 /* Sign-up page */
