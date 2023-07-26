@@ -35,7 +35,7 @@ Like.init(
         timestamps: false,
         freezeTableName: true,
         underscored: true,
-        modelName: "like",
+        modelName: "Like",
         validate: {
             eitherPostOrComment() {
                 if (!(this.post_id || this.comment_id)) {

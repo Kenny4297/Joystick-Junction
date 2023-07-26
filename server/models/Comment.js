@@ -15,7 +15,7 @@ Comment.init(
             type: DataTypes.INTEGER,
             allowNull: true,
             references: {
-                model: "user",
+                model: "User",
                 key: "id",
                 onDelete: "SET NULL",
             },
@@ -49,7 +49,7 @@ Comment.init(
         timestamps: false,
         freezeTableName: true,
         underscored: true,
-        modelName: "comment",
+        modelName: "Comment",
     }
 );
 
