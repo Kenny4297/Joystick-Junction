@@ -20,13 +20,6 @@ const GameCategoriesPage = () => {
     const [newComment, setNewComment] = useState([]);
     const [openIndex, setOpenIndex] = useState(null);
 
-    useEffect(() => {
-        if (user && user.id) {
-            console.log(user);
-            console.log(user.id);
-        }
-    }, [user]);
-
     // Modal Section
     const openModal = () => {
         setIsOpen(true);
@@ -81,10 +74,6 @@ const GameCategoriesPage = () => {
         }
     };
 
-    useEffect(() => {
-        console.log("posts state updated:", posts);
-    }, [posts]);
-
     const handleUnlikeComment = async (commentId) => {
         try {
             const { id: userId } = user;
@@ -116,8 +105,6 @@ const GameCategoriesPage = () => {
     const handleFormSubmit = async (event) => {
         event.preventDefault();
 
-        console.log(user.id);
-
         const newPost = {
             game_id: gameId,
             category: categoryPage,
@@ -142,8 +129,6 @@ const GameCategoriesPage = () => {
     };
 
     const handleAddComment = async (postId, index) => {
-        console.log("post.id:", postId);
-        console.log("index:", index);
         try {
             await axios.post("/api/comments", { post_id: postId, comment_content: newComment[index] }, { withCredentials: true });
 
@@ -222,10 +207,8 @@ const GameCategoriesPage = () => {
 
     useEffect(() => {
         const fetchPostsByGameAndCategory = async () => {
-            console.log("Test test?");
             try {
                 const postResponse = await axios.get(`/api/posts/game/${gameId}/category/${categoryPage}`);
-                console.log("Post response:", postResponse);
 
                 if (postResponse.data.length) {
                     const updatedPostData = postResponse.data.map((post) => {
@@ -237,7 +220,6 @@ const GameCategoriesPage = () => {
                     });
 
                     setPosts(updatedPostData);
-                    console.log("Posts data:", updatedPostData);
                 } else {
                     setPosts([]);
                 }

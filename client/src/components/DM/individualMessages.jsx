@@ -28,9 +28,6 @@ const IndividualMessages = () => {
         try {
             const response = await axios.post("/api/messages/", { message: messageContent, receiverId: otherUserId });
             const newMessage = response.data;
-
-            console.log("New message:", newMessage);
-
             setMessages((prevMessages) => [...prevMessages, newMessage]);
             setMessageContent("");
         } catch (err) {

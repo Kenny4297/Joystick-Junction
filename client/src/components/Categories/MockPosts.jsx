@@ -1232,15 +1232,6 @@ const StrategyAndTipsMock = ({ gameId, categoryPage }) => {
     const [isCommentLiked, setIsCommentLiked] = useState([]);
 
     // For the mock data, we store everything in local storage instead of a database
-
-    useEffect(() => {
-        if (user && user.id) {
-            console.log(user);
-            console.log(user.id);
-            console.log(user.username);
-        }
-    }, [user]);
-
     const handleAddComment = (postIndex, commentContent) => {
         const newPosts = randomPosts.map((post, index) => {
             if (index !== postIndex) return post;

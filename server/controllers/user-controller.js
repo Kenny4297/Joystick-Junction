@@ -4,7 +4,6 @@ require("dotenv").config();
 module.exports = {
     // GET: /api/users/verify
     async verifyUser(req, res) {
-        console.log(req.session);
         if (!req.session || !req.session.userId) {
             return res.status(401).json({ msg: "unauthorized" });
         }
@@ -22,9 +21,7 @@ module.exports = {
 
     // GET: /api/users/:userId
     async getUserById(req, res) {
-        console.log(req.params);
         try {
-            console.log("The try block of the '/api/users/:userId'");
             const user = await User.findOne({
                 where: { id: req.params.userId },
             });
@@ -72,7 +69,6 @@ module.exports = {
 
     // UPDATE PUT api/users/:id
     async updateUser(req, res) {
-        console.log("This is the req.session", req.session);
         const { body, params } = req;
         if (!req.session || !req.session.userId || req.session.userId != params.id) {
             return res.status(403).json({ message: "Forbidden" });
@@ -105,9 +101,6 @@ module.exports = {
 
     // POST: api/users/auth
     async authUser(req, res) {
-        console.log("This is the req.session", req.session);
-        console.log("Auth user API function firing");
-
         const { body } = req;
         const user = await User.findOne({ where: { email: body.email } });
 

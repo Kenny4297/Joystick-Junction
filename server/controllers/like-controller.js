@@ -6,7 +6,6 @@ const Comment = require("../models/Comment");
 module.exports = {
     // GET api/likes/posts/:postId
     async getLikesForPost(req, res) {
-        console.log("getLikesForPost firing!");
         try {
             const postId = req.params.postId;
             const likes = await Like.findAll({
@@ -62,7 +61,6 @@ module.exports = {
 
     // DELETE api/likes/posts/
     async deleteLikeForPost(req, res) {
-        console.log("deleteLikeForPost firing!");
         try {
             const deletedLike = await Like.destroy({
                 where: {
@@ -79,10 +77,8 @@ module.exports = {
 
     // GET api/likes/comments/:commentId
     async getLikesForComment(req, res) {
-        console.log("getLikesForComment firing!");
         try {
             const commentId = req.params.commentId;
-            console.log(`Fetching likes for comment ID: ${commentId}`);
             const likes = await Like.findAll({
                 where: {
                     comment_id: commentId,
@@ -92,9 +88,6 @@ module.exports = {
                     { model: Comment, as: "comment" },
                 ],
             });
-
-            console.log(`Fetched likes: ${JSON.stringify(likes)}`);
-
             res.json(likes);
         } catch (err) {
             console.error(err);
@@ -104,9 +97,6 @@ module.exports = {
 
     // POST api/likes/comments/:commentId
     async createLikeForComment(req, res) {
-        console.log("createLikeForComment firing!");
-        console.log(req.session);
-
         try {
             const newLike = await Like.create({
                 user_id: req.session.userId,
@@ -122,9 +112,6 @@ module.exports = {
 
     // DELETE api/likes/comments/:commentId
     async deleteLikeForComment(req, res) {
-        console.log("deleteLikeForComment firing!");
-        console.log("req.body: ", req.body);
-        console.log("req.params: ", req.params);
         try {
             const deletedLike = await Like.destroy({
                 where: {

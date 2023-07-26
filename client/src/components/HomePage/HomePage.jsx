@@ -1,18 +1,8 @@
-import { useContext, useEffect } from "react";
-import { UserContext } from "../../contexts/UserContext";
 import { Link } from "react-router-dom";
 import FeaturedGamesCarousel from "./FeaturedGamesCarousel";
 import RecentArticles from "./RecentArticles";
 
 const HomePage = () => {
-    const [user] = useContext(UserContext);
-
-    useEffect(() => {
-        if (user && user.id) {
-            console.log(user);
-            console.log(user.id);
-        }
-    }, [user]);
 
     return (
         <section>

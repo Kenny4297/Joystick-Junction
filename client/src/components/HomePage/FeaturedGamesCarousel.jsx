@@ -41,7 +41,6 @@ function FeaturedGamesCarousel() {
     }, []);
 
     const handleGameClick = (game) => {
-        console.log(user);
         if (user !== null && user.id !== null) {
             setGameData(game);
             navigate(`/game/${game.id}`);

@@ -22,11 +22,9 @@ const Messages = () => {
     useEffect(() => {
         if (userId) {
             const fetchConversations = async () => {
-                console.log(userId)
                 try {
                     const response = await axios.get(`/api/messages/conversations/${userId}`);
                     const conversations = response.data;
-                    console.log(conversations)
                     if (conversations.some((conversation) => !conversation)) {
                         console.error('Received null or undefined conversation');
                     } else {

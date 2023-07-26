@@ -10,7 +10,6 @@ export const GameProvider = ({ children }) => {
     const fetchGameById = useCallback(
         async (id) => {
             if (id !== lastFetchedGameId) {
-                console.log("Game context firing!");
                 const options = {
                     method: "GET",
                     url: "https://free-to-play-games-database.p.rapidapi.com/api/game",

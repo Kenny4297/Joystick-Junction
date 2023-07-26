@@ -6,7 +6,6 @@ const Like = require("../models/Like");
 module.exports = {
     // Get all posts
     async getAllPosts(req, res) {
-        console.log("get all posts function firing?");
         try {
             const getPostData = await Post.findAll({
                 include: [
@@ -24,9 +23,6 @@ module.exports = {
                     },
                 ],
             });
-
-            console.log(getPostData);
-
             if (!getPostData.length) {
                 return res.json([]);
             }
@@ -72,9 +68,6 @@ module.exports = {
     // Create a post
     // POST api/posts/
     async createPost(req, res) {
-        console.log("Create a post API function firing!");
-        console.log(req.body);
-
         try {
             const newPost = {
                 game_id: req.body.game_id,
@@ -102,7 +95,6 @@ module.exports = {
     // Get posts by game id and category
     // GET api/posts/game/:gameId/category/:category
     async getPostsByGameAndCategory(req, res) {
-        console.log("Get posts by category API function firing!");
         try {
             const postsData = await Post.findAll({
                 where: {
@@ -133,8 +125,6 @@ module.exports = {
             });
 
             const plainPostsData = postsData.map((post) => post.toJSON());
-
-            console.log("This is the plain post data", plainPostsData);
 
             if (!plainPostsData.length) {
                 return res.status(200).json([]);

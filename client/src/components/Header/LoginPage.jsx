@@ -14,12 +14,10 @@ const LoginPage = () => {
     };
 
     const handleFormSubmit = async (event) => {
-        console.log(formData);
         event.preventDefault();
 
         try {
             const response = await axios.post("/api/users/auth", formData);
-            console.log("login response", response);
             const result = response.data;
 
             if (result && !result.err) {
