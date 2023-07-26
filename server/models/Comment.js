@@ -25,7 +25,7 @@ Comment.init(
             allowNull: false,
             onDelete: "cascade",
             references: {
-                model: "post",
+                model: "Post",
                 key: "id",
             },
         },
