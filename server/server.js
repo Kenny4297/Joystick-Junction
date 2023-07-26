@@ -62,15 +62,31 @@ if (process.env.NODE_ENV !== "production") {
 //   console.error('Unable to sync database:', error);
 // });
 
-User.sync(syncOptions)
-.then(() => Post.sync(syncOptions))
-.then(() => Comment.sync(syncOptions))
-.then(() => DirectMessage.sync(syncOptions))
-.then(() => Like.sync(syncOptions))
-.then(() => {
-  app.listen(PORT, () => console.log(`Now listening on port ${PORT}`));
-})
-.catch((error) => {
-  console.error('Unable to sync database:', error);
-});
+// User.sync(syncOptions)
+// .then(() => Post.sync(syncOptions))
+// .then(() => Comment.sync(syncOptions))
+// .then(() => DirectMessage.sync(syncOptions))
+// .then(() => Like.sync(syncOptions))
+// .then(() => {
+//   app.listen(PORT, () => console.log(`Now listening on port ${PORT}`));
+// })
+// .catch((error) => {
+//   console.error('Unable to sync database:', error);
+// });
+
+const syncDatabase = async () => {
+  try {
+    await User.sync(syncOptions);
+    await Post.sync(syncOptions);
+    await Comment.sync(syncOptions);
+    await DirectMessage.sync(syncOptions);
+    await Like.sync(syncOptions);
+    app.listen(PORT, () => console.log(`Now listening on port ${PORT}`));
+  } catch (error) {
+    console.error('Unable to sync database:', error);
+  }
+};
+
+syncDatabase();
+
 
