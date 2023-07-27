@@ -11,7 +11,6 @@ export const UserProvider = ({ children }) => {
     });
   
     useEffect(() => {
-        console.log("User Context api firing!")
         const verifyUser = async () => {
             try {
             const response = await axios.get("/api/users/verify");

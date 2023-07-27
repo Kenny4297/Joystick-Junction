@@ -27,37 +27,27 @@ function App() {
     const [loading, setLoading] = useState(true);
 
     useEffect(() => {
-        console.log("App.js user verification firing!")
-        console.log(user)
         const verifyUser = async () => {
             try {
                 const response = await axios.get("/api/users/verify");
                 if (response.data) {
                     setUser(response.data);
                 }
-                setLoading(false); // Set loading to false after fetch
+                setLoading(false); 
             } catch (error) {
                 if (error.response && error.response.status === 401) {
                     setUser(null);
                 } else {
                     console.error("Unexpected error during fetch:", error);
                 }
-                setLoading(false); // Set loading to false even if there's an error
+                setLoading(false);
             }
         };
         verifyUser();
     }, []);
 
-    useEffect(() => {
-        if (user) {
-            console.log(user)
-        } else {
-            console.log("User not found")
-        }
-    })
-
     if (loading) {
-        return <div>Loading...</div>; // Or any other loading indication
+        return <div>Loading...</div>; 
     }
 
     return (

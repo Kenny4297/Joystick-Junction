@@ -9,7 +9,7 @@ function FeaturedGamesCarousel() {
     const [featuredGames, setFeaturedGames] = useState([]);
     const [hotGames, setHotGames] = useState([]);
     const [lovedGames, setLovedGames] = useState([]);
-    const [user, setUser] = useContext(UserContext);
+    const [user, _] = useContext(UserContext);
     const navigate = useNavigate();
 
     const { setGameData } = useContext(GameContext);
