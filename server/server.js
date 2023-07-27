@@ -37,8 +37,8 @@ app.use(express.json());
 
 app.use(routes);
 
-app.use(express.static(path.join(__dirname, 'public')));
-
+// Serve static files from the React app
+app.use(express.static(path.join(__dirname, '../client/build')));
 
 
 //! =====! Deleting tables section!
@@ -92,4 +92,8 @@ const syncDatabase = async () => {
 
 syncDatabase();
 
-
+// The "catchall" handler: for any request that doesn't
+// match one above, send back React's index.html file.
+app.get('*', (req, res) => {
+  res.sendFile(path.join(__dirname, '../client/build/index.html'));
+});
