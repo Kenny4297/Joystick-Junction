@@ -1,4 +1,5 @@
-import { useState, useEffect } from "react";
+import { useState, useEffect, useContext } from "react";
+import { UserContext } from "../../contexts/UserContext";
 import axios from "axios";
 import { useNavigate, useLocation } from "react-router-dom";
 
@@ -10,6 +11,7 @@ const LoginPage = () => {
     const [passwordError, setPasswordError] = useState("");
     const navigate = useNavigate();
     const location = useLocation();
+    const [, setUser] = useContext(UserContext);
 
     const handleInputChange = (event) => {
         setFormData({ ...formData, [event.target.name]: event.target.value });
@@ -36,10 +38,10 @@ const LoginPage = () => {
         try {
             const response = await axios.post("/api/users/auth", formData);
             const result = response.data;
-
+    
             if (result && !result.err) {
+                setUser(result);
                 setLoginResult("success");
-                navigate(location.state?.from || "/defaultPath");
             } else {
                 setLoginResult("fail");
             }
