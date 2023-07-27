@@ -25,6 +25,8 @@ const sess = {
   })
 };
 
+const sessionStore = new SequelizeStore({ db: sequelize });
+
 app.use(session(sess));
 
 // Set up CORS
@@ -81,6 +83,7 @@ const syncDatabase = async () => {
     await Comment.sync(syncOptions);
     await DirectMessage.sync(syncOptions);
     await Like.sync(syncOptions);
+    await sessionStore.sync();
     app.listen(PORT, () => console.log(`Now listening on port ${PORT}`));
   } catch (error) {
     console.error('Unable to sync database:', error);
