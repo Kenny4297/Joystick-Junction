@@ -642,7 +642,8 @@ header {
 }
 
 /* #card */
-.featured-games-card, .articles-card {
+/* .featured-games-card, */
+ .articles-card {
   position: relative;
   height: auto;
   border: 0.125rem solid var(--grey);
@@ -652,13 +653,14 @@ header {
   background-color: var(--metal);
 }
 
-.featured-games-card:hover, .articles-card:hover { 
+.articles-card:hover { 
     cursor: pointer
 }
 
 .featured-games-card {
   height: 22.5rem;
-  /* border: 2px solid red; */
+  border: 2px solid red;
+
 }
 
 .articles-card-heading {
@@ -672,20 +674,72 @@ header {
   margin-bottom: 1rem;
 }
 
-.featured-games-carousel {
-  display: flex;
-  flex-wrap: wrap;
-  justify-content: space-between;
-}
 
-.featured-games-carousel-item {
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+/* .featured-games-carousel {
+  display: flex;
+  border: 3px solid yellow;
+  justify-content: space-between;
+} */
+
+/* .featured-games-carousel-item {
   cursor: pointer;
   display: flex;
-  flex-direction: column;
+  border: 2px solid green;
+  flex-direction: row;
+  justify-content: space-around;
   align-items: center;
+  flex-wrap: wrap;
+  width: 100%;
+} */
+
+/* .featured-games-carousel-image {
+  width: 18%;
+  object-fit: cover;
+} */
+
+
+.carousel-individual-item {
+  border: 0.125rem solid var(--grey);
+  box-shadow: 0.3125rem 0.3125rem 0.625rem rgba(0,0,0,0.15);
+  border-radius: 5px;
 }
 
-.featured-games-carousel-image, .articles-card-image {
+.carousel-individual-item:hover {
+  cursor: pointer;
+}
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+.articles-card-image {
   width: 100%;
   object-fit: cover;
 }
@@ -749,14 +803,15 @@ header {
 }
 
 .carousel-control-prev {
-  right: 16rem;  
   top: -2rem;
-  height: 2rem;
+  left: 20rem;
+  opacity: 1;
 }
 
 .carousel-control-next {
-  left: 16rem; 
   top: -2rem;
+  right: 20rem;
+  opacity: 1;
 }
 
 .carousel-control-next-icon {

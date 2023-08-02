@@ -29,7 +29,7 @@ function FeaturedGamesCarousel() {
                 const response = await axios.request(options);
                 const games = response.data;
                 const shuffledGames = games.sort(() => 0.5 - Math.random());
-                setFeaturedGames(shuffledGames.slice(0, 5));
+                setFeaturedGames(shuffledGames.slice(0, 16));
                 setHotGames(shuffledGames.slice(5, 10));
                 setLovedGames(shuffledGames.slice(10, 15));
             } catch (error) {
