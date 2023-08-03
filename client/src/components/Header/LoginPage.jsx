@@ -42,6 +42,9 @@ const LoginPage = () => {
             if (result && !result.err) {
                 setUser(result);
                 setLoginResult("success");
+    
+                // Navigate to the "from" path if available, otherwise, to home
+                navigate(location.state?.from || "/");
             } else {
                 setLoginResult("fail");
             }
@@ -51,7 +54,7 @@ const LoginPage = () => {
     };
 
     const goToSignUpPage = async () => {
-        navigate("/login", { state: location.state });
+        navigate("/signup", { state: location.state });
     };
 
     useEffect(() => {
@@ -63,11 +66,12 @@ const LoginPage = () => {
     return (
         <>
             <section className="login-container">
+
+
+                <form className="login-form mb-3" aria-labelledby="loginHeader">
                 <h1 className="login-header" id="loginHeader">
                     Login
                 </h1>
-
-                <form className="login-form mb-3" aria-labelledby="loginHeader">
                     <div className="form-group">
                         <label id="emailLabel">Email Address</label>
                         <input type="text" name="email" placeholder="john@gmail.com" className="form-control" value={formData.email} onChange={handleInputChange} aria-labelledby="emailLabel" aria-required="true" />
@@ -97,6 +101,24 @@ const LoginPage = () => {
                         Login failed!
                     </div>
                 )}
+
+                <div className="quick-sign-up-info">
+                        <div className="info-group">
+                            <p className="info-title">Quick Log In</p>
+                            <div className="info-item">
+                                <p className="category">Email:</p>
+                                <p className="example">t@t.com</p>
+                            </div>
+                            <div className="info-item">
+                                <p className="category">Password:</p>
+                                <p className="example">t</p>
+                            </div>
+                            <div className="info-item">
+                                <p className="category">Your Username will be:</p>
+                                <p className="example">Tom</p>
+                            </div>
+                        </div>
+                    </div>
             </section>
         </>
     );

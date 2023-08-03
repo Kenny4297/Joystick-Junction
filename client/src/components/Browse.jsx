@@ -23,6 +23,7 @@ const Browse = () => {
     const [hasSearched, setHasSearched] = useState(false);
     const [user] = useContext(UserContext);
     const navigate = useNavigate();
+    const apiKey = process.env.REACT_APP_RAPID_GAMES_API_KEY;
 
     const [searchInput, setSearchInput] = useState("");
 
@@ -59,7 +60,7 @@ const Browse = () => {
                     method: "GET",
                     url: "https://free-to-play-games-database.p.rapidapi.com/api/games",
                     headers: {
-                        "X-RapidAPI-Key": "5353e51751msha2b28d9e3384746p1a9b44jsne8dbb6955924",
+                        "X-RapidAPI-Key": apiKey,
                         "X-RapidAPI-Host": "free-to-play-games-database.p.rapidapi.com",
                     },
                 };
@@ -67,8 +68,15 @@ const Browse = () => {
                     const response = await axios.request(options);
                     const games = response.data;
                     const filteredGames = games.filter((game) => game.title.toLowerCase().includes(searchInput.toLowerCase()));
-
-                    setGames(filteredGames);
+    
+                    if (filteredGames.length === 0) {
+                        setNoGamesFoundMessage("No games were found in the Rapid Free To Play Games API. Try a similar game.");
+                        setGames([]);
+                    } else {
+                        setNoGamesFoundMessage("");
+                        setGames(filteredGames);
+                    }
+    
                     setIsButtonClicked(true);
                     setIsLoading(false);
                     setIsSearchMade(true);
@@ -79,7 +87,7 @@ const Browse = () => {
                 }
             }
         }, 500);
-
+    
         return () => clearTimeout(timeoutId);
         // eslint-disable-next-line react-hooks/exhaustive-deps
     }, [searchInput]);
@@ -99,40 +107,43 @@ const Browse = () => {
             setNoGamesFoundMessage("Please select at least one category.");
             return;
         }
-
+    
         setIsFirstVisit(false);
         setHasSearched(true);
         setIsButtonClicked(true);
         setIsSearchingByCategories(true);
-
+        setIsLoading(true); 
+    
         const checkboxesAsString = selectedCategories.join(".");
-
+    
         const url = `https://free-to-play-games-database.p.rapidapi.com/api/filter?tag=${checkboxesAsString}`;
         const options = {
             method: "GET",
             headers: {
-                "X-RapidAPI-Key": "5353e51751msha2b28d9e3384746p1a9b44jsne8dbb6955924",
+                "X-RapidAPI-Key": apiKey,
                 "X-RapidAPI-Host": "free-to-play-games-database.p.rapidapi.com",
             },
         };
-
+    
         try {
             const response = await fetch(url, options);
             const data = await response.json();
-
+    
             if (data.length === 0) {
                 return;
             }
-
+    
             setGameData(data);
             setGames(data);
             setIsButtonClicked(true);
             setHasSearched(true);
         } catch (error) {
             console.error("Failed to fetch games:", error);
+        } finally {
+            setIsLoading(false); 
         }
     };
-
+    
     const handleCheckboxChange = (event) => {
         setErrorMessage("");
         setSelectedCategories((prevSelectedCategories) => {
@@ -162,7 +173,7 @@ const Browse = () => {
             setGameData(game);
             navigate(`/game/${game.id}`);
         } else {
-            navigate("/signup", { state: { from: `/game/${game.id}` } });
+            navigate("/login", { state: { from: `/game/${game.id}` } });
         }
     };
 
@@ -180,7 +191,7 @@ const Browse = () => {
                     </button>
                 )}
             </div>
-            {noGamesFoundMessage && <p>{noGamesFoundMessage}</p>}
+            {noGamesFoundMessage && <p style={{color: 'white', textAlign:'center'}}>{noGamesFoundMessage}</p>}
 
             {!searchInput.length && (
                 <section className="tailor-your-exploration-container" aria-labelledby="tailor-exploration-heading">
@@ -211,19 +222,22 @@ const Browse = () => {
                 </section>
             )}
             <div className="display-games-section" role="list">
-                {games.length > 0
-                    ? games.map((game) => {
-                          const gameDescription = game.short_description.length > 100 ? game.short_description.slice(0, 100) + "..." : game.short_description;
-                          return (
-                              <div key={game.id} className="individual-game-link" onClick={() => handleGameClick(game)} role="listitem" aria-labelledby={`game-title-${game.id}`} aria-describedby={`game-description-${game.id}`}>
-                                  <h2 id={`game-title-${game.id}`}>{game.title}</h2>
-                                  <img src={game.thumbnail} alt={game.title} style={{ width: "100%" }} />
-                                  <p id={`game-description-${game.id}`}>{gameDescription}</p>
-                              </div>
-                          );
-                      })
-                    : isSearchingByCategories && <p className="no-games-checkbox-message">No games found for the selected categories. Try again!</p>}
+                {isLoading ? 
+                    <p style={{color: 'white', textAlign:'center'}}>Loading...</p> 
+                    : games.length > 0
+                        ? games.map((game) => {
+                            const gameDescription = game.short_description.length > 100 ? game.short_description.slice(0, 100) + "..." : game.short_description;
+                            return (
+                                <div key={game.id} className="individual-game-link" onClick={() => handleGameClick(game)} role="listitem" aria-labelledby={`game-title-${game.id}`} aria-describedby={`game-description-${game.id}`}>
+                                    <h2 id={`game-title-${game.id}`}>{game.title}</h2>
+                                    <img src={game.thumbnail} alt={game.title} style={{ width: "100%" }} />
+                                    <p id={`game-description-${game.id}`}>{gameDescription}</p>
+                                </div>
+                            );
+                        })
+                        : isSearchingByCategories && <p className="no-games-checkbox-message">No games found for the selected categories. Try again!</p>}
             </div>
+
             {!isButtonClicked && !isLoading && !games.length && (
                 <div className="checkbox-section" aria-label="Categories filter">
                     <form onSubmit={fetchGamesByCategories}>

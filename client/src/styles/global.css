@@ -490,7 +490,7 @@ header {
 /* === Login Page === */
 .login-container {
   display: flex;
-  flex-direction: column;
+  /* flex-direction: column; */
   justify-content: center;
   align-items: center;
   background-color: var(--metal);
@@ -607,6 +607,7 @@ header {
   font-size: 1.1em;
   align-self: flex-start;
   margin-top:1rem;
+  margin-left: 2rem;
   border: 2px solid var(--blue);
 }
 
@@ -655,7 +656,7 @@ header {
 /* #card */
 /* .featured-games-card, */
  .articles-card {
-  position: relative;
+  /* position: relative; */
   height: auto;
   border: 0.125rem solid var(--grey);
   min-width: 20rem;
@@ -674,19 +675,17 @@ header {
 
 }
 
-.articles-card-heading {
-  padding-top: 1rem;
-}
-
 .featured-games-card-heading, .articles-card-heading {
   text-align: center;
   color: var(--blue);
   font-size: 1.5rem;
   margin-bottom: 1rem;
+  margin-top: 2rem;
 }
 
 .carousel-item-content {
   display: flex;
+  flex-wrap: wrap;
   justify-content: space-between;
 }
 
@@ -696,6 +695,10 @@ header {
   border-radius: 5px;
   flex: 1;
   margin: 1rem;
+}
+
+.carousel-individual-item img {
+  width: 100%;
 }
 
 .carousel-individual-item:hover {
@@ -747,10 +750,10 @@ header {
   padding: 0rem 1rem;
 }
 
-.carousel {
+/* .carousel {
   position: relative;
   height: 15rem;  
-}
+} */
 
 .carousel-caption p {
   display: -webkit-box;
@@ -759,22 +762,35 @@ header {
   overflow: hidden;
 }
 
+.carousel.slide {
+  position: relative;
+}
+
+.carousel-container {
+  position: relative;
+}
+
 .carousel-control-prev, .carousel-control-next {
   position: absolute;
   top: 50%; 
   transform: translateY(-50%);
+  /* border: 2px solid green; */
+  height: 3rem;
+  width: 3rem;
 }
 
 .carousel-control-prev {
-  top: -2rem;
-  left: 20rem;
+  top: 0rem;
+  left: 0;
   opacity: 1;
+  /* margin-left: 5rem; */
 }
 
 .carousel-control-next {
-  top: -2rem;
-  right: 20rem;
+  top: 0rem;
+  right: 0;
   opacity: 1;
+  /* margin-right: 5rem; */
 }
 
 .carousel-control-next-icon {
@@ -973,6 +989,7 @@ header {
   position: relative;
   margin: 0 auto;
   border: 0.125rem solid grey;
+  border-radius: 7px;
   box-shadow: 0.3125rem 0.3125rem 0.625rem rgba(0,0,0,0.15);
   background-color: steelblue;
   padding: 1rem;
@@ -1016,6 +1033,11 @@ header {
   flex-direction: column;
   align-items: center;
   justify-content: center;
+}
+
+.individual-checkboxes h4 {
+  color: var(--blue);
+  text-decoration: underline;
 }
 
 .individual-checkboxes ul {
@@ -1148,12 +1170,15 @@ footer h3, footer p {
     font-size: 2rem;
   }
   .navbar-collapse {
-    /* background-color: blue; */
+    background-color: var(--blue);
     display: flex;
     align-items: center;
     justify-content: center;
     flex-direction: column;
     text-align: center;
+  }
+  .login-button {
+    padding-right: 0rem;
   }
 }
 
@@ -1222,4 +1247,45 @@ footer h3, footer p {
     font-size: 1rem;
   }
 }
+
+@media (max-width: 900px) {
+  .carousel-individual-item {
+    flex-basis: 50%;
+    width: 40rem;
+    /* border: 2px solid red; */
+  }
+  .carousel-container {
+    margin-bottom: 10rem;
+  }
+  .carousel-individual-item img {
+    width: 100%;
+    /* border: 2px solid blue; */
+  }
+}
+
+@media (max-width: 700px) {
+    .carousel-individual-item {
+    width: 30rem;
+    /* border: 2px solid red; */
+  }
+    .carousel-container {
+    margin-bottom: 5rem;
+  }
+}
+
+@media (max-width: 550px) {
+    .carousel-individual-item {
+    width: 20rem;
+    /* border: 2px solid red; */
+  }
+  .carousel-container {
+    margin-bottom: 0rem;
+  }
+}
+
+
+
+  /* .carousel-individual-item {
+    flex-basis: 100%;
+  } */
 

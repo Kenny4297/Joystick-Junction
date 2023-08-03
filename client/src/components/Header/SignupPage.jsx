@@ -1,5 +1,6 @@
-import { useState } from "react";
+import { useState, useContext } from "react";
 import { useNavigate, useLocation } from "react-router-dom";
+import { UserContext } from "../../contexts/UserContext";
 
 const SignupPage = () => {
     const defForm = { email: "", password: "", username: "" };
@@ -10,6 +11,8 @@ const SignupPage = () => {
     const [usernameError, setUsernameError] = useState("");
     const navigate = useNavigate();
     const location = useLocation();
+    const [, setUser] = useContext(UserContext);
+
 
     const handleInputChange = (event) => {
         setFormData({ ...formData, [event.target.name]: event.target.value });
@@ -17,47 +20,54 @@ const SignupPage = () => {
 
     const handleFormSubmit = async (event) => {
         event.preventDefault();
-
+    
+        let isValid = true;
+    
         // Validation
         if (!formData.email) {
             setEmailError("Email field cannot be empty.");
-            return;
+            isValid = false;
         } else {
             setEmailError("");
         }
-
+    
         if (!formData.username) {
             setUsernameError("Username field cannot be empty.");
-            return;
+            isValid = false;
         } else {
             setUsernameError("");
         }
-
+    
         if (!formData.password) {
             setPasswordError("Password field cannot be empty.");
-            return;
+            isValid = false;
         } else {
             setPasswordError("");
         }
-      
-        const query = await fetch("/api/users/", {
-          method: "post",
-          body: JSON.stringify(formData),
-          headers: {
-            "Content-Type": "application/json",
-          },
-        });
-      
-        if (!query.ok) {
-          setSignupResult("fail");
-        } else {
-          await query.json();
-          setSignupResult("success");
-      
-          // navigate to the "from" path if available, otherwise, to home
-          navigate(location.state?.from || "/");
+    
+        // Only attempt sign up if all validations passed
+        if (isValid) {
+            const query = await fetch("/api/users/", {
+                method: "post",
+                body: JSON.stringify(formData),
+                headers: {
+                    "Content-Type": "application/json",
+                },
+            });
+    
+            if (!query.ok) {
+                setSignupResult("fail");
+            } else {
+                const result = await query.json();
+                setUser(result); 
+                setSignupResult("success");
+    
+                // navigate to the "from" path if available, otherwise, to home
+                navigate(location.state?.from || "/");
+            }
         }
-      };
+    };
+    
       
 
     const goToLoginPage = async () => {
@@ -113,24 +123,6 @@ const SignupPage = () => {
                                 Sign up failed!
                             </div>
                         )}
-                    </div>
-
-                    <div className="quick-sign-up-info">
-                        <div className="info-group">
-                            <p className="info-title">Quick Sign Up</p>
-                            <div className="info-item">
-                                <p className="category">Email:</p>
-                                <p className="example">t@t.com</p>
-                            </div>
-                            <div className="info-item">
-                                <p className="category">Username:</p>
-                                <p className="example">Tom</p>
-                            </div>
-                            <div className="info-item">
-                                <p className="category">Password:</p>
-                                <p className="example">t</p>
-                            </div>
-                        </div>
                     </div>
                 </div>
             </section>

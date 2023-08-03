@@ -8,24 +8,25 @@ const Header = () => {
     const [user, setUser] = useContext(UserContext);
     const navigate = useNavigate();
 
-    const logout = () => {
-        // Make API call to logout
-        fetch("/api/users/logout", {
-            method: "GET",
-            credentials: "include",
-        })
-            .then((response) => {
-                if (response.ok) {
-                    setUser(null);
-                    navigate("/");
-                } else {
-                    throw new Error("Failed to log out");
-                }
-            })
-            .catch((err) => {
-                console.error(err);
+    const logout = async () => {
+        try {
+            // Make API call to logout
+            const response = await fetch("/api/users/logout", {
+                method: "GET",
+                credentials: "include",
             });
+            
+            if (response.ok) {
+                setUser(null);
+                navigate("/");
+            } else {
+                throw new Error("Failed to log out");
+            }
+        } catch (err) {
+            console.error(err);
+        }
     };
+    
 
     return (
         <header className="Header" aria-label="Main navigation">

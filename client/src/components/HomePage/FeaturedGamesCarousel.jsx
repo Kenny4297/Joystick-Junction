@@ -11,6 +11,7 @@ function FeaturedGamesCarousel() {
     const [lovedGames, setLovedGames] = useState([]);
     const [user] = useContext(UserContext);
     const navigate = useNavigate();
+    const apiKey = process.env.REACT_APP_RAPID_GAMES_API_KEY;
 
     const { setGameData } = useContext(GameContext);
 
@@ -19,7 +20,7 @@ function FeaturedGamesCarousel() {
             method: "GET",
             url: "https://free-to-play-games-database.p.rapidapi.com/api/games",
             headers: {
-                "X-RapidAPI-Key": "5353e51751msha2b28d9e3384746p1a9b44jsne8dbb6955924",
+                "X-RapidAPI-Key": apiKey,
                 "X-RapidAPI-Host": "free-to-play-games-database.p.rapidapi.com",
             },
         };
@@ -38,7 +39,7 @@ function FeaturedGamesCarousel() {
         };
 
         fetchGames();
-    }, []);
+    }, [apiKey]);
 
     const handleGameClick = (game) => {
         if (user !== null && user.id !== null) {

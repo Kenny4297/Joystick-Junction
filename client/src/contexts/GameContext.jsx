@@ -6,6 +6,7 @@ export const GameContext = createContext();
 export const GameProvider = ({ children }) => {
     const [gameData, setGameData] = useState({});
     const [lastFetchedGameId, setLastFetchedGameId] = useState(null);
+    const apiKey = process.env.REACT_APP_RAPID_GAMES_API_KEY;
 
     const fetchGameById = useCallback(
         async (id) => {
@@ -15,7 +16,7 @@ export const GameProvider = ({ children }) => {
                     url: "https://free-to-play-games-database.p.rapidapi.com/api/game",
                     params: { id: id },
                     headers: {
-                        "X-RapidAPI-Key": "5353e51751msha2b28d9e3384746p1a9b44jsne8dbb6955924",
+                        "X-RapidAPI-Key": apiKey,
                         "X-RapidAPI-Host": "free-to-play-games-database.p.rapidapi.com",
                     },
                 };
@@ -30,7 +31,7 @@ export const GameProvider = ({ children }) => {
                 }
             }
         },
-        [lastFetchedGameId]
+        [lastFetchedGameId, apiKey]
     );
 
     return <GameContext.Provider value={{ gameData, setGameData, fetchGameById }}>{children}</GameContext.Provider>;

@@ -8,6 +8,7 @@ const RecentArticles = () => {
     const [searchedGame] = useState("");
     const [gameDescriptions, setGameDescriptions] = useState([]);
     const [articleTitlesIndex, setArticleTitlesIndex] = useState([]);
+    const apiKey = process.env.REACT_APP_RAPID_GAMES_API_KEY;
 
     useEffect(() => {
         const articleTitles = ["Having trouble beating the final boss?", "How to pass level 4: A guide", "Mastering the art of strategy", "Becoming an unbeatable gamer", "Exploring the open world", "Surviving the hardest levels", "Unlocking secret game features", "Finding all hidden treasures", "How to conquer multiplayer mode", "The best weapon upgrades", "Creating unbeatable game strategies", "The secret to high scores", "Powering through challenging quests", "Essential tips for beginners", "Advanced tactics for experienced gamers", "Ultimate guide to side quests", "The hidden lore of the game world", "Improving your reaction times", "Becoming a pro at puzzle solving", "Mastering the hardest boss fights"];
@@ -36,7 +37,7 @@ const RecentArticles = () => {
             method: "GET",
             url: "https://free-to-play-games-database.p.rapidapi.com/api/games",
             headers: {
-                "X-RapidAPI-Key": "5353e51751msha2b28d9e3384746p1a9b44jsne8dbb6955924",
+                "X-RapidAPI-Key": apiKey,
                 "X-RapidAPI-Host": "free-to-play-games-database.p.rapidapi.com",
             },
         };
@@ -53,7 +54,7 @@ const RecentArticles = () => {
         };
 
         fetchGames();
-    }, []);
+    }, [apiKey]);
 
     return (
         <section style={{ marginTop: "3rem" }} aria-labelledby="recent-articles-heading">
@@ -76,7 +77,7 @@ const RecentArticles = () => {
                         );
                     })
                 ) : (
-                    <p id="no-games-message">No games found for {searchedGame ? `the game name "${searchedGame}"` : "the selected categories or name"}.</p>
+                    <p id="no-games-message"></p>
                 )}
             </div>
         </section>
