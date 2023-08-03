@@ -30,11 +30,11 @@ function GameCarousel({ games, heading, handleGameClick }) {
                 <Carousel interval={null} indicators={false}>
                     {gamesInChunks.map((chunk, chunkIndex) => (
                         <Carousel.Item key={`chunk-${chunkIndex}`} className="featured-games-carousel">
-                            <div className="carousel-item-content" style={{ display: 'flex', justifyContent: 'space-between' }}>
+                            <div className="carousel-item-content">
                                 {chunk.map((game, gameIndex) => {
                                     const overallIndex = chunkIndex * 4 + gameIndex;
                                     return (
-                                        <div key={overallIndex} onClick={() => handleGameClick(game)} aria-labelledby={`featured-game-${overallIndex}-title`} aria-describedby={`featured-game-${overallIndex}-description`} className="carousel-individual-item" style={{ flex: 1, margin: '10px' }}>
+                                        <div key={overallIndex} onClick={() => handleGameClick(game)} aria-labelledby={`featured-game-${overallIndex}-title`} aria-describedby={`featured-game-${overallIndex}-description`} className="carousel-individual-item">
                                             <img src={game.thumbnail} alt={game.title} className="featured-games-carousel-image" style={{ width: '100%' }}/>
                                             <Carousel.Caption className="featured-games-carousel-caption">
                                                 <h3 id={`featured-game-${overallIndex}-title`}>{game.title}</h3>

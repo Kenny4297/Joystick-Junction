@@ -22,7 +22,7 @@ const HomePage = () => {
 
             <FeaturedGamesCarousel />
 
-            {/* <RecentArticles /> */}
+            <RecentArticles />
         </section>
     );
 };

@@ -30,8 +30,8 @@ function FeaturedGamesCarousel() {
                 const games = response.data;
                 const shuffledGames = games.sort(() => 0.5 - Math.random());
                 setFeaturedGames(shuffledGames.slice(0, 16));
-                setHotGames(shuffledGames.slice(5, 10));
-                setLovedGames(shuffledGames.slice(10, 15));
+                setHotGames(shuffledGames.slice(16, 32));
+                setLovedGames(shuffledGames.slice(32, 48));
             } catch (error) {
                 console.error("There was an error retrieving the games:", error);
             }
@@ -52,8 +52,8 @@ function FeaturedGamesCarousel() {
     return (
         <section className="featured-games-card-container">
             <GameCarousel games={featuredGames} heading="Featured Games" handleGameClick={handleGameClick} />
-            <GameCarousel games={hotGames} heading="What's Hot" handleGameClick={handleGameClick} />
-            <GameCarousel games={lovedGames} heading="Gotta Love It" handleGameClick={handleGameClick} />
+            <GameCarousel games={hotGames} heading="Trending" handleGameClick={handleGameClick} />
+            <GameCarousel games={lovedGames} heading="Highest Rated" handleGameClick={handleGameClick} />
         </section>
     );
 }

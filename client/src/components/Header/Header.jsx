@@ -29,7 +29,7 @@ const Header = () => {
 
     return (
         <header className="Header" aria-label="Main navigation">
-            <Navbar style={{ backgroundColor: "var(--metal" }} expand="md" className="d-flex justify-content-center align-items-center" aria-label="Main menu">
+            <Navbar style={{ backgroundColor: "grey", width: '100%', height: '100%' }} expand="md" className="d-flex justify-content-center align-items-center" aria-label="Main menu">
                 <Navbar.Toggle aria-controls="basic-navbar-nav" />
                 <Navbar.Collapse id="basic-navbar-nav">
                     <Nav

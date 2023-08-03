@@ -94,15 +94,6 @@ textarea::placeholder {
     border: 1px solid var(--metal);
 }
 
-
-
-/* === Header === */
-.Header {
-  z-index: 1000;
-}
-
-
-
 /*  === Game Categories ===*/
 .game-categories-container {
   display: flex;
@@ -427,34 +418,54 @@ textarea::placeholder {
 header {
   display: flex;
   justify-content: flex-end;
-  z-index: -1;
-  /* border: 2px solid red; */
+  align-items: center;
+  z-index: 1000;
+  height: 3rem;
 }
+
 
 .nav-link {
   position: relative;
   font-weight: 600;
-  color: white;
+  color: var(--black);
+  margin-right: .5rem;
+  /* height: 2rem; */
+}
+
+.nav-link:last-of-type {
+  margin-right: 2rem;
+}
+
+:root {
+  --white: #F8F9FA;
+  --metal: #2E2E2E;
+  --blue: #17A2B8;
+  --black: #000000;
+  --grey: #93989F;
 }
 
 .nav-link:hover {
-  color: white;
+  color: var(--black);
 }
 
 .login-button {
-  color: white;
+  color: var(--black);
+  padding-right: 5rem;
 }
 
 .login-button:hover {
-  color: var(--blue);
+  color: var(--black);
+
 }
 
 .login-button:focus {
-  color: white;
+  color: var(--black);
+
 }
 
 .login-button:visited {
-  color: white;
+  color: var(--black);
+
 }
 
 .nav-link::after {
@@ -659,7 +670,7 @@ header {
 
 .featured-games-card {
   height: 22.5rem;
-  border: 2px solid red;
+  /* border: 2px solid red; */
 
 }
 
@@ -674,70 +685,22 @@ header {
   margin-bottom: 1rem;
 }
 
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-/* .featured-games-carousel {
+.carousel-item-content {
   display: flex;
-  border: 3px solid yellow;
   justify-content: space-between;
-} */
-
-/* .featured-games-carousel-item {
-  cursor: pointer;
-  display: flex;
-  border: 2px solid green;
-  flex-direction: row;
-  justify-content: space-around;
-  align-items: center;
-  flex-wrap: wrap;
-  width: 100%;
-} */
-
-/* .featured-games-carousel-image {
-  width: 18%;
-  object-fit: cover;
-} */
-
+}
 
 .carousel-individual-item {
   border: 0.125rem solid var(--grey);
   box-shadow: 0.3125rem 0.3125rem 0.625rem rgba(0,0,0,0.15);
   border-radius: 5px;
+  flex: 1;
+  margin: 1rem;
 }
 
 .carousel-individual-item:hover {
   cursor: pointer;
 }
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
 
 .articles-card-image {
   width: 100%;
