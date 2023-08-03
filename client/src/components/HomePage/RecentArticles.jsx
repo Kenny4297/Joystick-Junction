@@ -5,7 +5,6 @@ import { loremIpsum } from "lorem-ipsum";
 const RecentArticles = () => {
     const [games, setGames] = useState([]);
     const [clickedGame, setClickedGame] = useState(null);
-    const [searchedGame] = useState("");
     const [gameDescriptions, setGameDescriptions] = useState([]);
     const [articleTitlesIndex, setArticleTitlesIndex] = useState([]);
     const apiKey = process.env.REACT_APP_RAPID_GAMES_API_KEY;
