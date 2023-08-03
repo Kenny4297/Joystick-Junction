@@ -17,6 +17,7 @@ body {
   margin: 0;
   padding: 0;
   box-sizing: border-box;
+  overflow-x: hidden;
 }
 
 textarea {
@@ -412,6 +413,39 @@ textarea::placeholder {
   font-size: 1.2rem;
 }
 
+/* === Hero Section === */
+
+.hero-container {
+  background-image: url('../components/Assets/Images/hero.jpg'); 
+  height: 500px; 
+  width: 100vw;
+  margin-top: -1rem;
+  margin-left: -4rem;
+  /* margin-right: 1rem; */
+  background-size: cover; 
+  background-position: center; 
+  position: relative;
+  opacity: 1;
+}
+
+
+.hero-container::before {
+  content: "";
+  position: absolute;
+  top: 0;
+  right: 0;
+  bottom: 0;
+  left: 0;
+
+  background: rgba(0, 0, 0, 0.65); /* This is the overlay, adjust color and opacity as needed */
+}
+
+.hero-content-container {
+  position: relative;
+  z-index: 2;
+  padding-top: 5rem;
+}
+
 
 
 /* === Header Section === */
@@ -430,6 +464,10 @@ header {
   color: var(--black);
   margin-right: .5rem;
   /* height: 2rem; */
+}
+
+.navbar-collapse {
+  z-index: 100;
 }
 
 .nav-link:last-of-type {
@@ -1154,6 +1192,18 @@ footer h3, footer p {
   }
 }
 
+@media (max-width: 460px) {
+  .hero-content-container h1 {
+    font-size: 2.9rem;
+  } 
+}
+
+@media (max-width: 380px) {
+  .hero-container {
+    height: 550px;
+  } 
+}
+
 @media (max-width: 810px) {
   .header-links {
     font-size:.82rem;
@@ -1179,6 +1229,7 @@ footer h3, footer p {
   }
   .login-button {
     padding-right: 0rem;
+    padding-left: 1rem;
   }
 }
 

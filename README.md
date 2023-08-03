@@ -29,6 +29,7 @@ The user can enter a name of a game or choose to select the categories they wish
 The user can choose to play or checkout what other users have to say about the game.
 ## **Category Page**
 <img src="./client/src/components/Assets/Images/categorypage.png" alt="Screenshot of the category page" width="1000"/>
+
 The user can create a post or comment on others posts / comments. Mock users have been created to simulate real users.
 
 ## **Purpose and Inspiration**
