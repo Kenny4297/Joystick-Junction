@@ -46,7 +46,7 @@ function FeaturedGamesCarousel() {
             setGameData(game);
             navigate(`/game/${game.id}`);
         } else {
-            navigate("/signup", { state: { from: `/game/${game.id}` } });
+            navigate("/login", { state: { from: `/game/${game.id}` } });
         }
     };
 

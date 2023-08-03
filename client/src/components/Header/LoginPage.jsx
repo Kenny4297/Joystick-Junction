@@ -17,6 +17,10 @@ const LoginPage = () => {
         setFormData({ ...formData, [event.target.name]: event.target.value });
     };
 
+    useEffect(() => {
+        window.scrollTo(0, 0);
+    }, []);    
+
     const handleFormSubmit = async (event) => {
         event.preventDefault();
 
