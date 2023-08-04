@@ -56,9 +56,11 @@ Font End
 * HTML
 * Cloudinary
 * React-Bootstrap
+* React-Modal
 * Free To Play Games Database API<br/>
 
 Back End
+* Node.js
 * SQL
 * Sequelize
 * Express-Sessions
