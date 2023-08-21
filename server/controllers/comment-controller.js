@@ -4,6 +4,8 @@ const Post = require("../models/Post");
 const Like = require("../models/Like");
 
 module.exports = {
+    // api/comments/:postId
+    // GET all comments
     async getAllComments(req, res) {
         try {
             const getAllComments = await Comment.findAll({

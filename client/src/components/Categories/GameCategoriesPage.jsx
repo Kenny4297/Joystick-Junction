@@ -1,6 +1,7 @@
 import React, { useContext, useEffect, useState } from "react";
 import { GameContext } from "../../contexts/GameContext";
 import { UserContext } from "../../contexts/UserContext";
+import NoUser from '../Assets/Images/noUser.png'
 import { useParams } from "react-router-dom";
 import Modal from "react-modal";
 import axios from "axios";
@@ -257,8 +258,12 @@ const GameCategoriesPage = () => {
                 posts.map((post, index) => (
                     <section key={index} className="post-mapping-section-container">
                         <section className="post-mapping-image-section">
-                            <img src={post.user.profileImage} alt={post.user.username} aria-label={post.user.username} />
-                            <div style={{ marginLeft: "1rem" }}>
+                        <img 
+                            src={post.user.profileImage ? post.user.profileImage : NoUser} 
+                            alt={post.user.username} 
+                            aria-label={post.user.username} 
+                        />
+                            <div className="post-text-section" style={{ marginLeft: "1rem" }}>
                                 <h2>{post.post_title}</h2>
                                 <p>{post.post_content}</p>
                                 <h5>{post.user.username}</h5>
@@ -296,11 +301,7 @@ const GameCategoriesPage = () => {
                                                 }}
                                             >
                                                 <img src={comment.user.profileImage} alt={comment.user.username} aria-label={comment.user.username} />
-                                                <div
-                                                    style={{
-                                                        marginLeft: "1rem",
-                                                    }}
-                                                >
+                                                <div className="comment-text-section">
                                                     <p>{comment.comment_content}</p>
                                                     <h5>{comment.user.username}</h5>
                                                 </div>
@@ -329,7 +330,7 @@ const GameCategoriesPage = () => {
                                                         Like
                                                     </button>
                                                 )}
-                                                <p>{comment.likes && comment.likes.length} likes</p>
+                                                <p style={{color:'white'}}>{comment.likes && comment.likes.length} likes</p>
                                             </section>
                                         </section>
                                     ))}

@@ -7,6 +7,7 @@ const GameDetails = () => {
     const { gameId } = useParams();
 
     useEffect(() => {
+        window.scrollTo(0, 0);
         fetchGameById(gameId);
     }, [gameId, fetchGameById]);
 

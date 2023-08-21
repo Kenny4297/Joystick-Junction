@@ -1377,7 +1377,7 @@ const StrategyAndTipsMock = ({ gameId, categoryPage }) => {
                         <section key={index} className="post-mapping-section-container">
                             <section className="post-mapping-image-section">
                                 <img src={post.user.profileImage} alt={post.user.username} aria-label={post.user.username} />
-                                <div style={{ marginLeft: "1rem" }}>
+                                <div className="post-text-section" style={{ marginLeft: "1rem" }}>
                                     <h2>{post.post_title}</h2>
                                     <p>{post.post_content}</p>
                                     <h5>{post.user.username}</h5>
@@ -1388,7 +1388,7 @@ const StrategyAndTipsMock = ({ gameId, categoryPage }) => {
                                 <button className="post-comment-like-button" style={{ width: "4rem" }} onClick={() => handleLike("post", index)} aria-pressed={isLiked[index] ? "true" : "false"} aria-label="like button for post">
                                     {isLiked[index] ? "Unlike" : "Like"}
                                 </button>
-                                <p>{post.likes} likes </p>
+                                <p style={{color:'white'}}>{post.likes} likes </p>
                             </section>
 
                             <div onClick={() => handleToggle(index)} className={`accordion-container ${openIndex === index ? "open" : "closed"}`}>
@@ -1409,11 +1409,7 @@ const StrategyAndTipsMock = ({ gameId, categoryPage }) => {
                                                     }}
                                                 >
                                                     <img src={comment.user.profileImage} alt={comment.user.username} aria-label={comment.user.username} />
-                                                    <div
-                                                        style={{
-                                                            marginLeft: "1rem",
-                                                        }}
-                                                    >
+                                                    <div className="comment-text-section">
                                                         <p>{comment.comment_content}</p>
                                                         <h5>{comment.user.username}</h5>
                                                     </div>
@@ -1430,7 +1426,7 @@ const StrategyAndTipsMock = ({ gameId, categoryPage }) => {
                                                     >
                                                         {(isCommentLiked[index] || [])[idx] || false ? "Unlike" : "Like"}
                                                     </button>
-                                                    <p>{comment.likes} likes</p>
+                                                    <p style={{color:'white'}}>{comment.likes} likes</p>
                                                 </section>
                                             </section>
                                         ))}
