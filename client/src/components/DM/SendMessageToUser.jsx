@@ -31,7 +31,7 @@ const SendMessageToUser = () => {
     }
 
     if (!userData) {
-        return <div>Loading...</div>;
+        <div style={{textAlign:'center', color:'white', marginTop:'5rem'}}>Loading...</div>;
     }
 
     return (

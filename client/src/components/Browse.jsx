@@ -223,7 +223,7 @@ const Browse = () => {
             )}
             <div className="display-games-section" role="list">
                 {isLoading ? 
-                    <p style={{color: 'white', textAlign:'center'}}>Loading...</p> 
+                    <p style={{color: 'white', textAlign:'center', marginTop:'5rem'}}>Loading...</p> 
                     : games.length > 0
                         ? games.map((game) => {
                             const gameDescription = game.short_description.length > 100 ? game.short_description.slice(0, 100) + "..." : game.short_description;

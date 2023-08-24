@@ -32,7 +32,7 @@ function GameCarousel({ games, heading, handleGameClick }) {
 
     if (isLoading) {
         return (
-            <p style={{color: 'white', textAlign:'center'}}>Loading...</p>
+            <p style={{color: 'white', textAlign:'center', marginTop:'5rem'}}>Loading...</p>
         );
     } else {
         return (
