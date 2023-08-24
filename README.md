@@ -19,12 +19,12 @@ This project is licensed under the MIT license.
 Joystick Junction is a comprehensive video game blog and community platform, offering a unique blend of social interaction, in-depth articles, and game exploration. Leveraging advanced features such as a debouncing search functionality and a filter system for game types, it ensures a smooth and user-friendly experience. Users can also engage in rich discussions through six distinct categories for each game. This seamless integration of technology, gaming, and community-building caters to diverse interests, making Joystick Junction a compelling project for both technically proficient and non-technical audiences alike.
 
 ## **Browse**
-<img src="./client/src/components/Assets/Images/browse.png" alt="Screenshot of the Browse page" width="1000"/>
+<img src="./client/src/components/Assets/Images/Browse.png" alt="Screenshot of the Browse page" width="1000"/>
 
 The user can enter a name of a game or choose to select the categories they wish to have in their game.
 
 ## **Game Page**
-<img src="./client/src/components/Assets/Images/gamepage.png" alt="Screenshot of the game page" width="1000"/>
+<img src="./client/src/components/Assets/Images/GamePage.png" alt="Screenshot of the game page" width="1000"/>
 
 The user can choose to play or checkout what other users have to say about the game.
 ## **Category Page**
