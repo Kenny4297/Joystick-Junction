@@ -47,7 +47,7 @@ function App() {
     }, []);
 
     if (loading) {
-        return <div>Loading...</div>; 
+        return <div style={{textAlign:'center', color:'white', marginTop:'5rem'}}>Loading...</div>; 
     }
 
     return (
