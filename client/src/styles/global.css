@@ -1233,12 +1233,26 @@ footer h3, footer p {
   }
 }
 
+/* === Login === */
+
 @media (max-width: 800px) {
   .login-container {
     width: 90%;
+    flex-direction: column;
+    margin: 0 auto;
+    /* border: 2px solid green; */
   }
   .login-form {
     width: 90%;
+  }
+  .quick-sign-up-info {
+    /* border:2px solid red; */
+    justify-content: center;
+    align-items: center;
+    margin: 0 auto;
+    position: relative;
+    width: 90%;
+    /* right: 4rem; */
   }
 }
 
@@ -1265,10 +1279,6 @@ footer h3, footer p {
     justify-content: center;
     margin: 0 auto;
     width: 100%;
-  }
-  .quick-sign-up-info {
-    align-self: center;
-    width: 15rem;
   }
 }
 
