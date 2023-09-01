@@ -2,7 +2,7 @@
 
 <img src="./client/src/components/Assets/Images/homepage.png" alt="Screenshot of the homepage" width="1000"/>
 
-Image of the Home Page.The users can choose to browse games, explore featured games via a carousel, or read recent gaming articles.
+Image of the Home Page. The user can choose to browse games, explore featured games via a carousel, or read recent gaming articles.
 ## **Table of Contents**
 - [License](#license)
 - [Project Overview](#project-overview)
