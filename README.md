@@ -5,12 +5,14 @@
 Image of the Home Page.The users can choose to browse games, explore featured games via a carousel, or read recent gaming articles.
 ## **Table of Contents**
 - [License](#license)
-- [Home Page](#home-page)
+- [Project Overview](#project-overview)
+- [Browse](#browse)
+- [Game Page](#game-page)
+- [Category Page](#category-page)
 - [Purpose and Inspiration](#purpose-and-inspiration)
-- [Unique Technologies](#technologies)
+- [Unique Technologies](#unique-technologies)
 - [Technologies Used](#technologies-used)
-- [Deployment](#Deployment)
-- [Testing](#testing)
+- [Deployment](#deployment)
 
 ## **License**
 This project is licensed under the MIT license.
@@ -67,4 +69,4 @@ Back End
 * bcrypt
 
 ## **Deployment**
-[Deployment Link]()
+[Deployment Link](https://joystick-junction-production.up.railway.app/)
