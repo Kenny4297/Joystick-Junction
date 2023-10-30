@@ -1386,7 +1386,7 @@ const StrategyAndTipsMock = ({ gameId, categoryPage }) => {
 
                             <section className="like-button-section">
                                 <button className="post-comment-like-button" style={{ width: "4rem" }} onClick={() => handleLike("post", index)} aria-pressed={isLiked[index] ? "true" : "false"} aria-label="like button for post">
-                                    {isLiked[index] ? "Unlike" : "Like"}sw
+                                    {isLiked[index] ? "Unlike" : "Like"}
                                 </button>
                                 <p style={{color:'white'}}>{post.likes} likes </p>
                             </section>
